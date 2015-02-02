@@ -58,3 +58,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /Revisor de Publicações/nbproject/private/
+/Revisor de Publicações/build/
+/Revisor de Publicações/dist/
