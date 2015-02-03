@@ -1,5 +1,6 @@
 package Model;
 
+import Core.Charset.Charset;
 import Core.Excecao.Excecao;
 import DAL.VistaDAL;
 import Entity.Estado;
@@ -77,7 +78,7 @@ public class TribunalModel
                        + "       ESTADO"
                        + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
                        + " WHERE CLIENTE = 'PROMAD'"
-                       + "   AND ESTADO  = '" + nomeEstado.toUpperCase() + "'";
+                       + "   AND ESTADO  = '" + Charset.removeAcentos(nomeEstado.toUpperCase()) + "'";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
