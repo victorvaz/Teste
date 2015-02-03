@@ -13,7 +13,7 @@ import Core.Excecao.Excecao;
  * <p>
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
-public class DAL
+public abstract class DAL
 {
     private int tentativa;
     
@@ -37,16 +37,20 @@ public class DAL
      * Senha do usuário do banco de dados.
      */
     protected String PASSWORD;
+    
+    /**
+     * Construtor da Classe
+     */
+    public DAL()
+    {
+        tentativa = 0;
+    }
 
     /**
      * Função para estabelecer uma conexão com o banco de dados.
      * @return null
      */
-    public Connection conectar()
-    {
-        tentativa = 0;
-        return null;
-    }
+    abstract public Connection conectar();
     
     /**
      * Função para desconectar uma conexão com o banco de dados.
