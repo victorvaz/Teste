@@ -53,6 +53,7 @@ public class Excecao
 
         // Mostra na tela utilizando o método System.err.println:
         JOptionPane.showMessageDialog(null, "Aconteceu um erro: " + NOME_DO_ERRO + " na " + CLASSE_RESPONSAVEL + ": " + DESCRICAO);
+        System.out.println("Aconteceu um erro: " + NOME_DO_ERRO + " na " + CLASSE_RESPONSAVEL + ": " + DESCRICAO);
 
         // Efetua a notificação por e-mail:
         this.notificarViaEmail();
