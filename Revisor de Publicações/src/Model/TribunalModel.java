@@ -64,6 +64,7 @@ public class TribunalModel
     
     /**
      * Função para buscar tribunais por estado
+     * @param cRecorte Recorte
      * @param nomeEstado Nome do estado
      * @return Lista de Tribunais
      */
@@ -110,6 +111,7 @@ public class TribunalModel
     
     /**
      * Função para buscar tribunais por estado
+     * @param cRecorte Recorte
      * @param nomeTribunal Nome do estado
      * @return Lista de Tribunais
      */
