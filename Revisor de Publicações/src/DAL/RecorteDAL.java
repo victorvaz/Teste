@@ -1,8 +1,10 @@
 package DAL;
 
 import Core.Excecao.Excecao;
+import Entity.Recorte;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -10,28 +12,9 @@ import java.sql.SQLException;
  * <p>
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
-public class RecorteDAL extends DAL
+public class RecorteDAL extends DAL implements DatabaseRecorteVista
 {
-    /**
-     * Nome do recorte
-     */
-    private String nomeRecorte;
-    
-    /**
-     * @return o nomeRecorte O nome do recorte.
-     */
-    public String getNomeRecorte()
-    {
-        return nomeRecorte;
-    }
-
-    /**
-     * @param NomeRecorte O nome do recorte que será determinado.
-     */
-    public void setNomeRecorte(String NomeRecorte)
-    {
-        this.nomeRecorte = NomeRecorte.toUpperCase();
-    }
+    private Recorte cRecorte;
     
     @Override
     public Connection conectar()
@@ -39,9 +22,9 @@ public class RecorteDAL extends DAL
         try
         {
             SERVER = "VISTAAPL";
-            DATABASE = nomeRecorte;
-            USER = nomeRecorte;
-            PASSWORD = nomeRecorte + "ADM";
+            DATABASE =  cRecorte.getNomeRecorte();
+            USER = cRecorte.getNomeRecorte();
+            PASSWORD = cRecorte.getNomeRecorte() + "ADM";
 
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://" + SERVER + "/" + DATABASE + ";", USER, PASSWORD);
@@ -53,5 +36,29 @@ public class RecorteDAL extends DAL
         }
 
         return null;
+    }
+
+    @Override
+    public void setRecorte(Recorte cRecorte)
+    {
+        this.cRecorte = cRecorte;
+    }
+
+    @Override
+    public Recorte getRecorte()
+    {
+        return this.cRecorte;
+    }
+
+    @Override
+    public void executarQuery(String sql)
+    {
+        super.executarQuery(sql);
+    }
+
+    @Override
+    public ResultSet executarSelectQuery(String sql)
+    {
+        return super.executarSelectQuery(sql);
     }
 }
