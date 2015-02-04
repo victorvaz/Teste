@@ -92,6 +92,9 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabel12 = new javax.swing.JLabel();
         varaPublicacaoTxt = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        btnProxima = new javax.swing.JButton();
+        btnAnterior = new javax.swing.JButton();
+        labelPaginacao = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         textoPublicacaoTxt = new javax.swing.JEditorPane();
         jLabel14 = new javax.swing.JLabel();
@@ -220,13 +223,19 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jLabel13.setText("VARA:");
 
+        btnProxima.setText("Próxima");
+
+        btnAnterior.setText("Anterior");
+
+        labelPaginacao.setText("0 / 0");
+
         javax.swing.GroupLayout jPanelCabecalhoLayout = new javax.swing.GroupLayout(jPanelCabecalho);
         jPanelCabecalho.setLayout(jPanelCabecalhoLayout);
         jPanelCabecalhoLayout.setHorizontalGroup(
             jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCabecalhoLayout.createSequentialGroup()
-                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
+            .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
+                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCabecalhoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
@@ -265,10 +274,17 @@ public class TelaPrincipal extends javax.swing.JFrame
                                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(varaPublicacaoTxt)
                                     .addComponent(nomeBuscadotxt)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelCabecalhoLayout.createSequentialGroup()
+                    .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(jLabel9)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCabecalhoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAnterior)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelPaginacao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnProxima)))
                 .addContainerGap())
         );
         jPanelCabecalhoLayout.setVerticalGroup(
@@ -298,7 +314,12 @@ public class TelaPrincipal extends javax.swing.JFrame
                     .addComponent(jLabel12)
                     .addComponent(varaPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnProxima)
+                    .addComponent(btnAnterior)
+                    .addComponent(labelPaginacao))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9))
         );
 
@@ -634,6 +655,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                 
                 btnBuscar.setEnabled(true);
                 btnBuscar.setText("Buscar");
+                
+                atualizaLabelPaginacao(0);
             }
         }, "Thread para buscar os valores para a tabela");
         
@@ -678,6 +701,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     textoPublicacao = cProcesso.getCorpoPublicacao().replaceAll("(?i)" + nomeBuscado, nomeBuscadoMarcado);
                     
                     textoPublicacaoTxt.setText(textoPublicacao);
+                    
+                    atualizaLabelPaginacao(tabelaProcessos.getSelectedRow());
                 }
                 catch (HeadlessException ex)
                 {
@@ -688,10 +713,21 @@ public class TelaPrincipal extends javax.swing.JFrame
         
         thread.start();
     }
+    
+    /**
+     * Função para atualizar a Label de paginação
+     * @param indexAtual Índice atual da paginação.
+     */
+    private void atualizaLabelPaginacao(int indexAtual)
+    {
+        labelPaginacao.setText((indexAtual + 1) + " / " + tabelaProcessos.getModel().getRowCount());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField arquivoPublicacaoTxt;
+    private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnProxima;
     private javax.swing.JFormattedTextField dataBusca;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
     private javax.swing.JTextField escritorioPublicacaoTxt;
@@ -717,6 +753,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JLabel labelPaginacao;
     private javax.swing.JTextField nomeBuscadotxt;
     private javax.swing.JTextField numPublicacaoTxt;
     private javax.swing.JTextField numeroProcessoPublicacaoTxt;

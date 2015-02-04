@@ -279,8 +279,8 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -333,8 +333,16 @@
                                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="btnAnterior" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="labelPaginacao" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="btnProxima" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -368,7 +376,13 @@
                                   <Component id="varaPublicacaoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnProxima" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnAnterior" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelPaginacao" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -441,6 +455,21 @@
                     <Component class="javax.swing.JLabel" name="jLabel13">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="VARA:"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="btnProxima">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Pr&#xf3;xima"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="btnAnterior">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Anterior"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="labelPaginacao">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="0 / 0"/>
                       </Properties>
                     </Component>
                   </SubComponents>
