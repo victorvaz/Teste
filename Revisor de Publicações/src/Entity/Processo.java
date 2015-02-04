@@ -47,6 +47,11 @@ public class Processo
      * Número do processo.
      */
     private String NumeroProcesso;
+    
+    /**
+     * Corpo da publicação.
+     */
+    private String CorpoPublicacao;
 
     /**
      * Função para retornar o número do processo.
@@ -190,5 +195,23 @@ public class Processo
     public void setNumeroProcesso(String NumeroProcesso)
     {
         this.NumeroProcesso = NumeroProcesso;
+    }
+
+    /**
+     * Função para retornar o corpo da publicação
+     * @return o CorpoPublicacao
+     */
+    public String getCorpoPublicacao()
+    {
+        return CorpoPublicacao;
+    }
+
+    /**
+     * Função para definir o corpo da publicação
+     * @param CorpoPublicacao o CorpoPublicacao que será definida
+     */
+    public void setCorpoPublicacao(String CorpoPublicacao)
+    {
+        this.CorpoPublicacao = CorpoPublicacao;
     }
 }
