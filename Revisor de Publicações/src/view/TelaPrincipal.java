@@ -164,6 +164,11 @@ public class TelaPrincipal extends javax.swing.JFrame
                 tabelaProcessosMouseClicked(evt);
             }
         });
+        tabelaProcessos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tabelaProcessosKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaProcessos);
 
         javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
@@ -302,7 +307,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         textoPublicacaoTxt.setContentType("text/html"); // NOI18N
         textoPublicacaoTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane2.setViewportView(textoPublicacaoTxt);
-        textoPublicacaoTxt.getAccessibleContext().setAccessibleDescription("text/html");
 
         jSplitPane1.setRightComponent(jScrollPane2);
 
@@ -398,6 +402,14 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void numPublicacaoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numPublicacaoTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numPublicacaoTxtActionPerformed
+
+    /**
+     * Função chamada ao teclar na tabela de processos
+     * @param evt 
+     */
+    private void tabelaProcessosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaProcessosKeyTyped
+        carregarPublicacao();
+    }//GEN-LAST:event_tabelaProcessosKeyTyped
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -663,7 +675,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                     String nomeBuscadoMarcado = "<font bgcolor='black' color='white'>" + nomeBuscado + "</font>";
                     
                     String textoPublicacao    = cProcesso.getCorpoPublicacao();
-                    textoPublicacao = cProcesso.getCorpoPublicacao().replace(nomeBuscado, nomeBuscadoMarcado);
+                    textoPublicacao = cProcesso.getCorpoPublicacao().replaceAll("(?i)" + nomeBuscado, nomeBuscadoMarcado);
                     
                     textoPublicacaoTxt.setText(textoPublicacao);
                 }
