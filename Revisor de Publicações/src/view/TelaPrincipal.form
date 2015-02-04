@@ -461,11 +461,17 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Pr&#xf3;xima"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProximaActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="btnAnterior">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Anterior"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnteriorActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="labelPaginacao">
                       <Properties>

@@ -224,8 +224,18 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabel13.setText("VARA:");
 
         btnProxima.setText("Próxima");
+        btnProxima.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximaActionPerformed(evt);
+            }
+        });
 
         btnAnterior.setText("Anterior");
+        btnAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnteriorActionPerformed(evt);
+            }
+        });
 
         labelPaginacao.setText("0 / 0");
 
@@ -431,6 +441,38 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void tabelaProcessosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaProcessosKeyTyped
         carregarPublicacao();
     }//GEN-LAST:event_tabelaProcessosKeyTyped
+
+    /**
+     * Função chamada ao clicar no botão anterior
+     * @param evt 
+     */
+    private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
+        if (tabelaProcessos.getSelectedRow() == 0)
+        {
+            tabelaProcessos.setRowSelectionInterval((tabelaProcessos.getRowCount() - 1), (tabelaProcessos.getRowCount() - 1));
+        }
+        else
+        {
+            tabelaProcessos.setRowSelectionInterval(tabelaProcessos.getSelectedRow() - 1, tabelaProcessos.getSelectedRow() - 1);
+        }
+        carregarPublicacao();
+    }//GEN-LAST:event_btnAnteriorActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão próximo
+     * @param evt 
+     */
+    private void btnProximaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximaActionPerformed
+        if ((tabelaProcessos.getSelectedRow()) == (tabelaProcessos.getRowCount() - 1))
+        {
+            tabelaProcessos.setRowSelectionInterval(0, 0);
+        }
+        else
+        {
+            tabelaProcessos.setRowSelectionInterval(tabelaProcessos.getSelectedRow() + 1, tabelaProcessos.getSelectedRow() + 1);
+        }
+        carregarPublicacao();
+    }//GEN-LAST:event_btnProximaActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
