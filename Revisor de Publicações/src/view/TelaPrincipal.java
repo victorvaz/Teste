@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import lib.GuiUtils;
 
 /**
  * Tela principal do sistema
@@ -68,7 +69,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSeparator1 = new javax.swing.JSeparator();
         jSplitPane = new javax.swing.JSplitPane();
         jPanelTabela = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPaneTabela = new javax.swing.JScrollPane();
         tabelaProcessos = new javax.swing.JTable();
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
@@ -172,7 +173,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 tabelaProcessosKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaProcessos);
+        jScrollPaneTabela.setViewportView(tabelaProcessos);
 
         javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
         jPanelTabela.setLayout(jPanelTabelaLayout);
@@ -182,7 +183,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTabelaLayout.createSequentialGroup()
                     .addGap(0, 0, 0)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
                     .addGap(0, 0, 0)))
         );
         jPanelTabelaLayout.setVerticalGroup(
@@ -191,7 +192,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelTabelaLayout.createSequentialGroup()
                     .addGap(0, 0, 0)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                     .addGap(0, 0, 0)))
         );
 
@@ -449,11 +450,11 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
         if (tabelaProcessos.getSelectedRow() == 0)
         {
-            tabelaProcessos.setRowSelectionInterval((tabelaProcessos.getRowCount() - 1), (tabelaProcessos.getRowCount() - 1));
+            GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getRowCount() - 1));
         }
         else
         {
-            tabelaProcessos.setRowSelectionInterval(tabelaProcessos.getSelectedRow() - 1, tabelaProcessos.getSelectedRow() - 1);
+            GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getSelectedRow() - 1));
         }
         carregarPublicacao();
     }//GEN-LAST:event_btnAnteriorActionPerformed
@@ -465,11 +466,11 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void btnProximaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximaActionPerformed
         if ((tabelaProcessos.getSelectedRow()) == (tabelaProcessos.getRowCount() - 1))
         {
-            tabelaProcessos.setRowSelectionInterval(0, 0);
+            GuiUtils.selectAndScroll(tabelaProcessos, 0);
         }
         else
         {
-            tabelaProcessos.setRowSelectionInterval(tabelaProcessos.getSelectedRow() + 1, tabelaProcessos.getSelectedRow() + 1);
+            GuiUtils.selectAndScroll(tabelaProcessos, tabelaProcessos.getSelectedRow() + 1);
         }
         carregarPublicacao();
     }//GEN-LAST:event_btnProximaActionPerformed
@@ -790,8 +791,8 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JPanel jPanelCabecalho;
     private javax.swing.JPanel jPanelDetalhesPublicacao;
     private javax.swing.JPanel jPanelTabela;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPaneTabela;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
     private javax.swing.JSplitPane jSplitPane1;
