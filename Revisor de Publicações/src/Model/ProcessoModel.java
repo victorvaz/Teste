@@ -178,4 +178,82 @@ public class ProcessoModel
         
         return null;
     }
+    
+    /**
+     * Função para buscar um Processo pelo seu numero de cadastro
+     * @param cRecorte
+     * @param cEstado
+     * @param numProcesso
+     * @return Processo
+     */
+    public Processo buscar(Recorte cRecorte, Estado cEstado, int numProcesso)
+    {
+        try
+        {
+            RecorteDAL DAL = new RecorteDAL();
+            DAL.setRecorte(cRecorte);
+
+            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+            
+            List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+
+            String sql = "     SELECT P1.NUM        AS NUM_PUBLICACAO,"
+                       + "            P1.N_PROCESSO AS NUMERO_PROCESSO,"
+                       + "            P1.ARQUIVO    AS ARQUIVO,"
+                       + "            P1.DATA       AS DATA_PUBLICACAO,"
+                       + "            P1.TRIBUNAL   AS TRIBUNAL,"
+                       + "            P1.NOME       AS NOME_BUSCADO,"
+                       + "            P1.VARA       AS VARA,"
+                       + "            P1.ORDEM      AS ORDEM,"
+                       + "            P2.PUBLICACAO AS CORPO_PUBLICACAO,"
+                       + "            E.NOME        AS NOME_ESCRITORIO"
+                       + "       FROM " + tabelaEstado + "  P1"
+                       + " INNER JOIN " + tabelaEstado + "2 P2"
+                       + "         ON P1.NUM = P2.NUM2"
+                       + " INNER JOIN ESCRITORIO E"
+                       + "         ON E.CODIGO = P1.CODIGO"
+                       + "      WHERE P1.NUM = " + numProcesso;
+
+            ResultSet row = DAL.executarSelectQuery(sql);
+            
+            row.next();
+            
+            Processo cProcesso = new Processo();
+            cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
+            cProcesso.setNumeroProcesso(row.getString("NUMERO_PROCESSO"));
+            cProcesso.setArquivo(row.getString("ARQUIVO"));
+            cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
+            cProcesso.setVara(row.getString("VARA"));
+            cProcesso.setOrdem(row.getInt("ORDEM"));
+            cProcesso.setCorpoPublicacao(row.getString("CORPO_PUBLICACAO"));
+
+            // Pega o tribunal correspondente:
+            String nomeTribunal = row.getString("TRIBUNAL");
+            for (Tribunal cTribunalLista : ListaTribunais)
+            {
+                if (cTribunalLista.getNomeTribunal().equals(nomeTribunal))
+                {
+                    cProcesso.setTribunal(cTribunalLista);
+                }
+            }
+
+            // Escritório:
+            Escritorio cEscritorio = new Escritorio();
+            cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
+
+            Cliente cCliente = new Cliente();
+            cCliente.setNome(row.getString("NOME_BUSCADO"));
+            cEscritorio.setCliente(cCliente);
+            cProcesso.setEscritorio(cEscritorio);
+            
+            DAL.desconectar();
+            return cProcesso;
+        }
+        catch (SQLException ex)
+        {
+            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
+        }
+        
+        return null;
+    }
 }
