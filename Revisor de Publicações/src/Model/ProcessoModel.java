@@ -10,10 +10,10 @@ import Entity.Recorte;
 import Entity.Tribunal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  * Classe modelo para a entidade processo
@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 public class ProcessoModel
 {
     // Classes modelo
-    private TabelaEstadoModel cTabelaEstadoModel;
-    private TribunalModel     cTribunalModel;
+    private final TabelaEstadoModel cTabelaEstadoModel;
+    private final TribunalModel     cTribunalModel;
 
     /**
      * Construtor da classe
@@ -39,9 +39,10 @@ public class ProcessoModel
      * Função para buscar os processos
      * @param cRecorte
      * @param cEstado
+     * @param dataBusca
      * @return Processo
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado)
+    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca)
     {
         try
         {
@@ -54,20 +55,22 @@ public class ProcessoModel
             RecorteDAL DAL = new RecorteDAL();
             DAL.setRecorte(cRecorte);            
 
-            String sql = "     SELECT P1.DATA     AS DATA_PUBLICACAO,"
+            String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
+                       + "            P1.DATA     AS DATA_PUBLICACAO,"
                        + "            P1.TRIBUNAL AS TRIBUNAL,"
                        + "            P1.NOME     AS NOME_BUSCADO,"
                        + "            E.NOME      AS NOME_ESCRITORIO"
                        + "       FROM " + tabelaEstado + " P1"
                        + " INNER JOIN ESCRITORIO E"
-                       + "         ON E.CODIGO = P1.CODIGO";
+                       + "         ON E.CODIGO = P1.CODIGO"
+                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
             while (row.next())
             {
                 Processo cProcesso = new Processo();
-                
+                cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
                 cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
                 
                 // Pega o tribunal correspondente:
@@ -107,10 +110,11 @@ public class ProcessoModel
      * Função para buscar os processos
      * @param cRecorte
      * @param cEstado
+     * @param dataBusca
      * @param cTribunal
      * @return Processo
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Tribunal cTribunal)
+    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, Tribunal cTribunal)
     {
         try
         {
@@ -123,21 +127,23 @@ public class ProcessoModel
             RecorteDAL DAL = new RecorteDAL();
             DAL.setRecorte(cRecorte);            
 
-            String sql = "     SELECT P1.DATA     AS DATA_PUBLICACAO,"
+            String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
+                       + "            P1.DATA     AS DATA_PUBLICACAO,"
                        + "            P1.TRIBUNAL AS TRIBUNAL,"
                        + "            P1.NOME     AS NOME_BUSCADO,"
                        + "            E.NOME      AS NOME_ESCRITORIO"
                        + "       FROM " + tabelaEstado + " P1"
                        + " INNER JOIN ESCRITORIO E"
                        + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'";
+                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
+                       + "        AND P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
             while (row.next())
             {
                 Processo cProcesso = new Processo();
-                
+                cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
                 cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
                 
                 // Pega o tribunal correspondente:
