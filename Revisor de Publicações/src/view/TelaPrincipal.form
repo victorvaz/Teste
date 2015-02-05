@@ -149,22 +149,20 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jInternalFrameProcessos" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jInternalFrame1" alignment="1" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jInternalFrameProcessos" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jInternalFrame1" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JInternalFrame" name="jInternalFrameProcessos">
+            <Container class="javax.swing.JInternalFrame" name="jInternalFrame1">
               <Properties>
                 <Property name="title" type="java.lang.String" value="Processos"/>
-                <Property name="desktopIcon" type="javax.swing.JInternalFrame$JDesktopIcon" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="null"/>
-                </Property>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/view/resources/filtro.png"/>
                 </Property>
@@ -174,12 +172,18 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPaneTabela" alignment="1" pref="233" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="243" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPaneTabela" alignment="0" pref="131" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPaneTabela" alignment="0" pref="386" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="386" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPaneTabela" alignment="0" pref="386" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -261,12 +265,30 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuFiltroActionPerformed"/>
                       </Events>
                       <SubComponents>
+                        <MenuItem class="javax.swing.JMenuItem" name="btnFiltrarPorNumeroUnico">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Filtrar por n&#xfa;mero &#xfa;nico"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrarPorNumeroUnicoActionPerformed"/>
+                          </Events>
+                        </MenuItem>
                         <MenuItem class="javax.swing.JMenuItem" name="btnFiltrarPorTrechoDaPublicacao">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Filtrar por trecho da publica&#xe7;&#xe3;o"/>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrarPorTrechoDaPublicacaoActionPerformed"/>
+                          </Events>
+                        </MenuItem>
+                        <MenuItem class="javax.swing.JPopupMenu$Separator" name="separator">
+                        </MenuItem>
+                        <MenuItem class="javax.swing.JMenuItem" name="btnLimparFiltro">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Limpar filtro"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimparFiltroActionPerformed"/>
                           </Events>
                         </MenuItem>
                       </SubComponents>

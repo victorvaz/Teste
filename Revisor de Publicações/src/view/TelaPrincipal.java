@@ -69,12 +69,15 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSeparator1 = new javax.swing.JSeparator();
         jSplitPane = new javax.swing.JSplitPane();
         jPanelTabela = new javax.swing.JPanel();
-        jInternalFrameProcessos = new javax.swing.JInternalFrame();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
         jScrollPaneTabela = new javax.swing.JScrollPane();
         tabelaProcessos = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFiltro = new javax.swing.JMenu();
+        btnFiltrarPorNumeroUnico = new javax.swing.JMenuItem();
         btnFiltrarPorTrechoDaPublicacao = new javax.swing.JMenuItem();
+        separator = new javax.swing.JPopupMenu.Separator();
+        btnLimparFiltro = new javax.swing.JMenuItem();
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanelCabecalho = new javax.swing.JPanel();
@@ -145,10 +148,10 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jSplitPane.setDividerLocation(250);
 
-        jInternalFrameProcessos.setTitle("Processos");
-        jInternalFrameProcessos.setDesktopIcon(null);
-        jInternalFrameProcessos.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/filtro.png"))); // NOI18N
-        jInternalFrameProcessos.setVisible(true);
+        jInternalFrame1.setTitle("Processos");
+        jInternalFrame1.setToolTipText("");
+        jInternalFrame1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/filtro.png"))); // NOI18N
+        jInternalFrame1.setVisible(true);
 
         tabelaProcessos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -193,6 +196,14 @@ public class TelaPrincipal extends javax.swing.JFrame
             }
         });
 
+        btnFiltrarPorNumeroUnico.setText("Filtrar por número único");
+        btnFiltrarPorNumeroUnico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarPorNumeroUnicoActionPerformed(evt);
+            }
+        });
+        menuFiltro.add(btnFiltrarPorNumeroUnico);
+
         btnFiltrarPorTrechoDaPublicacao.setText("Filtrar por trecho da publicação");
         btnFiltrarPorTrechoDaPublicacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,31 +211,44 @@ public class TelaPrincipal extends javax.swing.JFrame
             }
         });
         menuFiltro.add(btnFiltrarPorTrechoDaPublicacao);
+        menuFiltro.add(separator);
+
+        btnLimparFiltro.setText("Limpar filtro");
+        btnLimparFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparFiltroActionPerformed(evt);
+            }
+        });
+        menuFiltro.add(btnLimparFiltro);
 
         jMenuBar1.add(menuFiltro);
 
-        jInternalFrameProcessos.setJMenuBar(jMenuBar1);
+        jInternalFrame1.setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout jInternalFrameProcessosLayout = new javax.swing.GroupLayout(jInternalFrameProcessos.getContentPane());
-        jInternalFrameProcessos.getContentPane().setLayout(jInternalFrameProcessosLayout);
-        jInternalFrameProcessosLayout.setHorizontalGroup(
-            jInternalFrameProcessosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 243, Short.MAX_VALUE)
+            .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
         );
-        jInternalFrameProcessosLayout.setVerticalGroup(
-            jInternalFrameProcessosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 386, Short.MAX_VALUE)
+            .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
         jPanelTabela.setLayout(jPanelTabelaLayout);
         jPanelTabelaLayout.setHorizontalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrameProcessos, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jInternalFrame1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelTabelaLayout.setVerticalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrameProcessos)
+            .addComponent(jInternalFrame1)
         );
 
         jSplitPane.setLeftComponent(jPanelTabela);
@@ -527,8 +551,24 @@ public class TelaPrincipal extends javax.swing.JFrame
      * @param evt 
      */
     private void btnFiltrarPorTrechoDaPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPorTrechoDaPublicacaoActionPerformed
-        new FiltroPublicacoes(this).setVisible(true);
+        new FiltroPublicacoesTrecho(this).setVisible(true);
     }//GEN-LAST:event_btnFiltrarPorTrechoDaPublicacaoActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão filtrar por número da publicação
+     * @param evt 
+     */
+    private void btnFiltrarPorNumeroUnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPorNumeroUnicoActionPerformed
+        new FiltroPublicacoesNumeroUnico(this).setVisible(true);
+    }//GEN-LAST:event_btnFiltrarPorNumeroUnicoActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão limpar filtro
+     * @param evt 
+     */
+    private void btnLimparFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparFiltroActionPerformed
+        carregarTabela();
+    }//GEN-LAST:event_btnLimparFiltroActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -889,6 +929,64 @@ public class TelaPrincipal extends javax.swing.JFrame
     }
     
     /**
+     * Função para filtrar a tabela
+     * @param numeroBusca
+     */
+    public void filtrarTabelaPorNumero(final int numeroBusca)
+    {
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                menuFiltro.setText("Buscando...");
+                
+                try
+                {                    
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+                    Estado cEstado = new Estado();
+                    cEstado.setNome(selectEstado.getSelectedItem().toString());
+
+                    Processo cProcesso = cProcessoModel.buscar(cRecorte, cEstado, numeroBusca);
+
+                    DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
+                    model.setNumRows(0);
+
+                    if (cProcesso == null)
+                    {
+                        JOptionPane.showMessageDialog(null, "Não existem publicações de acordo com a busca.");
+                    }
+                    else
+                    {
+                        Object[] linha =
+                        {
+                            cProcesso.getNumProcesso(),
+                            new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()),
+                            cProcesso.getTribunal().getSigla(),
+                            cProcesso.getEscritorio().getNome(),
+                            cProcesso.getEscritorio().getCliente().getNome(),
+                            ""
+                        };
+
+                        model.addRow(linha);
+                    }
+                }
+                catch (HeadlessException ex)
+                {
+                    new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
+                }
+                
+                atualizaLabelPaginacao(0);
+                
+                menuFiltro.setText("Filtrar");
+            }
+        });
+        thread.start();
+    }    
+    
+    /**
      * Função para atualizar a Label de paginação
      * @param indexAtual Índice atual da paginação.
      */
@@ -901,13 +999,15 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JTextField arquivoPublicacaoTxt;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JMenuItem btnFiltrarPorNumeroUnico;
     private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
+    private javax.swing.JMenuItem btnLimparFiltro;
     private javax.swing.JButton btnProxima;
     private javax.swing.JTextField comarcaPublicacaoTxt;
     private javax.swing.JFormattedTextField dataBusca;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
     private javax.swing.JTextField escritorioPublicacaoTxt;
-    private javax.swing.JInternalFrame jInternalFrameProcessos;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -941,6 +1041,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JComboBox selectEstado;
     private javax.swing.JComboBox selectRecorte;
     private javax.swing.JComboBox selectTribunal;
+    private javax.swing.JPopupMenu.Separator separator;
     private javax.swing.JTable tabelaProcessos;
     private javax.swing.JEditorPane textoPublicacaoTxt;
     private javax.swing.JTextField tribunalPublicacaoTxt;
