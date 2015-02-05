@@ -146,6 +146,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSplitPane.setDividerLocation(250);
 
         jInternalFrameProcessos.setTitle("Processos");
+        jInternalFrameProcessos.setDesktopIcon(null);
+        jInternalFrameProcessos.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/filtro.png"))); // NOI18N
         jInternalFrameProcessos.setVisible(true);
 
         tabelaProcessos.setModel(new javax.swing.table.DefaultTableModel(

@@ -162,6 +162,12 @@
             <Container class="javax.swing.JInternalFrame" name="jInternalFrameProcessos">
               <Properties>
                 <Property name="title" type="java.lang.String" value="Processos"/>
+                <Property name="desktopIcon" type="javax.swing.JInternalFrame$JDesktopIcon" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="null"/>
+                </Property>
+                <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/view/resources/filtro.png"/>
+                </Property>
                 <Property name="visible" type="boolean" value="true"/>
               </Properties>
 
