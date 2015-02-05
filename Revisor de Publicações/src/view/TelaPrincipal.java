@@ -131,7 +131,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         dataBusca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM))));
         dataBusca.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
-        jLabel4.setText("Tribunal:");
+        jLabel4.setText("Diário:");
 
         selectTribunal.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -158,7 +158,7 @@ public class TelaPrincipal extends javax.swing.JFrame
 
             },
             new String [] {
-                "Num", "Data", "Tribunal", "Escritório", "Nome Buscado", "Verificado?"
+                "Num", "Data", "Diário", "Escritório", "Nome Buscado", "Verificado?"
             }
         ) {
             Class[] types = new Class [] {
@@ -229,13 +229,13 @@ public class TelaPrincipal extends javax.swing.JFrame
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 243, Short.MAX_VALUE)
+            .addGap(0, 233, Short.MAX_VALUE)
             .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 386, Short.MAX_VALUE)
+            .addGap(0, 390, Short.MAX_VALUE)
             .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
@@ -275,7 +275,7 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jLabel8.setText("NOME BUSCADO:");
 
-        jLabel12.setText("TRIBUNAL:");
+        jLabel12.setText("DIÁRIO:");
 
         jLabel13.setText("VARA:");
 
@@ -417,7 +417,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jPanelDetalhesPublicacaoLayout.setVerticalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
         );
 
         jSplitPane.setRightComponent(jPanelDetalhesPublicacao);
@@ -470,7 +470,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane)
+                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
