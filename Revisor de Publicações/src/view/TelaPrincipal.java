@@ -71,6 +71,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelTabela = new javax.swing.JPanel();
         jScrollPaneTabela = new javax.swing.JScrollPane();
         tabelaProcessos = new javax.swing.JTable();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnFiltrarTabela = new javax.swing.JButton();
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanelCabecalho = new javax.swing.JPanel();
@@ -96,6 +98,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnProxima = new javax.swing.JButton();
         btnAnterior = new javax.swing.JButton();
         labelPaginacao = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        comarcaPublicacaoTxt = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         textoPublicacaoTxt = new javax.swing.JEditorPane();
         jLabel14 = new javax.swing.JLabel();
@@ -175,25 +179,34 @@ public class TelaPrincipal extends javax.swing.JFrame
         });
         jScrollPaneTabela.setViewportView(tabelaProcessos);
 
+        jToolBar1.setFloatable(false);
+
+        btnFiltrarTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/filtro.png"))); // NOI18N
+        btnFiltrarTabela.setText("Filtrar");
+        btnFiltrarTabela.setFocusable(false);
+        btnFiltrarTabela.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnFiltrarTabela.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnFiltrarTabela.setIconTextGap(2);
+        btnFiltrarTabela.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarTabelaActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnFiltrarTabela);
+
         javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
         jPanelTabela.setLayout(jPanelTabelaLayout);
         jPanelTabelaLayout.setHorizontalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 249, Short.MAX_VALUE)
-            .addGroup(jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelTabelaLayout.createSequentialGroup()
-                    .addGap(0, 0, 0)
-                    .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-                    .addGap(0, 0, 0)))
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+            .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         jPanelTabelaLayout.setVerticalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 425, Short.MAX_VALUE)
-            .addGroup(jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanelTabelaLayout.createSequentialGroup()
-                    .addGap(0, 0, 0)
-                    .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-                    .addGap(0, 0, 0)))
+            .addGroup(jPanelTabelaLayout.createSequentialGroup()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
         );
 
         jSplitPane.setLeftComponent(jPanelTabela);
@@ -240,6 +253,8 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         labelPaginacao.setText("0 / 0");
 
+        jLabel15.setText("COMARCA:");
+
         javax.swing.GroupLayout jPanelCabecalhoLayout = new javax.swing.GroupLayout(jPanelCabecalho);
         jPanelCabecalho.setLayout(jPanelCabecalhoLayout);
         jPanelCabecalhoLayout.setHorizontalGroup(
@@ -253,36 +268,42 @@ public class TelaPrincipal extends javax.swing.JFrame
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(numPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numeroProcessoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(dataPublicacaoTxt))
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel12))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
+                                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel12))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(escritorioPublicacaoTxt)
+                                            .addComponent(tribunalPublicacaoTxt))
+                                        .addGap(12, 12, 12)
+                                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel13))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                    .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(numeroProcessoPublicacaoTxt)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel15)
+                                        .addGap(6, 6, 6)))
                                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tribunalPublicacaoTxt)
-                                    .addComponent(escritorioPublicacaoTxt))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel13))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comarcaPublicacaoTxt)
                                     .addComponent(varaPublicacaoTxt)
                                     .addComponent(nomeBuscadotxt)))))
                     .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
@@ -305,8 +326,6 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(numPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(numeroProcessoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
@@ -327,10 +346,16 @@ public class TelaPrincipal extends javax.swing.JFrame
                     .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numeroProcessoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel15)
+                    .addComponent(comarcaPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnProxima)
                     .addComponent(btnAnterior)
                     .addComponent(labelPaginacao))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9))
         );
 
@@ -350,7 +375,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jPanelDetalhesPublicacaoLayout.setVerticalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
         );
 
         jSplitPane.setRightComponent(jPanelDetalhesPublicacao);
@@ -364,7 +389,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSplitPane)
+                    .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1124, Short.MAX_VALUE)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel14)
@@ -373,11 +398,11 @@ public class TelaPrincipal extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectEstado, 0, 1, Short.MAX_VALUE)
+                        .addComponent(selectEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(selectTribunal, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selectTribunal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -408,6 +433,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 	
     private void selectEstadoActionPerformed(java.awt.event.ActionEvent evt)
@@ -423,25 +449,9 @@ public class TelaPrincipal extends javax.swing.JFrame
         carregarTabela();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    /**
-     * Função chamada ao clicar na linha da tabela de processos
-     * @param evt 
-     */
-    private void tabelaProcessosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProcessosMouseClicked
-        carregarPublicacao();
-    }//GEN-LAST:event_tabelaProcessosMouseClicked
-
     private void numPublicacaoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numPublicacaoTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numPublicacaoTxtActionPerformed
-
-    /**
-     * Função chamada ao teclar na tabela de processos
-     * @param evt 
-     */
-    private void tabelaProcessosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaProcessosKeyTyped
-        carregarPublicacao();
-    }//GEN-LAST:event_tabelaProcessosKeyTyped
 
     /**
      * Função chamada ao clicar no botão anterior
@@ -474,6 +484,30 @@ public class TelaPrincipal extends javax.swing.JFrame
         }
         carregarPublicacao();
     }//GEN-LAST:event_btnProximaActionPerformed
+
+    /**
+     * Função chamada ao teclar na tabela de processos
+     * @param evt 
+     */
+    private void tabelaProcessosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaProcessosKeyTyped
+        carregarPublicacao();
+    }//GEN-LAST:event_tabelaProcessosKeyTyped
+
+    /**
+     * Função chamada ao clicar na linha da tabela de processos
+     * @param evt 
+     */
+    private void tabelaProcessosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProcessosMouseClicked
+        carregarPublicacao();
+    }//GEN-LAST:event_tabelaProcessosMouseClicked
+
+    /**
+     * Função chamada ao clicar no botão de fitrar os processos da tabela
+     * @param evt 
+     */
+    private void btnFiltrarTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarTabelaActionPerformed
+        new FiltroPublicacoes(this).setVisible(true);
+    }//GEN-LAST:event_btnFiltrarTabelaActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -707,6 +741,84 @@ public class TelaPrincipal extends javax.swing.JFrame
     }
     
     /**
+     * Função para filtrar a tabela
+     * @param trechoBusca
+     */
+    public void filtrarTabela(final String trechoBusca)
+    {
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {                
+                btnFiltrarTabela.setEnabled(false);
+                btnFiltrarTabela.setText("Filtrando...");
+                
+                try
+                {
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+                    Estado cEstado = new Estado();
+                    cEstado.setNome(selectEstado.getSelectedItem().toString());
+
+                    DateFormat df = DateFormat.getDateInstance();
+                    Date data = df.parse(dataBusca.getText());
+
+                    List<Processo> ListaProcessos = null;
+
+                    if (selectTribunal.getSelectedItem().toString().equalsIgnoreCase("Todos"))
+                    {
+                        ListaProcessos = cProcessoModel.buscar(cRecorte, cEstado, data, trechoBusca);
+                    }
+                    else
+                    {
+                        Tribunal cTribunal = new Tribunal();
+                        cTribunal.setNomeTribunal(selectTribunal.getSelectedItem().toString().split(" - ")[1]);
+
+                        ListaProcessos = cProcessoModel.buscar(cRecorte, cEstado, data, cTribunal, trechoBusca);
+                    }
+
+                    DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
+                    model.setNumRows(0);
+
+                    if (ListaProcessos.isEmpty())
+                    {
+                        JOptionPane.showMessageDialog(null, "Não existem publicações de acordo com a busca.");
+                    }
+                    else
+                    {
+                        for (Processo cProcesso : ListaProcessos)
+                        {
+                            Object[] linha =
+                            {
+                                cProcesso.getNumProcesso(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()),
+                                cProcesso.getTribunal().getSigla(),
+                                cProcesso.getEscritorio().getNome(),
+                                cProcesso.getEscritorio().getCliente().getNome(),
+                                ""
+                            };
+
+                            model.addRow(linha);
+                        }
+                    }
+                }
+                catch (HeadlessException | ParseException ex)
+                {
+                    new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
+                }
+                
+                btnFiltrarTabela.setEnabled(true);
+                btnFiltrarTabela.setText("Filtrar");
+                
+                atualizaLabelPaginacao(0);
+            }
+        });
+        thread.start();
+    }
+    
+    /**
      * Função para carregar a publicação
      */
     private void carregarPublicacao()
@@ -770,7 +882,9 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JTextField arquivoPublicacaoTxt;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnFiltrarTabela;
     private javax.swing.JButton btnProxima;
+    private javax.swing.JTextField comarcaPublicacaoTxt;
     private javax.swing.JFormattedTextField dataBusca;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
     private javax.swing.JTextField escritorioPublicacaoTxt;
@@ -780,6 +894,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -796,6 +911,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel labelPaginacao;
     private javax.swing.JTextField nomeBuscadotxt;
     private javax.swing.JTextField numPublicacaoTxt;
