@@ -10,12 +10,14 @@ import Model.ProcessoModel;
 import Model.RecorteModel;
 import Model.TribunalModel;
 import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import lib.GuiUtils;
@@ -69,7 +71,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSeparator1 = new javax.swing.JSeparator();
         jSplitPane = new javax.swing.JSplitPane();
         jPanelTabela = new javax.swing.JPanel();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
+        jInternalFrameListaPublicacoes = new javax.swing.JInternalFrame();
         jScrollPaneTabela = new javax.swing.JScrollPane();
         tabelaProcessos = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -79,6 +81,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         separator = new javax.swing.JPopupMenu.Separator();
         btnLimparFiltro = new javax.swing.JMenuItem();
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
+        jInternalFrameDetalhesProcesso = new javax.swing.JInternalFrame();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanelCabecalho = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -148,10 +151,10 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jSplitPane.setDividerLocation(250);
 
-        jInternalFrame1.setTitle("Processos");
-        jInternalFrame1.setToolTipText("");
-        jInternalFrame1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/filtro.png"))); // NOI18N
-        jInternalFrame1.setVisible(true);
+        jInternalFrameListaPublicacoes.setTitle("Processos");
+        jInternalFrameListaPublicacoes.setToolTipText("");
+        jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png"))); // NOI18N
+        jInternalFrameListaPublicacoes.setVisible(true);
 
         tabelaProcessos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -183,6 +186,9 @@ public class TelaPrincipal extends javax.swing.JFrame
             }
         });
         tabelaProcessos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tabelaProcessosKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tabelaProcessosKeyTyped(evt);
             }
@@ -223,20 +229,20 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jMenuBar1.add(menuFiltro);
 
-        jInternalFrame1.setJMenuBar(jMenuBar1);
+        jInternalFrameListaPublicacoes.setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jInternalFrameListaPublicacoesLayout = new javax.swing.GroupLayout(jInternalFrameListaPublicacoes.getContentPane());
+        jInternalFrameListaPublicacoes.getContentPane().setLayout(jInternalFrameListaPublicacoesLayout);
+        jInternalFrameListaPublicacoesLayout.setHorizontalGroup(
+            jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 233, Short.MAX_VALUE)
-            .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
         );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jInternalFrameListaPublicacoesLayout.setVerticalGroup(
+            jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 390, Short.MAX_VALUE)
-            .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
 
@@ -244,19 +250,24 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelTabela.setLayout(jPanelTabelaLayout);
         jPanelTabelaLayout.setHorizontalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrame1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jInternalFrameListaPublicacoes, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelTabelaLayout.setVerticalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jInternalFrame1)
+            .addComponent(jInternalFrameListaPublicacoes)
         );
 
         jSplitPane.setLeftComponent(jPanelTabela);
+
+        jInternalFrameDetalhesProcesso.setTitle("Detalhes do processo");
+        jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png"))); // NOI18N
+        jInternalFrameDetalhesProcesso.setVisible(true);
 
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         jLabel1.setText("NUM:");
 
+        numPublicacaoTxt.setEditable(false);
         numPublicacaoTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numPublicacaoTxtActionPerformed(evt);
@@ -265,15 +276,29 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jLabel7.setText("NÚMERO DE PROCESSO:");
 
+        numeroProcessoPublicacaoTxt.setEditable(false);
+
         jLabel5.setText("DATA:");
+
+        dataPublicacaoTxt.setEditable(false);
 
         jLabel10.setText("ORDEM:");
 
+        ordemPublicacaoTxt.setEditable(false);
+
         jLabel11.setText("ARQUIVO:");
+
+        arquivoPublicacaoTxt.setEditable(false);
+
+        escritorioPublicacaoTxt.setEditable(false);
 
         jLabel6.setText("ESCRITÓRIO:");
 
+        nomeBuscadotxt.setEditable(false);
+
         jLabel8.setText("NOME BUSCADO:");
+
+        tribunalPublicacaoTxt.setEditable(false);
 
         jLabel12.setText("DIÁRIO:");
 
@@ -296,6 +321,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         labelPaginacao.setText("0 / 0");
 
         jLabel15.setText("COMARCA:");
+
+        comarcaPublicacaoTxt.setEditable(false);
 
         javax.swing.GroupLayout jPanelCabecalhoLayout = new javax.swing.GroupLayout(jPanelCabecalho);
         jPanelCabecalho.setLayout(jPanelCabecalhoLayout);
@@ -409,15 +436,44 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jSplitPane1.setRightComponent(jScrollPane2);
 
+        javax.swing.GroupLayout jInternalFrameDetalhesProcessoLayout = new javax.swing.GroupLayout(jInternalFrameDetalhesProcesso.getContentPane());
+        jInternalFrameDetalhesProcesso.getContentPane().setLayout(jInternalFrameDetalhesProcessoLayout);
+        jInternalFrameDetalhesProcessoLayout.setHorizontalGroup(
+            jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 839, Short.MAX_VALUE)
+            .addGroup(jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jInternalFrameDetalhesProcessoLayout.setVerticalGroup(
+            jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 411, Short.MAX_VALUE)
+            .addGroup(jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+
         javax.swing.GroupLayout jPanelDetalhesPublicacaoLayout = new javax.swing.GroupLayout(jPanelDetalhesPublicacao);
         jPanelDetalhesPublicacao.setLayout(jPanelDetalhesPublicacaoLayout);
         jPanelDetalhesPublicacaoLayout.setHorizontalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addGap(0, 855, Short.MAX_VALUE)
+            .addGroup(jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDetalhesPublicacaoLayout.createSequentialGroup()
+                    .addComponent(jInternalFrameDetalhesProcesso)
+                    .addGap(0, 0, 0)))
         );
         jPanelDetalhesPublicacaoLayout.setVerticalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+            .addGap(0, 440, Short.MAX_VALUE)
+            .addGroup(jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDetalhesPublicacaoLayout.createSequentialGroup()
+                    .addComponent(jInternalFrameDetalhesProcesso)
+                    .addGap(0, 0, 0)))
         );
 
         jSplitPane.setRightComponent(jPanelDetalhesPublicacao);
@@ -431,7 +487,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1124, Short.MAX_VALUE)
+                    .addComponent(jSplitPane)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel14)
@@ -500,31 +556,15 @@ public class TelaPrincipal extends javax.swing.JFrame
      * @param evt 
      */
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
-        if (tabelaProcessos.getSelectedRow() == 0)
-        {
-            GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getRowCount() - 1));
-        }
-        else
-        {
-            GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getSelectedRow() - 1));
-        }
-        carregarPublicacao();
+        scrollAnteriorTabela();
     }//GEN-LAST:event_btnAnteriorActionPerformed
-
+    
     /**
      * Função chamada ao clicar no botão próximo
      * @param evt 
      */
     private void btnProximaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximaActionPerformed
-        if ((tabelaProcessos.getSelectedRow()) == (tabelaProcessos.getRowCount() - 1))
-        {
-            GuiUtils.selectAndScroll(tabelaProcessos, 0);
-        }
-        else
-        {
-            GuiUtils.selectAndScroll(tabelaProcessos, tabelaProcessos.getSelectedRow() + 1);
-        }
-        carregarPublicacao();
+        scrollProximaTabela();
     }//GEN-LAST:event_btnProximaActionPerformed
 
     /**
@@ -570,6 +610,25 @@ public class TelaPrincipal extends javax.swing.JFrame
         carregarTabela();
     }//GEN-LAST:event_btnLimparFiltroActionPerformed
 
+    /**
+     * Função chamada ao apertar uma tecla do teclado na tabela
+     * @param evt 
+     */
+    private void tabelaProcessosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaProcessosKeyPressed
+        if ((evt.getKeyCode() == KeyEvent.VK_DOWN) || (evt.getKeyCode() == KeyEvent.VK_UP))
+        {
+            carregarPublicacao();
+        }
+        else if (evt.getKeyCode() == KeyEvent.VK_LEFT)
+        {
+            scrollAnteriorTabela();
+        }
+        else if (evt.getKeyCode() == KeyEvent.VK_RIGHT)
+        {
+            scrollProximaTabela();
+        }
+    }//GEN-LAST:event_tabelaProcessosKeyPressed
+
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
     private void selectTribunalItemStateChanged(java.awt.event.ItemEvent evt){}
@@ -611,6 +670,38 @@ public class TelaPrincipal extends javax.swing.JFrame
                 new TelaPrincipal().setVisible(true);
             }
         });
+    }
+    
+    /**
+     * Move o scroll para o valor anterior na tabela
+     */
+    private void scrollAnteriorTabela()
+    {
+        if (tabelaProcessos.getSelectedRow() == 0)
+        {
+            GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getRowCount() - 1));
+        }
+        else
+        {
+            GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getSelectedRow() - 1));
+        }
+        carregarPublicacao();
+    }
+    
+    /**
+     * Move o scroll para o próximo valor na tabela
+     */
+    private void scrollProximaTabela()
+    {
+        if ((tabelaProcessos.getSelectedRow()) == (tabelaProcessos.getRowCount() - 1))
+        {
+            GuiUtils.selectAndScroll(tabelaProcessos, 0);
+        }
+        else
+        {
+            GuiUtils.selectAndScroll(tabelaProcessos, tabelaProcessos.getSelectedRow() + 1);
+        }
+        carregarPublicacao();
     }
     
     /**
@@ -735,6 +826,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             {
                 btnBuscar.setEnabled(false);
                 btnBuscar.setText("Buscando...");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
                 try
                 {
@@ -793,6 +885,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 
                 btnBuscar.setEnabled(true);
                 btnBuscar.setText("Buscar");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
                 
                 atualizaLabelPaginacao(0);
             }
@@ -813,6 +906,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             public void run()
             {
                 menuFiltro.setText("Buscando...");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
                 try
                 {                    
@@ -872,6 +966,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 atualizaLabelPaginacao(0);
                 
                 menuFiltro.setText("Filtrar");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
             }
         });
         thread.start();
@@ -887,6 +982,8 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
+                jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
+                
                 try
                 {
                     Recorte cRecorte = new Recorte();
@@ -922,6 +1019,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                 {
                     new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
+                
+                jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png")));
             }
         });
         
@@ -940,6 +1039,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             public void run()
             {
                 menuFiltro.setText("Buscando...");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
                 try
                 {                    
@@ -981,6 +1081,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 atualizaLabelPaginacao(0);
                 
                 menuFiltro.setText("Filtrar");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
             }
         });
         thread.start();
@@ -1007,7 +1108,8 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JFormattedTextField dataBusca;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
     private javax.swing.JTextField escritorioPublicacaoTxt;
-    private javax.swing.JInternalFrame jInternalFrame1;
+    private javax.swing.JInternalFrame jInternalFrameDetalhesProcesso;
+    private javax.swing.JInternalFrame jInternalFrameListaPublicacoes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
