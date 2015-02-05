@@ -82,7 +82,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnLimparFiltro = new javax.swing.JMenuItem();
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
         jInternalFrameDetalhesProcesso = new javax.swing.JInternalFrame();
-        jSplitPane1 = new javax.swing.JSplitPane();
         jPanelCabecalho = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         numPublicacaoTxt = new javax.swing.JTextField();
@@ -263,8 +262,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png"))); // NOI18N
         jInternalFrameDetalhesProcesso.setVisible(true);
 
-        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-
         jLabel1.setText("NUM:");
 
         numPublicacaoTxt.setEditable(false);
@@ -348,7 +345,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dataPublicacaoTxt))
+                                .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
@@ -428,33 +425,23 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addComponent(jLabel9))
         );
 
-        jSplitPane1.setTopComponent(jPanelCabecalho);
-
         textoPublicacaoTxt.setContentType("text/html"); // NOI18N
         textoPublicacaoTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane2.setViewportView(textoPublicacaoTxt);
-
-        jSplitPane1.setRightComponent(jScrollPane2);
 
         javax.swing.GroupLayout jInternalFrameDetalhesProcessoLayout = new javax.swing.GroupLayout(jInternalFrameDetalhesProcesso.getContentPane());
         jInternalFrameDetalhesProcesso.getContentPane().setLayout(jInternalFrameDetalhesProcessoLayout);
         jInternalFrameDetalhesProcessoLayout.setHorizontalGroup(
             jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 839, Short.MAX_VALUE)
-            .addGroup(jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addComponent(jPanelCabecalho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jInternalFrameDetalhesProcessoLayout.setVerticalGroup(
             jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
-            .addGroup(jInternalFrameDetalhesProcessoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addContainerGap()))
+            .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
+                .addComponent(jPanelCabecalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelDetalhesPublicacaoLayout = new javax.swing.GroupLayout(jPanelDetalhesPublicacao);
@@ -1133,7 +1120,6 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPaneTabela;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
-    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel labelPaginacao;
     private javax.swing.JMenu menuFiltro;
     private javax.swing.JTextField nomeBuscadotxt;
