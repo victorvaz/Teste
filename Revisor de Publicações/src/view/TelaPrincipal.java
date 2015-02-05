@@ -69,10 +69,12 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSeparator1 = new javax.swing.JSeparator();
         jSplitPane = new javax.swing.JSplitPane();
         jPanelTabela = new javax.swing.JPanel();
+        jInternalFrameProcessos = new javax.swing.JInternalFrame();
         jScrollPaneTabela = new javax.swing.JScrollPane();
         tabelaProcessos = new javax.swing.JTable();
-        jToolBar1 = new javax.swing.JToolBar();
-        btnFiltrarTabela = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuFiltro = new javax.swing.JMenu();
+        btnFiltrarPorTrechoDaPublicacao = new javax.swing.JMenuItem();
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanelCabecalho = new javax.swing.JPanel();
@@ -143,6 +145,9 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jSplitPane.setDividerLocation(250);
 
+        jInternalFrameProcessos.setTitle("Processos");
+        jInternalFrameProcessos.setVisible(true);
+
         tabelaProcessos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -179,34 +184,45 @@ public class TelaPrincipal extends javax.swing.JFrame
         });
         jScrollPaneTabela.setViewportView(tabelaProcessos);
 
-        jToolBar1.setFloatable(false);
-
-        btnFiltrarTabela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/filtro.png"))); // NOI18N
-        btnFiltrarTabela.setText("Filtrar");
-        btnFiltrarTabela.setFocusable(false);
-        btnFiltrarTabela.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnFiltrarTabela.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnFiltrarTabela.setIconTextGap(2);
-        btnFiltrarTabela.addActionListener(new java.awt.event.ActionListener() {
+        menuFiltro.setText("Filtrar");
+        menuFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarTabelaActionPerformed(evt);
+                menuFiltroActionPerformed(evt);
             }
         });
-        jToolBar1.add(btnFiltrarTabela);
+
+        btnFiltrarPorTrechoDaPublicacao.setText("Filtrar por trecho da publicação");
+        btnFiltrarPorTrechoDaPublicacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarPorTrechoDaPublicacaoActionPerformed(evt);
+            }
+        });
+        menuFiltro.add(btnFiltrarPorTrechoDaPublicacao);
+
+        jMenuBar1.add(menuFiltro);
+
+        jInternalFrameProcessos.setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout jInternalFrameProcessosLayout = new javax.swing.GroupLayout(jInternalFrameProcessos.getContentPane());
+        jInternalFrameProcessos.getContentPane().setLayout(jInternalFrameProcessosLayout);
+        jInternalFrameProcessosLayout.setHorizontalGroup(
+            jInternalFrameProcessosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+        );
+        jInternalFrameProcessosLayout.setVerticalGroup(
+            jInternalFrameProcessosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
         jPanelTabela.setLayout(jPanelTabelaLayout);
         jPanelTabelaLayout.setHorizontalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
-            .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jInternalFrameProcessos, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelTabelaLayout.setVerticalGroup(
             jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTabelaLayout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+            .addComponent(jInternalFrameProcessos)
         );
 
         jSplitPane.setLeftComponent(jPanelTabela);
@@ -501,13 +517,16 @@ public class TelaPrincipal extends javax.swing.JFrame
         carregarPublicacao();
     }//GEN-LAST:event_tabelaProcessosMouseClicked
 
+    private void menuFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFiltroActionPerformed
+    }//GEN-LAST:event_menuFiltroActionPerformed
+
     /**
-     * Função chamada ao clicar no botão de fitrar os processos da tabela
+     * Função chamada ao clicar no botão filtrar por trecho da publicação.
      * @param evt 
      */
-    private void btnFiltrarTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarTabelaActionPerformed
+    private void btnFiltrarPorTrechoDaPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPorTrechoDaPublicacaoActionPerformed
         new FiltroPublicacoes(this).setVisible(true);
-    }//GEN-LAST:event_btnFiltrarTabelaActionPerformed
+    }//GEN-LAST:event_btnFiltrarPorTrechoDaPublicacaoActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -744,18 +763,17 @@ public class TelaPrincipal extends javax.swing.JFrame
      * Função para filtrar a tabela
      * @param trechoBusca
      */
-    public void filtrarTabela(final String trechoBusca)
+    public void filtrarTabelaPorTrecho(final String trechoBusca)
     {
         Thread thread = new Thread(new Runnable()
         {
             @Override
             public void run()
-            {                
-                btnFiltrarTabela.setEnabled(false);
-                btnFiltrarTabela.setText("Filtrando...");
+            {
+                menuFiltro.setText("Buscando...");
                 
                 try
-                {
+                {                    
                     Recorte cRecorte = new Recorte();
                     cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
 
@@ -809,10 +827,9 @@ public class TelaPrincipal extends javax.swing.JFrame
                     new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
                 
-                btnFiltrarTabela.setEnabled(true);
-                btnFiltrarTabela.setText("Filtrar");
-                
                 atualizaLabelPaginacao(0);
+                
+                menuFiltro.setText("Filtrar");
             }
         });
         thread.start();
@@ -882,12 +899,13 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JTextField arquivoPublicacaoTxt;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnFiltrarTabela;
+    private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
     private javax.swing.JButton btnProxima;
     private javax.swing.JTextField comarcaPublicacaoTxt;
     private javax.swing.JFormattedTextField dataBusca;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
     private javax.swing.JTextField escritorioPublicacaoTxt;
+    private javax.swing.JInternalFrame jInternalFrameProcessos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -903,6 +921,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanelCabecalho;
     private javax.swing.JPanel jPanelDetalhesPublicacao;
     private javax.swing.JPanel jPanelTabela;
@@ -911,8 +930,8 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel labelPaginacao;
+    private javax.swing.JMenu menuFiltro;
     private javax.swing.JTextField nomeBuscadotxt;
     private javax.swing.JTextField numPublicacaoTxt;
     private javax.swing.JTextField numeroProcessoPublicacaoTxt;

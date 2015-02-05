@@ -109,7 +109,7 @@ public class FiltroPublicacoes extends javax.swing.JFrame
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         this.setVisible(false);
-        cTelaPrincipal.filtrarTabela(trechoPesquisaTxt.getText());
+        cTelaPrincipal.filtrarTabelaPorTrecho(trechoPesquisaTxt.getText());
     }//GEN-LAST:event_btnOKActionPerformed
 
     /**
