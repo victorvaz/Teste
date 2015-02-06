@@ -408,4 +408,31 @@ public class ProcessoModel
         
         return null;
     }
+    
+    /**
+     * Função para atualizar um processo
+     * @param cRecorte
+     * @param cEstado
+     * @param cProcesso 
+     */
+    public void atualizar(Recorte cRecorte, Estado cEstado, Processo cProcesso)
+    {
+        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+        
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+        
+        String sqlProc1 = "UPDATE " + tabelaEstado
+                        + "   SET VARA = '" + cProcesso.getVara() + "'"
+                        + " WHERE NUM = " + cProcesso.getNumProcesso();
+        
+        DAL.executarQuery(sqlProc1);
+        
+        String sqlProc2 = "UPDATE " + tabelaEstado + "2"
+                        + "   SET PUBLICACAO = '" + cProcesso.getCorpoPublicacao() + "'"
+                        + " WHERE NUM2 = " + cProcesso.getNumProcesso();
+        
+        DAL.executarQuery(sqlProc2);
+        DAL.desconectar();
+    }
 }

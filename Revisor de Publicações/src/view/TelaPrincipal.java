@@ -16,11 +16,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import lib.GuiUtils;
+import org.jsoup.Jsoup;
 
 /**
  * Tela principal do sistema
@@ -34,6 +33,11 @@ public class TelaPrincipal extends javax.swing.JFrame
     private final TribunalModel cTribunalModel;
     private final ProcessoModel cProcessoModel;
     
+    // Variáveis da tela de publicação:
+    private String  varaPublicacao;
+    private String  corpoPublicacao;
+    private boolean conteudoAlterado;
+    
     /**
      * Creates new form TelaPrincipal
      */
@@ -44,6 +48,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         this.cEstadoModel   = new EstadoModel();
         this.cTribunalModel = new TribunalModel();
         this.cProcessoModel = new ProcessoModel();
+        
+        conteudoAlterado = false;
         
         // Inicializa os componentes:
         initComponents();
@@ -111,6 +117,9 @@ public class TelaPrincipal extends javax.swing.JFrame
         textoPublicacaoTxt = new javax.swing.JEditorPane();
         jLabel14 = new javax.swing.JLabel();
         selectRecorte = new javax.swing.JComboBox();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        btnSalvarPublicacao = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Revisor de Publicações");
@@ -240,7 +249,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jInternalFrameListaPublicacoesLayout.setVerticalGroup(
             jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGap(0, 369, Short.MAX_VALUE)
             .addGroup(jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
@@ -298,6 +307,15 @@ public class TelaPrincipal extends javax.swing.JFrame
         tribunalPublicacaoTxt.setEditable(false);
 
         jLabel12.setText("DIÁRIO:");
+
+        varaPublicacaoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                varaPublicacaoTxtKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                varaPublicacaoTxtKeyReleased(evt);
+            }
+        });
 
         jLabel13.setText("VARA:");
 
@@ -427,6 +445,11 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         textoPublicacaoTxt.setContentType("text/html"); // NOI18N
         textoPublicacaoTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        textoPublicacaoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textoPublicacaoTxtKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(textoPublicacaoTxt);
 
         javax.swing.GroupLayout jInternalFrameDetalhesProcessoLayout = new javax.swing.GroupLayout(jInternalFrameDetalhesProcesso.getContentPane());
@@ -441,7 +464,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
                 .addComponent(jPanelCabecalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelDetalhesPublicacaoLayout = new javax.swing.GroupLayout(jPanelDetalhesPublicacao);
@@ -456,7 +479,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jPanelDetalhesPublicacaoLayout.setVerticalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGap(0, 419, Short.MAX_VALUE)
             .addGroup(jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelDetalhesPublicacaoLayout.createSequentialGroup()
                     .addComponent(jInternalFrameDetalhesProcesso)
@@ -466,6 +489,22 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSplitPane.setRightComponent(jPanelDetalhesPublicacao);
 
         jLabel14.setText("Recorte:");
+
+        jMenu1.setText("Arquivo");
+
+        btnSalvarPublicacao.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        btnSalvarPublicacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/save.png"))); // NOI18N
+        btnSalvarPublicacao.setText("Salvar");
+        btnSalvarPublicacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarPublicacaoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btnSalvarPublicacao);
+
+        jMenuBar2.add(jMenu1);
+
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -513,7 +552,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -615,6 +654,38 @@ public class TelaPrincipal extends javax.swing.JFrame
             scrollProximaTabela();
         }
     }//GEN-LAST:event_tabelaProcessosKeyPressed
+
+    /**
+     * Função chamada ao clicar no botão salvar publicação
+     * @param evt 
+     */
+    private void btnSalvarPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarPublicacaoActionPerformed
+        salvarPublicacao();
+    }//GEN-LAST:event_btnSalvarPublicacaoActionPerformed
+    
+    /**
+     * Função chamada ao digitar no campo vara
+     * @param evt 
+     */
+    private void varaPublicacaoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_varaPublicacaoTxtKeyPressed
+        
+    }//GEN-LAST:event_varaPublicacaoTxtKeyPressed
+
+    /**
+     * Função chamada após a ação de digitar na vara
+     * @param evt 
+     */
+    private void varaPublicacaoTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_varaPublicacaoTxtKeyReleased
+        confereAlteracoes();
+    }//GEN-LAST:event_varaPublicacaoTxtKeyReleased
+
+    /**
+     * Função chamada após a açao de digitar na vara
+     * @param evt 
+     */
+    private void textoPublicacaoTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoPublicacaoTxtKeyReleased
+        confereAlteracoes();
+    }//GEN-LAST:event_textoPublicacaoTxtKeyReleased
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -1000,6 +1071,9 @@ public class TelaPrincipal extends javax.swing.JFrame
                     
                     textoPublicacaoTxt.setText(textoPublicacao);
                     
+                    varaPublicacao  = cProcesso.getVara();
+                    corpoPublicacao = textoPublicacaoTxt.getText();
+                    
                     atualizaLabelPaginacao(tabelaProcessos.getSelectedRow());
                 }
                 catch (HeadlessException ex)
@@ -1082,6 +1156,46 @@ public class TelaPrincipal extends javax.swing.JFrame
     {
         labelPaginacao.setText((indexAtual + 1) + " / " + tabelaProcessos.getModel().getRowCount());
     }
+    
+    /**
+     * Função para salvar uma publicação no banco de dados.
+     */
+    private void salvarPublicacao()
+    {
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                int    numPublicacao   = Integer.parseInt(numPublicacaoTxt.getText());
+                String varaPublicacao  = varaPublicacaoTxt.getText();
+                String corpoPublicacao = Jsoup.parse(textoPublicacaoTxt.getText()).text();
+                
+                JOptionPane.showMessageDialog(null, "NUM: " + numPublicacao);
+            }
+        });
+        thread.start();
+    }
+    
+    /**
+     * Função para conferir as alterações na publicação atual
+     */
+    private void confereAlteracoes()
+    {
+        conteudoAlterado = !varaPublicacaoTxt.getText().equals(varaPublicacao) || !textoPublicacaoTxt.getText().equals(corpoPublicacao);
+        
+        if (conteudoAlterado)
+        {
+            if (!jInternalFrameDetalhesProcesso.getTitle().contains(" (Alterado) "))
+            {
+                jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle() + " (Alterado) ");
+            }
+        }
+        else
+        {
+            jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle().replace(" (Alterado) ", ""));
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField arquivoPublicacaoTxt;
@@ -1091,6 +1205,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
     private javax.swing.JMenuItem btnLimparFiltro;
     private javax.swing.JButton btnProxima;
+    private javax.swing.JMenuItem btnSalvarPublicacao;
     private javax.swing.JTextField comarcaPublicacaoTxt;
     private javax.swing.JFormattedTextField dataBusca;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
@@ -1112,7 +1227,9 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JPanel jPanelCabecalho;
     private javax.swing.JPanel jPanelDetalhesPublicacao;
     private javax.swing.JPanel jPanelTabela;
