@@ -463,6 +463,11 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnSalvar.setFocusable(false);
         btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnSalvar);
 
         jMenu1.setText("Arquivo");
@@ -698,6 +703,14 @@ public class TelaPrincipal extends javax.swing.JFrame
         confereAlteracoes();
     }//GEN-LAST:event_textoPublicacaoTxtKeyReleased
 
+    /**
+     * Função chamada ao clicar no botão salvar
+     * @param evt 
+     */
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        salvarPublicacao();
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
     private void selectTribunalItemStateChanged(java.awt.event.ItemEvent evt){}
@@ -746,6 +759,15 @@ public class TelaPrincipal extends javax.swing.JFrame
      */
     private void scrollAnteriorTabela()
     {
+        if (conteudoAlterado)
+        {
+            int resposta = JOptionPane.showConfirmDialog(null, "Existem alterações não salvas no processo. Deseja salvar?");
+            if (resposta == 0)
+            {
+                salvarPublicacao();
+            }
+        }
+        
         if (tabelaProcessos.getSelectedRow() == 0)
         {
             GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getRowCount() - 1));
@@ -754,7 +776,9 @@ public class TelaPrincipal extends javax.swing.JFrame
         {
             GuiUtils.selectAndScroll(tabelaProcessos, (tabelaProcessos.getSelectedRow() - 1));
         }
+        
         carregarPublicacao();
+        confereAlteracoes();
     }
     
     /**
@@ -762,6 +786,15 @@ public class TelaPrincipal extends javax.swing.JFrame
      */
     private void scrollProximaTabela()
     {
+        if (conteudoAlterado)
+        {
+            int resposta = JOptionPane.showConfirmDialog(null, "Existem alterações não salvas no processo. Deseja salvar?");
+            if (resposta == 0)
+            {
+                salvarPublicacao();
+            }
+        }
+        
         if ((tabelaProcessos.getSelectedRow()) == (tabelaProcessos.getRowCount() - 1))
         {
             GuiUtils.selectAndScroll(tabelaProcessos, 0);
@@ -770,7 +803,9 @@ public class TelaPrincipal extends javax.swing.JFrame
         {
             GuiUtils.selectAndScroll(tabelaProcessos, tabelaProcessos.getSelectedRow() + 1);
         }
+        
         carregarPublicacao();
+        confereAlteracoes();
     }
     
     /**
