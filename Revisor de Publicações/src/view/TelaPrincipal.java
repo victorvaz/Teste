@@ -111,6 +111,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         textoPublicacaoTxt = new javax.swing.JEditorPane();
         jLabel14 = new javax.swing.JLabel();
         selectRecorte = new javax.swing.JComboBox();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnSalvar = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btnSalvarPublicacao = new javax.swing.JMenuItem();
@@ -212,7 +214,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jInternalFrameListaPublicacoesLayout.setVerticalGroup(
             jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGap(0, 368, Short.MAX_VALUE)
             .addGroup(jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
@@ -427,7 +429,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
                 .addComponent(jPanelCabecalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelDetalhesPublicacaoLayout = new javax.swing.GroupLayout(jPanelDetalhesPublicacao);
@@ -442,7 +444,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jPanelDetalhesPublicacaoLayout.setVerticalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 419, Short.MAX_VALUE)
+            .addGap(0, 397, Short.MAX_VALUE)
             .addGroup(jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelDetalhesPublicacaoLayout.createSequentialGroup()
                     .addComponent(jInternalFrameDetalhesProcesso)
@@ -452,6 +454,16 @@ public class TelaPrincipal extends javax.swing.JFrame
         jSplitPane.setRightComponent(jPanelDetalhesPublicacao);
 
         jLabel14.setText("Recorte:");
+
+        jToolBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jToolBar1.setFloatable(false);
+
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/save.png"))); // NOI18N
+        btnSalvar.setEnabled(false);
+        btnSalvar.setFocusable(false);
+        btnSalvar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalvar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnSalvar);
 
         jMenu1.setText("Arquivo");
 
@@ -531,11 +543,13 @@ public class TelaPrincipal extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscar)))
                 .addContainerGap())
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(selectEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -549,7 +563,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1198,13 +1212,17 @@ public class TelaPrincipal extends javax.swing.JFrame
         {
             if (!jInternalFrameDetalhesProcesso.getTitle().contains(" (Alterado) "))
             {
+                // Muda para alterado
                 jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle() + " (Alterado) ");
             }
         }
         else
         {
+            // Muda para não alterado
             jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle().replace(" (Alterado) ", ""));
         }
+        
+        btnSalvar.setEnabled(conteudoAlterado);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1215,6 +1233,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
     private javax.swing.JMenuItem btnLimparFiltro;
     private javax.swing.JButton btnProxima;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JMenuItem btnSalvarPublicacao;
     private javax.swing.JTextField comarcaPublicacaoTxt;
     private javax.swing.JFormattedTextField dataBusca;
@@ -1246,6 +1265,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPaneTabela;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel labelPaginacao;
     private javax.swing.JMenu menuFiltro;
     private javax.swing.JTextField nomeBuscadotxt;
