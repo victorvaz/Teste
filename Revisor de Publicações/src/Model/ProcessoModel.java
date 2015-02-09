@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe modelo para a entidade processo
@@ -205,6 +207,7 @@ public class ProcessoModel
                        + "            P1.NOME       AS NOME_BUSCADO,"
                        + "            P1.VARA       AS VARA,"
                        + "            P1.ORDEM      AS ORDEM,"
+                       + "            P1.CODIGO     AS CODIGO_ESCRITORIO,"
                        + "            P2.PUBLICACAO AS CORPO_PUBLICACAO,"
                        + "            E.NOME        AS NOME_ESCRITORIO"
                        + "       FROM " + tabelaEstado + "  P1"
@@ -239,6 +242,7 @@ public class ProcessoModel
 
             // Escritório:
             Escritorio cEscritorio = new Escritorio();
+            cEscritorio.setCodigo(Integer.parseInt(row.getString("CODIGO_ESCRITORIO")));
             cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
 
             Cliente cCliente = new Cliente();
@@ -434,5 +438,66 @@ public class ProcessoModel
         
         DAL.executarQuery(sqlProc2);
         DAL.desconectar();
+    }
+    
+    /**
+     * Função para cadastra um processo
+     * @param cRecorte
+     * @param cEstado
+     * @param cProcesso 
+     * @return Número de cadastro do processo.
+     */
+    public int cadastrar(Recorte cRecorte, Estado cEstado, Processo cProcesso)
+    {
+        try
+        {
+            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+
+            RecorteDAL DAL = new RecorteDAL();
+            DAL.setRecorte(cRecorte);
+
+            String sqlBuscaIDRegistro = "SELECT (MAX(NUM) + 1) AS PROXIMO_ID"
+                                      + "  FROM PROC_ACRE";
+            ResultSet rowRegistro = DAL.executarSelectQuery(sqlBuscaIDRegistro);
+            rowRegistro.next();
+            int id = rowRegistro.getInt("PROXIMO_ID");
+
+            String sql1 = "INSERT INTO " + tabelaEstado + " (NUM,"
+                        + "                                  DATA,"
+                        + "                                  CODIGO,"
+                        + "                                  NOME,"
+                        + "                                  VARA,"
+                        + "                                  TRIBUNAL,"
+                        + "                                  ARQUIVO,"
+                        + "                                  ORDEM,"
+                        + "                                  N_PROCESSO)" 
+                        + "                          VALUES ( " + id + ","
+                        + "                                  '" + new SimpleDateFormat("yyyy-MM-dd").format(cProcesso.getDataPublicacao()) + "',"
+                        + "                                   " + cProcesso.getEscritorio().getCodigo() + ","
+                        + "                                  '" + cProcesso.getEscritorio().getCliente().getNome() + "',"
+                        + "                                  '" + cProcesso.getVara() + "',"
+                        + "                                  '" + cProcesso.getTribunal().getNomeTribunal() + "',"
+                        + "                                  '" + cProcesso.getArquivo() + "',"
+                        + "                                   "  + cProcesso.getOrdem() + ","
+                        + "                                  '" + cProcesso.getNumeroProcesso() + "')";
+
+            DAL.executarQuery(sql1);
+
+            String sql2 = "INSERT INTO " + tabelaEstado + "2 (NUM2,"
+                        + "                                   PUBLICACAO)"
+                        + "                           VALUES ( " + id + ","
+                        + "                                   '" + cProcesso.getCorpoPublicacao() + "')";
+
+            DAL.executarQuery(sql2);
+            DAL.desconectar();
+            
+            return id;
+        }
+        catch (SQLException ex)
+        {
+            new Excecao("Erro ao cadastrar os processos", this.getClass().getName(), ex.toString());
+        }
+        
+        return 0;
     }
 }

@@ -1,0 +1,10 @@
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\bin\Debug\Executavel.exe.config
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\bin\Debug\Executavel.exe
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\bin\Debug\Executavel.pdb
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.exe
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.pdb
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\bin\Debug\Executavel.exe.manifest
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\bin\Debug\Executavel.application
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.csprojResolveAssemblyReference.cache
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.exe.manifest
+C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.application

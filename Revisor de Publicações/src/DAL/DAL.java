@@ -83,25 +83,7 @@ public abstract class DAL
         }
         catch (SQLException ex) // Acontece muito ao dar SQLBUSY
         {
-            tentativa++;
-            
-            try
-            {
-                Thread.sleep(5000);
-            }
-            catch (InterruptedException ex1)
-            {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-            
-            if (tentativa > 30)
-            {            
-                new Excecao("Query ultrapassou o numero de tentativas", this.getClass().getName(), sql + " " + ex.toString());
-            }
-            else
-            {
-                this.executarQuery(sql);
-            }
+            new Excecao("Não foi possível executar a query", this.getClass().getName(), ex.toString());
         }
     }
 
@@ -124,25 +106,7 @@ public abstract class DAL
         }
         catch (SQLException ex) // Acontece muito ao dar SQLBUSY
         {
-            tentativa++;
-            
-            try
-            {
-                Thread.sleep(1000);
-            }
-            catch (InterruptedException ex1)
-            {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-            
-            if (tentativa > 30)
-            {            
-                new Excecao("Query ultrapassou o numero de tentativas", this.getClass().getName(), sql + " " + ex.toString());
-            }
-            else
-            {
-                this.executarQuery(sql);
-            }
+            new Excecao("Não foi possível executar a query", this.getClass().getName(), ex.toString());
         }
 
         return null;
