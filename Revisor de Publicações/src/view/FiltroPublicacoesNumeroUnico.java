@@ -42,6 +42,7 @@ public class FiltroPublicacoesNumeroUnico extends javax.swing.JFrame
 
         setTitle("Filtrar tabela por número único");
         setResizable(false);
+        setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setText("Informe o número único da publicação:");
 

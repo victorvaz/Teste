@@ -15,7 +15,6 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +48,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     public TelaPrincipal() 
     {
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/view/resources/logo512.png"));
-        this.setIconImage(imagemTitulo); 
+        this.setIconImage(imagemTitulo);
         
         // Inicia as classes de modelo:
         this.cRecorteModel  = new RecorteModel();
@@ -63,6 +62,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         initComponents();
         dataBusca.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
         btnNovoProcessoCabecalhoModelo.setEnabled(false);
+        btnDuplicarPublicacao.setEnabled(false);
         btnSalvar.setEnabled(false);
         
         // Carrega os recortes:
@@ -123,6 +123,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabel14 = new javax.swing.JLabel();
         selectRecorte = new javax.swing.JComboBox();
         jToolBar1 = new javax.swing.JToolBar();
+        btnNovaPublicacaoEmBranco = new javax.swing.JButton();
+        btnDuplicarPublicacao = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -134,9 +136,11 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnFiltrarPorTrechoDaPublicacao = new javax.swing.JMenuItem();
         separator = new javax.swing.JPopupMenu.Separator();
         btnLimparFiltro = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações");
+        setTitle("Revisor de Publicações 1.0.0.1");
 
         jLabel2.setText("Estado:");
 
@@ -479,6 +483,28 @@ public class TelaPrincipal extends javax.swing.JFrame
         jToolBar1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jToolBar1.setFloatable(false);
 
+        btnNovaPublicacaoEmBranco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/novo.png"))); // NOI18N
+        btnNovaPublicacaoEmBranco.setFocusable(false);
+        btnNovaPublicacaoEmBranco.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNovaPublicacaoEmBranco.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNovaPublicacaoEmBranco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovaPublicacaoEmBrancoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnNovaPublicacaoEmBranco);
+
+        btnDuplicarPublicacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/duplicar.png"))); // NOI18N
+        btnDuplicarPublicacao.setFocusable(false);
+        btnDuplicarPublicacao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDuplicarPublicacao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnDuplicarPublicacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDuplicarPublicacaoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnDuplicarPublicacao);
+
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/save.png"))); // NOI18N
         btnSalvar.setEnabled(false);
         btnSalvar.setFocusable(false);
@@ -509,7 +535,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenu1.add(btnNovoProcessoEmBranco);
 
         btnNovoProcessoCabecalhoModelo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        btnNovoProcessoCabecalhoModelo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/novo.png"))); // NOI18N
+        btnNovoProcessoCabecalhoModelo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/duplicar.png"))); // NOI18N
         btnNovoProcessoCabecalhoModelo.setText("Novo Processo Utilizando Cabeçalho Como Modelo");
         btnNovoProcessoCabecalhoModelo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -563,6 +589,18 @@ public class TelaPrincipal extends javax.swing.JFrame
         menuFiltro.add(btnLimparFiltro);
 
         jMenuBar2.add(menuFiltro);
+
+        jMenu2.setText("Ajuda");
+
+        menuSobre.setText("Sobre");
+        menuSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSobreActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuSobre);
+
+        jMenuBar2.add(jMenu2);
 
         setJMenuBar(jMenuBar2);
 
@@ -762,7 +800,13 @@ public class TelaPrincipal extends javax.swing.JFrame
      * @param evt 
      */
     private void btnNovoProcessoEmBrancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoProcessoEmBrancoActionPerformed
-        // TODO add your handling code here:
+        Recorte cRecorte = new Recorte();
+        cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+        Estado cEstado = new Estado();
+        cEstado.setNome(selectEstado.getSelectedItem().toString());
+        
+        new CadastroPublicacaoEmBranco().setVisible(true);
     }//GEN-LAST:event_btnNovoProcessoEmBrancoActionPerformed
 
     /**
@@ -776,6 +820,30 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu1ActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão sobre
+     * @param evt 
+     */
+    private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
+        new Sobre().setVisible(true);
+    }//GEN-LAST:event_menuSobreActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão nova publicação em branco
+     * @param evt 
+     */
+    private void btnNovaPublicacaoEmBrancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaPublicacaoEmBrancoActionPerformed
+        new CadastroPublicacaoEmBranco().setVisible(true);
+    }//GEN-LAST:event_btnNovaPublicacaoEmBrancoActionPerformed
+
+    /**
+     * FUnção chamada ao clicar no botão duplicar publicação
+     * @param evt 
+     */
+    private void btnDuplicarPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDuplicarPublicacaoActionPerformed
+        abrirFormCadastroPublicacaoUtilizandoCabecalho();
+    }//GEN-LAST:event_btnDuplicarPublicacaoActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -1076,6 +1144,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             {
                 jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 btnNovoProcessoCabecalhoModelo.setEnabled(true);
+                btnDuplicarPublicacao.setEnabled(true);
                 
                 try
                 {
@@ -1362,7 +1431,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             cTribunal.setNomeTribunal(tribunalPublicacaoTxt.getText());
             cProcesso.setTribunal(cTribunal);
             
-            new CadastroPublicacao(cRecorte, cEstado, cProcesso).setVisible(true);
+            new CadastroPublicacaoPorModelo(cRecorte, cEstado, cProcesso).setVisible(true);
         }
         catch (ParseException ex)
         {
@@ -1374,9 +1443,11 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JTextField arquivoPublicacaoTxt;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnDuplicarPublicacao;
     private javax.swing.JMenuItem btnFiltrarPorNumeroUnico;
     private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
     private javax.swing.JMenuItem btnLimparFiltro;
+    private javax.swing.JButton btnNovaPublicacaoEmBranco;
     private javax.swing.JMenuItem btnNovoProcessoCabecalhoModelo;
     private javax.swing.JMenuItem btnNovoProcessoEmBranco;
     private javax.swing.JButton btnProxima;
@@ -1405,6 +1476,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JPanel jPanelCabecalho;
     private javax.swing.JPanel jPanelDetalhesPublicacao;
@@ -1416,6 +1488,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel labelPaginacao;
     private javax.swing.JMenu menuFiltro;
+    private javax.swing.JMenuItem menuSobre;
     private javax.swing.JTextField nomeBuscadotxt;
     private javax.swing.JTextField numPublicacaoTxt;
     private javax.swing.JTextField numeroProcessoPublicacaoTxt;

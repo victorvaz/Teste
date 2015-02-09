@@ -42,6 +42,7 @@ public class FiltroPublicacoesTrecho extends javax.swing.JFrame
         btnOK = new javax.swing.JButton();
 
         setTitle("Filtrar tabela por trecho de publicações");
+        setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setText("Informe o trecho da publicação:");
 

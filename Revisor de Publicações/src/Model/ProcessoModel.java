@@ -14,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Classe modelo para a entidade processo
@@ -456,11 +454,11 @@ public class ProcessoModel
             RecorteDAL DAL = new RecorteDAL();
             DAL.setRecorte(cRecorte);
 
-            String sqlBuscaIDRegistro = "SELECT (MAX(NUM) + 1) AS PROXIMO_ID"
+            String sqlBuscaIDRegistro = "SELECT CAST(MAX(NUM) AS INT) AS PROXIMO_ID"
                                       + "  FROM PROC_ACRE";
             ResultSet rowRegistro = DAL.executarSelectQuery(sqlBuscaIDRegistro);
             rowRegistro.next();
-            int id = rowRegistro.getInt("PROXIMO_ID");
+            int id = rowRegistro.getInt("PROXIMO_ID") + 1;
 
             String sql1 = "INSERT INTO " + tabelaEstado + " (NUM,"
                         + "                                  DATA,"
@@ -487,7 +485,7 @@ public class ProcessoModel
                         + "                                   PUBLICACAO)"
                         + "                           VALUES ( " + id + ","
                         + "                                   '" + cProcesso.getCorpoPublicacao() + "')";
-
+            
             DAL.executarQuery(sql2);
             DAL.desconectar();
             
