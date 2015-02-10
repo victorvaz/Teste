@@ -59,11 +59,13 @@ public class ProcessoModel
                        + "            P1.DATA     AS DATA_PUBLICACAO,"
                        + "            P1.TRIBUNAL AS TRIBUNAL,"
                        + "            P1.NOME     AS NOME_BUSCADO,"
+                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
                        + "            E.NOME      AS NOME_ESCRITORIO"
                        + "       FROM " + tabelaEstado + " P1"
                        + " INNER JOIN ESCRITORIO E"
                        + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'";
+                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
+                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
@@ -86,6 +88,7 @@ public class ProcessoModel
                 // Escritório:
                 Escritorio cEscritorio = new Escritorio();
                 cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
+                cEscritorio.setCodigo(row.getInt("CODIGO_ESCRITORIO"));
                 
                 Cliente cCliente = new Cliente();
                 cCliente.setNome(row.getString("NOME_BUSCADO"));
@@ -131,12 +134,14 @@ public class ProcessoModel
                        + "            P1.DATA     AS DATA_PUBLICACAO,"
                        + "            P1.TRIBUNAL AS TRIBUNAL,"
                        + "            P1.NOME     AS NOME_BUSCADO,"
+                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
                        + "            E.NOME      AS NOME_ESCRITORIO"
                        + "       FROM " + tabelaEstado + " P1"
                        + " INNER JOIN ESCRITORIO E"
                        + "         ON E.CODIGO = P1.CODIGO"
                        + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
-                       + "        AND P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'";
+                       + "        AND P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'"
+                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
@@ -159,6 +164,7 @@ public class ProcessoModel
                 // Escritório:
                 Escritorio cEscritorio = new Escritorio();
                 cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
+                cEscritorio.setCodigo(row.getInt("CODIGO_ESCRITORIO"));
                 
                 Cliente cCliente = new Cliente();
                 cCliente.setNome(row.getString("NOME_BUSCADO"));
@@ -282,6 +288,7 @@ public class ProcessoModel
 
             String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
                        + "            P1.DATA     AS DATA_PUBLICACAO,"
+                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
                        + "            P1.TRIBUNAL AS TRIBUNAL,"
                        + "            P1.NOME     AS NOME_BUSCADO,"
                        + "            E.NOME      AS NOME_ESCRITORIO"
@@ -291,7 +298,8 @@ public class ProcessoModel
                        + " INNER JOIN ESCRITORIO E"
                        + "         ON E.CODIGO = P1.CODIGO"
                        + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
-                       + "        AND P2.PUBLICACAO LIKE '%" + trechoBusca + "%'";
+                       + "        AND P2.PUBLICACAO LIKE '%" + trechoBusca + "%'"
+                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
@@ -314,6 +322,7 @@ public class ProcessoModel
                 // Escritório:
                 Escritorio cEscritorio = new Escritorio();
                 cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
+                cEscritorio.setCodigo(row.getInt("CODIGO_ESCRITORIO"));
                 
                 Cliente cCliente = new Cliente();
                 cCliente.setNome(row.getString("NOME_BUSCADO"));
@@ -360,6 +369,7 @@ public class ProcessoModel
                        + "            P1.DATA     AS DATA_PUBLICACAO,"
                        + "            P1.TRIBUNAL AS TRIBUNAL,"
                        + "            P1.NOME     AS NOME_BUSCADO,"
+                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
                        + "            E.NOME      AS NOME_ESCRITORIO"
                        + "       FROM " + tabelaEstado + " P1"
                        + " INNER JOIN " + tabelaEstado + "2 P2"
@@ -368,7 +378,8 @@ public class ProcessoModel
                        + "         ON E.CODIGO = P1.CODIGO"
                        + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
                        + "        AND P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'"
-                       + "        AND P2.PUBLICACAO LIKE '%" + trechoBusca + "%'";
+                       + "        AND P2.PUBLICACAO LIKE '%" + trechoBusca + "%'"
+                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 

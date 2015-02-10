@@ -140,7 +140,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.1");
+        setTitle("Revisor de Publicações 1.0.0.2");
 
         jLabel2.setText("Estado:");
 
@@ -187,14 +187,14 @@ public class TelaPrincipal extends javax.swing.JFrame
 
             },
             new String [] {
-                "ID", "Data", "Diário", "Escritório", "Variação", "Verificado?"
+                "ID", "Diário", "Escritório", "Variação", "Verificado?"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1105,9 +1105,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                             Object[] linha =
                             {
                                 cProcesso.getNumProcesso(),
-                                new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()),
                                 cProcesso.getTribunal().getSigla(),
-                                cProcesso.getEscritorio().getNome(),
+                                cProcesso.getEscritorio().getCodigo(),
                                 cProcesso.getEscritorio().getCliente().getNome(),
                                 ""
                             };
@@ -1246,9 +1245,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                             Object[] linha =
                             {
                                 cProcesso.getNumProcesso(),
-                                new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()),
                                 cProcesso.getTribunal().getSigla(),
-                                cProcesso.getEscritorio().getNome(),
+                                cProcesso.getEscritorio().getCodigo(),
                                 cProcesso.getEscritorio().getCliente().getNome(),
                                 ""
                             };
@@ -1307,9 +1305,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                         Object[] linha =
                         {
                             cProcesso.getNumProcesso(),
-                            new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()),
                             cProcesso.getTribunal().getSigla(),
-                            cProcesso.getEscritorio().getNome(),
+                            cProcesso.getEscritorio().getCodigo(),
                             cProcesso.getEscritorio().getCliente().getNome(),
                             ""
                         };
