@@ -1373,9 +1373,9 @@ public class TelaPrincipal extends javax.swing.JFrame
                     {
                         Object[] linha =
                         {
-                            model.getValueAt(i, 0).toString(),
+                            Integer.parseInt(model.getValueAt(i, 0).toString()),
                             model.getValueAt(i, 1).toString(),
-                            model.getValueAt(i, 2).toString(),
+                            Integer.parseInt(model.getValueAt(i, 2).toString()),
                             model.getValueAt(i, 3).toString(),
                             model.getValueAt(i, 4).toString()
                         };
