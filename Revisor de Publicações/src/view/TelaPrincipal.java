@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -77,6 +78,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         jLabel2 = new javax.swing.JLabel();
         selectEstado = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
@@ -134,10 +136,13 @@ public class TelaPrincipal extends javax.swing.JFrame
         menuFiltro = new javax.swing.JMenu();
         btnFiltrarPorNumeroUnico = new javax.swing.JMenuItem();
         btnFiltrarPorTrechoDaPublicacao = new javax.swing.JMenuItem();
+        btnFiltrarPorCodigoEscritorio = new javax.swing.JMenuItem();
         separator = new javax.swing.JPopupMenu.Separator();
         btnLimparFiltro = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuSobre = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Revisor de Publicações 1.0.0.2");
@@ -578,6 +583,14 @@ public class TelaPrincipal extends javax.swing.JFrame
             }
         });
         menuFiltro.add(btnFiltrarPorTrechoDaPublicacao);
+
+        btnFiltrarPorCodigoEscritorio.setText("Filtrar por código do escritório");
+        btnFiltrarPorCodigoEscritorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarPorCodigoEscritorioActionPerformed(evt);
+            }
+        });
+        menuFiltro.add(btnFiltrarPorCodigoEscritorio);
         menuFiltro.add(separator);
 
         btnLimparFiltro.setText("Limpar filtro");
@@ -844,6 +857,14 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void btnDuplicarPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDuplicarPublicacaoActionPerformed
         abrirFormCadastroPublicacaoUtilizandoCabecalho();
     }//GEN-LAST:event_btnDuplicarPublicacaoActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão de filtrar por código do escritório.
+     * @param evt 
+     */
+    private void btnFiltrarPorCodigoEscritorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPorCodigoEscritorioActionPerformed
+        new FiltroPublicacoesCodigoEscritorio(this).setVisible(true);
+    }//GEN-LAST:event_btnFiltrarPorCodigoEscritorioActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -1329,6 +1350,58 @@ public class TelaPrincipal extends javax.swing.JFrame
     }    
     
     /**
+     * Funçao para filtrar por código do escritório
+     * @param codigoEscritorio 
+     */
+    public void filtrarPorCodigoEscritorio(final int codigoEscritorio)
+    {
+        Thread thread = new Thread(new Runnable() 
+        {
+            @Override
+            public void run()
+            {
+                menuFiltro.setText("Buscando...");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
+                
+                DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
+                
+                List<Object> linhas = new ArrayList<>();
+                
+                for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                {
+                    if (Integer.parseInt(model.getValueAt(i, 2).toString()) == codigoEscritorio)
+                    {
+                        Object[] linha =
+                        {
+                            model.getValueAt(i, 0).toString(),
+                            model.getValueAt(i, 1).toString(),
+                            model.getValueAt(i, 2).toString(),
+                            model.getValueAt(i, 3).toString(),
+                            model.getValueAt(i, 4).toString()
+                        };
+                        
+                        linhas.add(linha);
+                    }
+                }
+                
+                model.setNumRows(0);
+                
+                for (Object linha : linhas)
+                {
+                    model.addRow((Object[]) linha);
+                }
+                
+                atualizaLabelPaginacao(0);
+                
+                menuFiltro.setText("Filtrar");
+                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+            }
+        });
+        
+        thread.start();
+    }
+    
+    /**
      * Função para atualizar a Label de paginação
      * @param indexAtual Índice atual da paginação.
      */
@@ -1450,6 +1523,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnDuplicarPublicacao;
+    private javax.swing.JMenuItem btnFiltrarPorCodigoEscritorio;
     private javax.swing.JMenuItem btnFiltrarPorNumeroUnico;
     private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
     private javax.swing.JMenuItem btnLimparFiltro;
@@ -1484,6 +1558,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanelCabecalho;
     private javax.swing.JPanel jPanelDetalhesPublicacao;
     private javax.swing.JPanel jPanelTabela;
