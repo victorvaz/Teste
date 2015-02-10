@@ -1416,6 +1416,15 @@ public class TelaPrincipal extends javax.swing.JFrame
             cProcesso.setVara(varaPublicacaoTxt.getText());
             cProcesso.setNumeroProcesso(numeroProcessoPublicacaoTxt.getText());
             
+            if (textoPublicacaoTxt.getSelectedText() != null)
+            {
+                cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getSelectedText()).text());
+            }
+            else
+            {
+                cProcesso.setCorpoPublicacao("");
+            }
+            
             Escritorio cEscritorio = new Escritorio();
             cEscritorio.setCodigo(Integer.parseInt(codEscritorioTxt.getText()));
             cEscritorio.setNome(escritorioPublicacaoTxt.getText());
