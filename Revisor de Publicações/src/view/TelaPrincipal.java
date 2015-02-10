@@ -95,8 +95,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         jPanelDetalhesPublicacao = new javax.swing.JPanel();
         jInternalFrameDetalhesProcesso = new javax.swing.JInternalFrame();
         jPanelCabecalho = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        numPublicacaoTxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         numeroProcessoPublicacaoTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -145,7 +143,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.2");
+        setTitle("Revisor de Publicações 1.0.0.3");
 
         jLabel2.setText("Estado:");
 
@@ -258,16 +256,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png"))); // NOI18N
         jInternalFrameDetalhesProcesso.setVisible(true);
 
-        jLabel1.setText("ID:");
-
-        numPublicacaoTxt.setEditable(false);
-        numPublicacaoTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                numPublicacaoTxtActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("NÚMERO DE PROCESSO:");
+        jLabel7.setText("Nº PROCESSO:");
 
         numeroProcessoPublicacaoTxt.setEditable(false);
 
@@ -282,6 +271,11 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabel11.setText("ARQUIVO:");
 
         arquivoPublicacaoTxt.setEditable(false);
+        arquivoPublicacaoTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arquivoPublicacaoTxtActionPerformed(evt);
+            }
+        });
 
         escritorioPublicacaoTxt.setEditable(false);
 
@@ -337,53 +331,36 @@ public class TelaPrincipal extends javax.swing.JFrame
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCabecalhoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE))
+                                .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+                            .addComponent(numeroProcessoPublicacaoTxt)
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
-                                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
-                                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel12))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(tribunalPublicacaoTxt)
-                                            .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
-                                                .addComponent(codEscritorioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(escritorioPublicacaoTxt))))
-                                    .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(numeroProcessoPublicacaoTxt)))
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCabecalhoLayout.createSequentialGroup()
-                                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel13))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCabecalhoLayout.createSequentialGroup()
-                                        .addComponent(jLabel15)
-                                        .addGap(6, 6, 6)))
-                                .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comarcaPublicacaoTxt)
-                                    .addComponent(varaPublicacaoTxt)
-                                    .addComponent(nomeBuscadotxt)))))
+                                .addComponent(codEscritorioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(escritorioPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
+                            .addComponent(tribunalPublicacaoTxt))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel5))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                            .addComponent(comarcaPublicacaoTxt)
+                            .addComponent(varaPublicacaoTxt)
+                            .addComponent(nomeBuscadotxt)))
                     .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(jLabel9)
@@ -402,15 +379,13 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(numPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
                     .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(escritorioPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
@@ -459,7 +434,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
                 .addComponent(jPanelCabecalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelDetalhesPublicacaoLayout = new javax.swing.GroupLayout(jPanelDetalhesPublicacao);
@@ -686,10 +661,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         carregarTabela();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void numPublicacaoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numPublicacaoTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_numPublicacaoTxtActionPerformed
-
     /**
      * Função chamada ao clicar no botão anterior
      * @param evt 
@@ -865,6 +836,10 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void btnFiltrarPorCodigoEscritorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarPorCodigoEscritorioActionPerformed
         new FiltroPublicacoesCodigoEscritorio(this).setVisible(true);
     }//GEN-LAST:event_btnFiltrarPorCodigoEscritorioActionPerformed
+
+    private void arquivoPublicacaoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arquivoPublicacaoTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_arquivoPublicacaoTxtActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -1176,7 +1151,6 @@ public class TelaPrincipal extends javax.swing.JFrame
 
                     Processo cProcesso = cProcessoModel.buscar(cRecorte, cEstado, (int) tabelaProcessos.getValueAt(tabelaProcessos.getSelectedRow(), 0));
                     
-                    numPublicacaoTxt.setText(cProcesso.getNumProcesso() + "");
                     numeroProcessoPublicacaoTxt.setText(cProcesso.getNumeroProcesso());
                     arquivoPublicacaoTxt.setText(cProcesso.getArquivo());
                     ordemPublicacaoTxt.setText(cProcesso.getOrdem() + "");
@@ -1427,7 +1401,6 @@ public class TelaPrincipal extends javax.swing.JFrame
                 cEstado.setNome(selectEstado.getSelectedItem().toString());
 
                 Processo cProcesso = new Processo();
-                cProcesso.setNumProcesso(Integer.parseInt(numPublicacaoTxt.getText()));
                 cProcesso.setVara(varaPublicacaoTxt.getText());
                 cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
                 
@@ -1540,7 +1513,6 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JTextField escritorioPublicacaoTxt;
     private javax.swing.JInternalFrame jInternalFrameDetalhesProcesso;
     private javax.swing.JInternalFrame jInternalFrameListaPublicacoes;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1571,7 +1543,6 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JMenu menuFiltro;
     private javax.swing.JMenuItem menuSobre;
     private javax.swing.JTextField nomeBuscadotxt;
-    private javax.swing.JTextField numPublicacaoTxt;
     private javax.swing.JTextField numeroProcessoPublicacaoTxt;
     private javax.swing.JTextField ordemPublicacaoTxt;
     private javax.swing.JComboBox selectEstado;
