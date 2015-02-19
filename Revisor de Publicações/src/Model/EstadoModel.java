@@ -27,7 +27,7 @@ public class EstadoModel
             String sql = "SELECT CodEstado,"
                        + "       Sigla,"
                        + "       Nome"
-                       + "  FROM Estado";
+                       + "  FROM db_vista_recorte.dbo.estadoextended";
 
             ResultSet row = DAL.executarSelectQuery(sql);
 
