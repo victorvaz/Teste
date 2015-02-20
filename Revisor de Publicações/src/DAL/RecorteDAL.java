@@ -22,8 +22,10 @@ public class RecorteDAL extends DAL
         {
             SERVER = "VISTAAPL";
             DATABASE =  cRecorte.getNomeRecorte();
-            USER = cRecorte.getNomeRecorte();
-            PASSWORD = cRecorte.getNomeRecorte() + "ADM";
+            //USER = cRecorte.getNomeRecorte();
+            //PASSWORD = cRecorte.getNomeRecorte() + "ADM";
+            USER = "VISTASA";
+            PASSWORD = "vistasaadm";
 
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://" + SERVER + "/" + DATABASE + ";", USER, PASSWORD);
