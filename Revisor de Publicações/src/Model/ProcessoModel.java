@@ -2,6 +2,7 @@ package Model;
 
 import Core.Excecao.Excecao;
 import DAL.RecorteDAL;
+import DAL.SqlFactory;
 import Entity.Cliente;
 import Entity.Escritorio;
 import Entity.Estado;
@@ -36,44 +37,88 @@ public class ProcessoModel
     }
     
     /**
-     * Função para buscar os processos
-     * @param cRecorte
-     * @param cEstado
-     * @param dataBusca
-     * @return Processo
+     * Função para buscar processos de forma geral. É uma busca centralizada: todas os outros tipos de busca apontam para esta função.
+     * @param cRecorte Recorte no qual buscaremos as publicações.
+     * @param cEstado  Estado das publicações.
+     * @param where    Condições para a busca.
+     * @return Lista de Processos.
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca)
+    private List<Processo> buscar(Recorte cRecorte, Estado cEstado, List<String> where)
     {
+        List<Processo> ListaProcessos = new ArrayList<>();
+        
+        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+            
+        List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+        
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+
+        String[] sqlSelect =
+        {
+            "P1.NUM                    AS NUM_PUBLICACAO",
+            "P1.N_PROCESSO             AS NUMERO_PROCESSO",
+            "P1.TRIBUNAL               AS TRIBUNAL",
+            "P1.VARA                   AS VARA",
+            "P1.ORDEM                  AS ORDEM",
+            "P1.NOME                   AS NOME_BUSCADO",
+            "P1.CODIGO                 AS CODIGO_ESCRITORIO",
+            "P1.ARQUIVO                AS ARQUIVO",
+            "P1.DATA                   AS DATA_VISTA",
+            "DOM.DATA_DISPONIBILIZACAO AS DATA_DISPONIBILIZACAO",
+            "DOM.DATA_PUBLICACAO       AS DATA_PUBLICACAO",
+            "P2.PUBLICACAO             AS CORPO_PUBLICACAO",
+            "E.NOME                    AS NOME_ESCRITORIO"
+        };
+
+        String[] sqlFrom =
+        {
+            tabelaEstado + " P1"
+        };
+
+        String[] sqlInnerJoin =
+        {
+            "INNER JOIN ESCRITORIO E"
+                + "  ON E.CODIGO = P1.CODIGO",
+            "INNER JOIN " + tabelaEstado + "2 P2"
+                + "  ON P1.NUM = P2.NUM2",
+            "INNER JOIN VISTA.dbo.DIARIO_OFICIAL_MAPA DOM"
+                + "  ON DOM.DATA_VISTA = P1.DATA"
+        };
+        
+        String[] sqlOrderBy =
+        {
+            "P1.TRIBUNAL",
+            "P1.NUM"
+        };
+        
+        where.add("DOM.SIGLA IN (SELECT SIGLA"
+                + "                FROM VISTA.dbo.DIARIO_OFICIAL_TRIBUNAIS DOT"
+                + "               WHERE CAST(DOT.TRIBUNAL AS VARCHAR(50)) COLLATE Latin1_General_CI_AI = P1.TRIBUNAL"
+                + "                 AND DOT.ESTADO = '" + cEstado.getNome() + "'"
+                + "                 AND DOT.CLIENTE = '" + cRecorte.getNomeRecorte() + "')");
+        
+        String[] sqlWhere = where.toArray(new String[where.size()]);
+
+        // Cria o select geral:
+        String sql = SqlFactory.createSelect(sqlSelect, sqlFrom, sqlInnerJoin, sqlWhere, sqlOrderBy);
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+        
         try
         {
-            List<Processo> ListaProcessos = new ArrayList<>();
-            
-            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-            
-            List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-            
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);            
-
-            String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
-                       + "            P1.DATA     AS DATA_PUBLICACAO,"
-                       + "            P1.TRIBUNAL AS TRIBUNAL,"
-                       + "            P1.NOME     AS NOME_BUSCADO,"
-                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
-                       + "            E.NOME      AS NOME_ESCRITORIO"
-                       + "       FROM " + tabelaEstado + " P1"
-                       + " INNER JOIN ESCRITORIO E"
-                       + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
-                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
             while (row.next())
             {
                 Processo cProcesso = new Processo();
                 cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
+                cProcesso.setNumeroProcesso(row.getString("NUMERO_PROCESSO"));
+                cProcesso.setDataVista(row.getDate("DATA_VISTA"));
                 cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
+                cProcesso.setDataDisponibilizacao(row.getDate("DATA_DISPONIBILIZACAO"));
+                cProcesso.setArquivo(row.getString("ARQUIVO"));
+                cProcesso.setVara(row.getString("VARA"));
+                cProcesso.setCorpoPublicacao(row.getString("CORPO_PUBLICACAO"));
+                cProcesso.setOrdem(row.getInt("ORDEM"));
                 
                 // Pega o tribunal correspondente:
                 String nomeTribunal = row.getString("TRIBUNAL");
@@ -106,7 +151,23 @@ public class ProcessoModel
             new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
         }
         
-        return null;
+        return ListaProcessos;
+    }
+    
+    /**
+     * Função para buscar os processos
+     * @param cRecorte
+     * @param cEstado
+     * @param dataBusca
+     * @return Processo
+     */
+    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca)
+    {
+        List<String> where = new ArrayList<>();
+        where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
+        
+        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        return ListaProcessos;
     }
     
     /**
@@ -119,70 +180,12 @@ public class ProcessoModel
      */
     public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, Tribunal cTribunal)
     {
-        try
-        {
-            List<Processo> ListaProcessos = new ArrayList<>();
-            
-            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-            
-            List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-            
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);            
-
-            String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
-                       + "            P1.DATA     AS DATA_PUBLICACAO,"
-                       + "            P1.TRIBUNAL AS TRIBUNAL,"
-                       + "            P1.NOME     AS NOME_BUSCADO,"
-                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
-                       + "            E.NOME      AS NOME_ESCRITORIO"
-                       + "       FROM " + tabelaEstado + " P1"
-                       + " INNER JOIN ESCRITORIO E"
-                       + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
-                       + "        AND P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'"
-                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Processo cProcesso = new Processo();
-                cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
-                cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
-                
-                // Pega o tribunal correspondente:
-                String nomeTribunal = row.getString("TRIBUNAL");
-                for (Tribunal cTribunalLista : ListaTribunais)
-                {
-                    if (cTribunalLista.getNomeTribunal().equals(nomeTribunal))
-                    {
-                        cProcesso.setTribunal(cTribunalLista);
-                    }
-                }
-                
-                // Escritório:
-                Escritorio cEscritorio = new Escritorio();
-                cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
-                cEscritorio.setCodigo(row.getInt("CODIGO_ESCRITORIO"));
-                
-                Cliente cCliente = new Cliente();
-                cCliente.setNome(row.getString("NOME_BUSCADO"));
-                cEscritorio.setCliente(cCliente);
-                cProcesso.setEscritorio(cEscritorio);
-                
-                ListaProcessos.add(cProcesso);
-            }
-
-            DAL.desconectar();
-            return ListaProcessos;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
-        }
+        List<String> where = new ArrayList<>();
+        where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
+        where.add("P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'");
         
-        return null;
+        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        return ListaProcessos;
     }
     
     /**
@@ -194,75 +197,11 @@ public class ProcessoModel
      */
     public Processo buscar(Recorte cRecorte, Estado cEstado, int numProcesso)
     {
-        try
-        {
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);
-
-            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-            
-            List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-
-            String sql = "     SELECT P1.NUM        AS NUM_PUBLICACAO,"
-                       + "            P1.N_PROCESSO AS NUMERO_PROCESSO,"
-                       + "            P1.ARQUIVO    AS ARQUIVO,"
-                       + "            P1.DATA       AS DATA_PUBLICACAO,"
-                       + "            P1.TRIBUNAL   AS TRIBUNAL,"
-                       + "            P1.NOME       AS NOME_BUSCADO,"
-                       + "            P1.VARA       AS VARA,"
-                       + "            P1.ORDEM      AS ORDEM,"
-                       + "            P1.CODIGO     AS CODIGO_ESCRITORIO,"
-                       + "            P2.PUBLICACAO AS CORPO_PUBLICACAO,"
-                       + "            E.NOME        AS NOME_ESCRITORIO"
-                       + "       FROM " + tabelaEstado + "  P1"
-                       + " INNER JOIN " + tabelaEstado + "2 P2"
-                       + "         ON P1.NUM = P2.NUM2"
-                       + " INNER JOIN ESCRITORIO E"
-                       + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.NUM = " + numProcesso;
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-            
-            row.next();
-            
-            Processo cProcesso = new Processo();
-            cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
-            cProcesso.setNumeroProcesso(row.getString("NUMERO_PROCESSO"));
-            cProcesso.setArquivo(row.getString("ARQUIVO"));
-            cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
-            cProcesso.setVara(row.getString("VARA"));
-            cProcesso.setOrdem(row.getInt("ORDEM"));
-            cProcesso.setCorpoPublicacao(row.getString("CORPO_PUBLICACAO"));
-
-            // Pega o tribunal correspondente:
-            String nomeTribunal = row.getString("TRIBUNAL");
-            for (Tribunal cTribunalLista : ListaTribunais)
-            {
-                if (cTribunalLista.getNomeTribunal().equals(nomeTribunal))
-                {
-                    cProcesso.setTribunal(cTribunalLista);
-                }
-            }
-
-            // Escritório:
-            Escritorio cEscritorio = new Escritorio();
-            cEscritorio.setCodigo(Integer.parseInt(row.getString("CODIGO_ESCRITORIO")));
-            cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
-
-            Cliente cCliente = new Cliente();
-            cCliente.setNome(row.getString("NOME_BUSCADO"));
-            cEscritorio.setCliente(cCliente);
-            cProcesso.setEscritorio(cEscritorio);
-            
-            DAL.desconectar();
-            return cProcesso;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
-        }
+        List<String> where = new ArrayList<>();
+        where.add("P1.NUM = " + numProcesso);
         
-        return null;
+        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        return ListaProcessos.get(0);
     }
     
     /**
@@ -275,72 +214,12 @@ public class ProcessoModel
      */
     public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, String trechoBusca)
     {
-        try
-        {
-            List<Processo> ListaProcessos = new ArrayList<>();
-            
-            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-            
-            List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-            
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);            
-
-            String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
-                       + "            P1.DATA     AS DATA_PUBLICACAO,"
-                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
-                       + "            P1.TRIBUNAL AS TRIBUNAL,"
-                       + "            P1.NOME     AS NOME_BUSCADO,"
-                       + "            E.NOME      AS NOME_ESCRITORIO"
-                       + "       FROM " + tabelaEstado + " P1"
-                       + " INNER JOIN " + tabelaEstado + "2 P2"
-                       + "         ON P1.NUM = P2.NUM2"
-                       + " INNER JOIN ESCRITORIO E"
-                       + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
-                       + "        AND P2.PUBLICACAO LIKE '%" + trechoBusca + "%'"
-                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Processo cProcesso = new Processo();
-                cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
-                cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
-                
-                // Pega o tribunal correspondente:
-                String nomeTribunal = row.getString("TRIBUNAL");
-                for (Tribunal cTribunal : ListaTribunais)
-                {
-                    if (cTribunal.getNomeTribunal().equals(nomeTribunal))
-                    {
-                        cProcesso.setTribunal(cTribunal);
-                    }
-                }
-                
-                // Escritório:
-                Escritorio cEscritorio = new Escritorio();
-                cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
-                cEscritorio.setCodigo(row.getInt("CODIGO_ESCRITORIO"));
-                
-                Cliente cCliente = new Cliente();
-                cCliente.setNome(row.getString("NOME_BUSCADO"));
-                cEscritorio.setCliente(cCliente);
-                cProcesso.setEscritorio(cEscritorio);
-                
-                ListaProcessos.add(cProcesso);
-            }
-
-            DAL.desconectar();
-            return ListaProcessos;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
-        }
+        List<String> where = new ArrayList<>();
+        where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
+        where.add("P2.PUBLICACAO LIKE '%" + trechoBusca + "%'");
         
-        return null;
+        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        return ListaProcessos;
     }
     
     /**
@@ -354,72 +233,13 @@ public class ProcessoModel
      */
     public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, Tribunal cTribunal, String trechoBusca)
     {
-        try
-        {
-            List<Processo> ListaProcessos = new ArrayList<>();
-            
-            String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-            
-            List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-            
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);            
-
-            String sql = "     SELECT P1.NUM      AS NUM_PUBLICACAO,"
-                       + "            P1.DATA     AS DATA_PUBLICACAO,"
-                       + "            P1.TRIBUNAL AS TRIBUNAL,"
-                       + "            P1.NOME     AS NOME_BUSCADO,"
-                       + "            P1.CODIGO   AS CODIGO_ESCRITORIO,"
-                       + "            E.NOME      AS NOME_ESCRITORIO"
-                       + "       FROM " + tabelaEstado + " P1"
-                       + " INNER JOIN " + tabelaEstado + "2 P2"
-                       + "         ON P1.NUM = P2.NUM2"
-                       + " INNER JOIN ESCRITORIO E"
-                       + "         ON E.CODIGO = P1.CODIGO"
-                       + "      WHERE P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'"
-                       + "        AND P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'"
-                       + "        AND P2.PUBLICACAO LIKE '%" + trechoBusca + "%'"
-                       + "   ORDER BY P1.TRIBUNAL, P1.NUM";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Processo cProcesso = new Processo();
-                cProcesso.setNumProcesso(row.getInt("NUM_PUBLICACAO"));
-                cProcesso.setDataPublicacao(row.getDate("DATA_PUBLICACAO"));
-                
-                // Pega o tribunal correspondente:
-                String nomeTribunal = row.getString("TRIBUNAL");
-                for (Tribunal cTribunalLista : ListaTribunais)
-                {
-                    if (cTribunalLista.getNomeTribunal().equals(nomeTribunal))
-                    {
-                        cProcesso.setTribunal(cTribunalLista);
-                    }
-                }
-                
-                // Escritório:
-                Escritorio cEscritorio = new Escritorio();
-                cEscritorio.setNome(row.getString("NOME_ESCRITORIO"));
-                
-                Cliente cCliente = new Cliente();
-                cCliente.setNome(row.getString("NOME_BUSCADO"));
-                cEscritorio.setCliente(cCliente);
-                cProcesso.setEscritorio(cEscritorio);
-                
-                ListaProcessos.add(cProcesso);
-            }
-
-            DAL.desconectar();
-            return ListaProcessos;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
-        }
+        List<String> where = new ArrayList<>();
+        where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
+        where.add("P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'");
+        where.add("P2.PUBLICACAO LIKE '%" + trechoBusca + "%'");
         
-        return null;
+        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        return ListaProcessos;
     }
     
     /**
@@ -481,7 +301,7 @@ public class ProcessoModel
                         + "                                  ORDEM,"
                         + "                                  N_PROCESSO)" 
                         + "                          VALUES ( " + id + ","
-                        + "                                  '" + new SimpleDateFormat("yyyy-MM-dd").format(cProcesso.getDataPublicacao()) + "',"
+                        + "                                  '" + new SimpleDateFormat("yyyy-MM-dd").format(cProcesso.getDataVista()) + "',"
                         + "                                   " + cProcesso.getEscritorio().getCodigo() + ","
                         + "                                  '" + cProcesso.getEscritorio().getCliente().getNome() + "',"
                         + "                                  '" + cProcesso.getVara() + "',"

@@ -14,9 +14,19 @@ public class Processo
     private int NumProcesso;
     
     /**
+     * Data de trabalho da vista.
+     */
+    private Date DataVista;
+    
+    /**
      * Data da publicação.
      */
     private Date DataPublicacao;
+    
+    /**
+     * Data de disponibilizacao;
+     */
+    private Date DataDisponibilizacao;
     
     /**
      * Escritório da publicação.
@@ -70,6 +80,24 @@ public class Processo
     {
         this.NumProcesso = NumProcesso;
     }
+    
+    /**
+     * Função para retornar a data da vista.
+     * @return Data Vista
+     */
+    public Date getDataVista()
+    {
+        return DataVista;
+    }
+    
+    /**
+     * Função para definir a data da vista
+     * @param DataVista
+     */
+    public void setDataVista(Date DataVista)
+    {
+        this.DataVista = DataVista;
+    }
 
     /**
      * Função para retornar a data de publicação
@@ -87,6 +115,24 @@ public class Processo
     public void setDataPublicacao(Date DataPublicacao)
     {
         this.DataPublicacao = DataPublicacao;
+    }
+    
+    /**
+     * Função para retornar a data de disponibilização do processo.
+     * @return Data de disponibilização do processo.
+     */
+    public Date getDataDisponibilizacao()
+    {
+        return this.DataDisponibilizacao;
+    }
+    
+    /**
+     * Função para definir a data de disponibilização do processo.
+     * @param DataDisponibilizacao 
+     */
+    public void setDataDisponibilizacao(Date DataDisponibilizacao)
+    {
+        this.DataDisponibilizacao = DataDisponibilizacao;
     }
 
     /**

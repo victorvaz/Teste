@@ -90,7 +90,7 @@ public class Excecao
         // Instancia a classe Email que será responsável por enviar o e-mail de exceção:
         Email cEmail = new Email();
         // Define o assunto do e-mail:
-        cEmail.setAssunto("L.O.D.O. - Aconteceu um problema");
+        cEmail.setAssunto("Revisor de Publicações - Aconteceu um problema");
         // Define o corpo do e-mail:
         cEmail.setCorpo(textoTemplate);
         // Define os destinatários do e-mail:

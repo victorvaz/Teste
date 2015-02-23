@@ -42,6 +42,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private String  varaPublicacao;
     private String  corpoPublicacao;
     private boolean conteudoAlterado;
+    private Date    dataVistaProcesso;
     
     /**
      * Creates new form TelaPrincipal
@@ -118,6 +119,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabel15 = new javax.swing.JLabel();
         comarcaPublicacaoTxt = new javax.swing.JTextField();
         codEscritorioTxt = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        dataDisponibilizacaoTxt = new javax.swing.JFormattedTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         textoPublicacaoTxt = new javax.swing.JEditorPane();
         jLabel14 = new javax.swing.JLabel();
@@ -143,7 +146,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.3");
+        setTitle("Revisor de Publicações 1.0.0.4");
 
         jLabel2.setText("Estado:");
 
@@ -259,8 +262,13 @@ public class TelaPrincipal extends javax.swing.JFrame
         jLabel7.setText("Nº PROCESSO:");
 
         numeroProcessoPublicacaoTxt.setEditable(false);
+        numeroProcessoPublicacaoTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numeroProcessoPublicacaoTxtActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("DATA:");
+        jLabel5.setText("DATA PUBLICAÇÃO:");
 
         dataPublicacaoTxt.setEditable(false);
 
@@ -322,6 +330,10 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         codEscritorioTxt.setEditable(false);
 
+        jLabel16.setText("DATA DISPONIBILIZAÇÃO:");
+
+        dataDisponibilizacaoTxt.setEditable(false);
+
         javax.swing.GroupLayout jPanelCabecalhoLayout = new javax.swing.GroupLayout(jPanelCabecalho);
         jPanelCabecalho.setLayout(jPanelCabecalhoLayout);
         jPanelCabecalhoLayout.setHorizontalGroup(
@@ -338,16 +350,16 @@ public class TelaPrincipal extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
-                                .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(arquivoPublicacaoTxt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
-                            .addComponent(numeroProcessoPublicacaoTxt)
+                                .addComponent(ordemPublicacaoTxt))
+                            .addComponent(numeroProcessoPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
                             .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                                 .addComponent(codEscritorioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(escritorioPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
+                                .addComponent(escritorioPublicacaoTxt))
                             .addComponent(tribunalPublicacaoTxt))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,10 +369,15 @@ public class TelaPrincipal extends javax.swing.JFrame
                             .addComponent(jLabel5))
                         .addGap(6, 6, 6)
                         .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-                            .addComponent(comarcaPublicacaoTxt)
+                            .addComponent(comarcaPublicacaoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                             .addComponent(varaPublicacaoTxt)
-                            .addComponent(nomeBuscadotxt)))
+                            .addComponent(nomeBuscadotxt)
+                            .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
+                                .addComponent(dataPublicacaoTxt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dataDisponibilizacaoTxt))))
                     .addGroup(jPanelCabecalhoLayout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(jLabel9)
@@ -384,7 +401,9 @@ public class TelaPrincipal extends javax.swing.JFrame
                     .addComponent(jLabel10)
                     .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(arquivoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(dataDisponibilizacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCabecalhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(escritorioPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -841,6 +860,10 @@ public class TelaPrincipal extends javax.swing.JFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_arquivoPublicacaoTxtActionPerformed
 
+    private void numeroProcessoPublicacaoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeroProcessoPublicacaoTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numeroProcessoPublicacaoTxtActionPerformed
+
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
     private void selectTribunalItemStateChanged(java.awt.event.ItemEvent evt){}
@@ -1155,6 +1178,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                     arquivoPublicacaoTxt.setText(cProcesso.getArquivo());
                     ordemPublicacaoTxt.setText(cProcesso.getOrdem() + "");
                     dataPublicacaoTxt.setText(new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()));
+                    dataDisponibilizacaoTxt.setText(new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataDisponibilizacao()));
                     codEscritorioTxt.setText(cProcesso.getEscritorio().getCodigo() + "");
                     escritorioPublicacaoTxt.setText(cProcesso.getEscritorio().getNome());
                     nomeBuscadotxt.setText(cProcesso.getEscritorio().getCliente().getNome());
@@ -1172,6 +1196,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     
                     varaPublicacao  = cProcesso.getVara();
                     corpoPublicacao = textoPublicacaoTxt.getText();
+                    
+                    dataVistaProcesso = cProcesso.getDataVista();
                     
                     atualizaLabelPaginacao(tabelaProcessos.getSelectedRow());
                 }
@@ -1445,50 +1471,43 @@ public class TelaPrincipal extends javax.swing.JFrame
      */
     private void abrirFormCadastroPublicacaoUtilizandoCabecalho()
     {
-        try
-        {
-            Recorte cRecorte = new Recorte();
-            cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+        Recorte cRecorte = new Recorte();
+        cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
 
-            Estado cEstado = new Estado();
-            cEstado.setNome(selectEstado.getSelectedItem().toString());
-            
-            DateFormat df = DateFormat.getDateInstance();
+        Estado cEstado = new Estado();
+        cEstado.setNome(selectEstado.getSelectedItem().toString());
 
-            Processo cProcesso = new Processo();
-            cProcesso.setArquivo(arquivoPublicacaoTxt.getText());
-            cProcesso.setOrdem(Integer.parseInt(ordemPublicacaoTxt.getText()));
-            cProcesso.setDataPublicacao(df.parse(dataPublicacaoTxt.getText()));
-            cProcesso.setVara(varaPublicacaoTxt.getText());
-            cProcesso.setNumeroProcesso(numeroProcessoPublicacaoTxt.getText());
-            
-            if (textoPublicacaoTxt.getSelectedText() != null)
-            {
-                cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getSelectedText()).text());
-            }
-            else
-            {
-                cProcesso.setCorpoPublicacao("");
-            }
-            
-            Escritorio cEscritorio = new Escritorio();
-            cEscritorio.setCodigo(Integer.parseInt(codEscritorioTxt.getText()));
-            cEscritorio.setNome(escritorioPublicacaoTxt.getText());
-            Cliente cCliente = new Cliente();
-            cCliente.setNome(nomeBuscadotxt.getText());
-            cEscritorio.setCliente(cCliente);
-            cProcesso.setEscritorio(cEscritorio);
-            
-            Tribunal cTribunal = new Tribunal();
-            cTribunal.setNomeTribunal(tribunalPublicacaoTxt.getText());
-            cProcesso.setTribunal(cTribunal);
-            
-            new CadastroPublicacaoPorModelo(cRecorte, cEstado, cProcesso).setVisible(true);
-        }
-        catch (ParseException ex)
+        DateFormat df = DateFormat.getDateInstance();
+
+        Processo cProcesso = new Processo();
+        cProcesso.setArquivo(arquivoPublicacaoTxt.getText());
+        cProcesso.setOrdem(Integer.parseInt(ordemPublicacaoTxt.getText()));
+        cProcesso.setDataVista(dataVistaProcesso);
+        cProcesso.setVara(varaPublicacaoTxt.getText());
+        cProcesso.setNumeroProcesso(numeroProcessoPublicacaoTxt.getText());
+
+        if (textoPublicacaoTxt.getSelectedText() != null)
         {
-            new Excecao("Erro ao tentar converter a data", this.getClass().getName(), ex.toString());
+            cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getSelectedText()).text());
         }
+        else
+        {
+            cProcesso.setCorpoPublicacao("");
+        }
+
+        Escritorio cEscritorio = new Escritorio();
+        cEscritorio.setCodigo(Integer.parseInt(codEscritorioTxt.getText()));
+        cEscritorio.setNome(escritorioPublicacaoTxt.getText());
+        Cliente cCliente = new Cliente();
+        cCliente.setNome(nomeBuscadotxt.getText());
+        cEscritorio.setCliente(cCliente);
+        cProcesso.setEscritorio(cEscritorio);
+
+        Tribunal cTribunal = new Tribunal();
+        cTribunal.setNomeTribunal(tribunalPublicacaoTxt.getText());
+        cProcesso.setTribunal(cTribunal);
+
+        new CadastroPublicacaoPorModelo(cRecorte, cEstado, cProcesso).setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1509,6 +1528,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JTextField codEscritorioTxt;
     private javax.swing.JTextField comarcaPublicacaoTxt;
     private javax.swing.JFormattedTextField dataBusca;
+    private javax.swing.JFormattedTextField dataDisponibilizacaoTxt;
     private javax.swing.JFormattedTextField dataPublicacaoTxt;
     private javax.swing.JTextField escritorioPublicacaoTxt;
     private javax.swing.JInternalFrame jInternalFrameDetalhesProcesso;
@@ -1519,6 +1539,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -67,7 +67,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
     private void initComponents() {
 
         jLabel5 = new javax.swing.JLabel();
-        dataPublicacaoTxt = new javax.swing.JFormattedTextField();
+        dataVistaTxt = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -231,7 +231,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(nomeBuscadotxt, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(comarcaPublicacaoTxt)
-                            .addComponent(dataPublicacaoTxt))))
+                            .addComponent(dataVistaTxt))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -248,7 +248,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dataVistaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(numeroProcessoPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -559,7 +559,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
      */
     private void preencherCampos()
     {
-        dataPublicacaoTxt.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+        dataVistaTxt.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
     }
     
     /**
@@ -581,7 +581,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
             cProcessoAtual.setNumeroProcesso(numeroProcessoPublicacaoTxt.getText());
             cProcessoAtual.setArquivo(tribunalTxt.getSelectedItem().toString().split(" - ")[0] + "-0.txt");
             cProcessoAtual.setOrdem(0);
-            cProcessoAtual.setDataPublicacao(df.parse(dataPublicacaoTxt.getText()));
+            cProcessoAtual.setDataVista(df.parse(dataVistaTxt.getText()));
             cProcessoAtual.setVara(varaPublicacaoTxt.getText());
             cProcessoAtual.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
             
@@ -611,7 +611,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
     private javax.swing.JButton btnOK;
     private javax.swing.JComboBox codigoEscritorioPublicacaoTxt;
     private javax.swing.JTextField comarcaPublicacaoTxt;
-    private javax.swing.JFormattedTextField dataPublicacaoTxt;
+    private javax.swing.JFormattedTextField dataVistaTxt;
     private javax.swing.JComboBox estadoTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;

@@ -79,7 +79,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         numeroProcessoPublicacaoTxt.setEnabled(false);
         arquivoPublicacaoTxt.setEnabled(false);
         ordemPublicacaoTxt.setEnabled(false);
-        dataPublicacaoTxt.setEnabled(false);
+        dataVistaTxt.setEnabled(false);
         nomeBuscadotxt.setEnabled(false);
         codigoEscritorioPublicacaoTxt.setEnabled(false);
         tribunalPublicacaoTxt.setEnabled(false);
@@ -98,7 +98,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         jLabel10 = new javax.swing.JLabel();
         ordemPublicacaoTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        dataPublicacaoTxt = new javax.swing.JFormattedTextField();
+        dataVistaTxt = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
         codigoEscritorioPublicacaoTxt = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -215,7 +215,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dataVistaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -251,7 +251,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(dataPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dataVistaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(ordemPublicacaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
@@ -370,7 +370,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         numeroProcessoPublicacaoTxt.setText(cProcesso.getNumeroProcesso());
         arquivoPublicacaoTxt.setText(cProcesso.getArquivo());
         ordemPublicacaoTxt.setText(cProcesso.getOrdem() + "");
-        dataPublicacaoTxt.setText(new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataPublicacao()));
+        dataVistaTxt.setText(new SimpleDateFormat("dd/MM/yyyy").format(cProcesso.getDataVista()));
         codigoEscritorioPublicacaoTxt.setText(cProcesso.getEscritorio().getCodigo()+"");
         nomeBuscadotxt.setText(cProcesso.getEscritorio().getCliente().getNome());
         tribunalPublicacaoTxt.setText(cProcesso.getTribunal().getNomeTribunal());
@@ -391,7 +391,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
             cProcessoAtual.setNumeroProcesso(numeroProcessoPublicacaoTxt.getText());
             cProcessoAtual.setArquivo(arquivoPublicacaoTxt.getText());
             cProcessoAtual.setOrdem(Integer.parseInt(ordemPublicacaoTxt.getText()));
-            cProcessoAtual.setDataPublicacao(df.parse(dataPublicacaoTxt.getText()));
+            cProcessoAtual.setDataVista(df.parse(dataVistaTxt.getText()));
             cProcessoAtual.setVara(varaPublicacaoTxt.getText());
             cProcessoAtual.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
             
@@ -422,7 +422,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
     private javax.swing.JButton btnOK;
     private javax.swing.JTextField codigoEscritorioPublicacaoTxt;
     private javax.swing.JTextField comarcaPublicacaoTxt;
-    private javax.swing.JFormattedTextField dataPublicacaoTxt;
+    private javax.swing.JFormattedTextField dataVistaTxt;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

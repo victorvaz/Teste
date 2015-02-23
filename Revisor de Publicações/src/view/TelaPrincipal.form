@@ -125,7 +125,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Revisor de Publica&#xe7;&#xf5;es 1.0.0.3"/>
+    <Property name="title" type="java.lang.String" value="Revisor de Publica&#xe7;&#xf5;es 1.0.0.4"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar2"/>
@@ -453,24 +453,24 @@
                                           <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="arquivoPublicacaoTxt" min="-2" pref="165" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="arquivoPublicacaoTxt" max="32767" attributes="0"/>
+                                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="ordemPublicacaoTxt" pref="164" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <Component id="ordemPublicacaoTxt" max="32767" attributes="0"/>
                                           </Group>
-                                          <Component id="numeroProcessoPublicacaoTxt" max="32767" attributes="0"/>
+                                          <Component id="numeroProcessoPublicacaoTxt" pref="236" max="32767" attributes="0"/>
                                           <Group type="102" attributes="0">
                                               <Component id="codEscritorioTxt" min="-2" pref="60" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="escritorioPublicacaoTxt" pref="317" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <Component id="escritorioPublicacaoTxt" max="32767" attributes="0"/>
                                           </Group>
                                           <Component id="tribunalPublicacaoTxt" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
@@ -479,10 +479,16 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="dataPublicacaoTxt" pref="286" max="32767" attributes="0"/>
-                                          <Component id="comarcaPublicacaoTxt" max="32767" attributes="0"/>
+                                          <Component id="comarcaPublicacaoTxt" pref="392" max="32767" attributes="0"/>
                                           <Component id="varaPublicacaoTxt" max="32767" attributes="0"/>
                                           <Component id="nomeBuscadotxt" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="dataPublicacaoTxt" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                                              <Component id="dataDisponibilizacaoTxt" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -514,6 +520,8 @@
                                   <Component id="ordemPublicacaoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="arquivoPublicacaoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dataDisponibilizacaoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -559,10 +567,13 @@
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="numeroProcessoPublicacaoTxtActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel5">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="DATA:"/>
+                        <Property name="text" type="java.lang.String" value="DATA PUBLICA&#xc7;&#xc3;O:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="dataPublicacaoTxt">
@@ -668,6 +679,16 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="codEscritorioTxt">
+                      <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="jLabel16">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="DATA DISPONIBILIZA&#xc7;&#xc3;O:"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JFormattedTextField" name="dataDisponibilizacaoTxt">
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
                       </Properties>

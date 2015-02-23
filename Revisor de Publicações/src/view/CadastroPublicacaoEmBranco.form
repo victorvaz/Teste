@@ -103,7 +103,7 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="nomeBuscadotxt" max="32767" attributes="0"/>
                           <Component id="comarcaPublicacaoTxt" max="32767" attributes="0"/>
-                          <Component id="dataPublicacaoTxt" max="32767" attributes="0"/>
+                          <Component id="dataVistaTxt" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -126,7 +126,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="dataPublicacaoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dataVistaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="numeroProcessoPublicacaoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -164,7 +164,7 @@
         <Property name="text" type="java.lang.String" value="DATA:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="dataPublicacaoTxt">
+    <Component class="javax.swing.JFormattedTextField" name="dataVistaTxt">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
