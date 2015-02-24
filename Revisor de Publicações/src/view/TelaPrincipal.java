@@ -36,7 +36,6 @@ public class TelaPrincipal extends javax.swing.JFrame
     private final RecorteModel  cRecorteModel;
     private final EstadoModel   cEstadoModel;
     private final TribunalModel cTribunalModel;
-    private final ProcessoModel cProcessoModel;
     
     // Variáveis da tela de publicação:
     private String  varaPublicacao;
@@ -56,7 +55,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         this.cRecorteModel  = new RecorteModel();
         this.cEstadoModel   = new EstadoModel();
         this.cTribunalModel = new TribunalModel();
-        this.cProcessoModel = new ProcessoModel();
         
         conteudoAlterado = false;
         
@@ -197,7 +195,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -433,6 +431,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
 
         textoPublicacaoTxt.setContentType("text/html"); // NOI18N
+        textoPublicacaoTxt.setText("<html>\r\n  <head>\r\n\r\n  </head>\r\n  <body>\r\n    <p style=\"margin-top: 0;\">\r\n      \r\n    </p>\r\n  </body>\r\n</html>\r\n");
         textoPublicacaoTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         textoPublicacaoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -803,12 +802,6 @@ public class TelaPrincipal extends javax.swing.JFrame
      * @param evt 
      */
     private void btnNovoProcessoEmBrancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoProcessoEmBrancoActionPerformed
-        Recorte cRecorte = new Recorte();
-        cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
-
-        Estado cEstado = new Estado();
-        cEstado.setNome(selectEstado.getSelectedItem().toString());
-        
         new CadastroPublicacaoEmBranco().setVisible(true);
     }//GEN-LAST:event_btnNovoProcessoEmBrancoActionPerformed
 
@@ -1096,18 +1089,19 @@ public class TelaPrincipal extends javax.swing.JFrame
                     DateFormat df = DateFormat.getDateInstance();
                     Date data = df.parse(dataBusca.getText());
 
+                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
                     List<Processo> ListaProcessos = null;
 
                     if (selectTribunal.getSelectedItem().toString().equalsIgnoreCase("Todos"))
                     {
-                        ListaProcessos = cProcessoModel.buscar(cRecorte, cEstado, data);
+                        ListaProcessos = cProcessoModel.buscar(data);
                     }
                     else
                     {
                         Tribunal cTribunal = new Tribunal();
                         cTribunal.setNomeTribunal(selectTribunal.getSelectedItem().toString().split(" - ")[1]);
 
-                        ListaProcessos = cProcessoModel.buscar(cRecorte, cEstado, data, cTribunal);
+                        ListaProcessos = cProcessoModel.buscar(data, cTribunal);
                     }
 
                     DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
@@ -1127,7 +1121,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                                 cProcesso.getTribunal().getSigla(),
                                 cProcesso.getEscritorio().getCodigo(),
                                 cProcesso.getEscritorio().getCliente().getNome(),
-                                ""
+                                cProcesso.isRevisado()
                             };
 
                             model.addRow(linha);
@@ -1172,7 +1166,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     Estado cEstado = new Estado();
                     cEstado.setNome(selectEstado.getSelectedItem().toString());
 
-                    Processo cProcesso = cProcessoModel.buscar(cRecorte, cEstado, (int) tabelaProcessos.getValueAt(tabelaProcessos.getSelectedRow(), 0));
+                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                    Processo cProcesso = cProcessoModel.buscar((int) tabelaProcessos.getValueAt(tabelaProcessos.getSelectedRow(), 0));
                     
                     numeroProcessoPublicacaoTxt.setText(cProcesso.getNumeroProcesso());
                     arquivoPublicacaoTxt.setText(cProcesso.getArquivo());
@@ -1238,18 +1233,19 @@ public class TelaPrincipal extends javax.swing.JFrame
                     DateFormat df = DateFormat.getDateInstance();
                     Date data = df.parse(dataBusca.getText());
 
+                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
                     List<Processo> ListaProcessos = null;
 
                     if (selectTribunal.getSelectedItem().toString().equalsIgnoreCase("Todos"))
                     {
-                        ListaProcessos = cProcessoModel.buscar(cRecorte, cEstado, data, trechoBusca);
+                        ListaProcessos = cProcessoModel.buscar(data, trechoBusca);
                     }
                     else
                     {
                         Tribunal cTribunal = new Tribunal();
                         cTribunal.setNomeTribunal(selectTribunal.getSelectedItem().toString().split(" - ")[1]);
 
-                        ListaProcessos = cProcessoModel.buscar(cRecorte, cEstado, data, cTribunal, trechoBusca);
+                        ListaProcessos = cProcessoModel.buscar(data, cTribunal, trechoBusca);
                     }
 
                     DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
@@ -1312,7 +1308,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     Estado cEstado = new Estado();
                     cEstado.setNome(selectEstado.getSelectedItem().toString());
 
-                    Processo cProcesso = cProcessoModel.buscar(cRecorte, cEstado, numeroBusca);
+                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                    Processo cProcesso = cProcessoModel.buscar(numeroBusca);
 
                     DefaultTableModel model = (DefaultTableModel) tabelaProcessos.getModel();
                     model.setNumRows(0);
@@ -1430,7 +1427,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                 cProcesso.setVara(varaPublicacaoTxt.getText());
                 cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
                 
-                cProcessoModel.atualizar(cRecorte, cEstado, cProcesso);
+                ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                cProcessoModel.atualizar(cProcesso);
                 JOptionPane.showMessageDialog(null, "Publicação atualizada com sucesso.");
                 
                 jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle().replace(" (Alterado) ", ""));

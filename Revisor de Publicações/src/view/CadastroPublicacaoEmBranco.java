@@ -35,7 +35,6 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
     private final TribunalModel   cTribunalModel;
     private final EscritorioModel cEscritorioModel;
     private final ClienteModel    cClienteModel;
-    private final ProcessoModel   cProcessoModel;
     
     /**
      * Cria o formulário CadastroPublicacao
@@ -52,7 +51,6 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
         this.cTribunalModel   = new TribunalModel();
         this.cEscritorioModel = new EscritorioModel();
         this.cClienteModel    = new ClienteModel();
-        this.cProcessoModel   = new ProcessoModel();
         
         preencherCampos();
         carregarRecortes();
@@ -117,6 +115,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
         jLabel15.setText("COMARCA:");
 
         textoPublicacaoTxt.setContentType("text/html"); // NOI18N
+        textoPublicacaoTxt.setText("<html>\r\n  <head>\r\n\r\n  </head>\r\n  <body>\r\n    <p style=\"margin-top: 0;\">\r\n      \r\n    </p>\r\n  </body>\r\n</html>\r\n");
         textoPublicacaoTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         textoPublicacaoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -596,7 +595,8 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
             cTribunal.setNomeTribunal(tribunalTxt.getSelectedItem().toString().split(" - ")[1]);
             cProcessoAtual.setTribunal(cTribunal);
             
-            cProcessoModel.cadastrar(cRecorte, cEstado, cProcessoAtual);
+            ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+            cProcessoModel.cadastrar(cProcessoAtual);
             
             JOptionPane.showMessageDialog(null, "Publicação cadastrada com sucesso.");
         }

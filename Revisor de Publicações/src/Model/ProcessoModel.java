@@ -22,15 +22,25 @@ import java.util.List;
  */
 public class ProcessoModel
 {
+    // Classes de Entidade:
+    private final Recorte cRecorte;
+    private final Estado  cEstado;
+    
     // Classes modelo
     private final TabelaEstadoModel cTabelaEstadoModel;
     private final TribunalModel     cTribunalModel;
 
     /**
      * Construtor da classe
+     * @param cRecorte Recorte referente ao processo.
+     * @param cEstado  Estado referente ao processo.
      */
-    public ProcessoModel()
+    public ProcessoModel(Recorte cRecorte, Estado cEstado)
     {
+        // Define as classes de entidade:
+        this.cRecorte = cRecorte;
+        this.cEstado  = cEstado;
+        
         // Inicia as classes de modelo:
         this.cTabelaEstadoModel = new TabelaEstadoModel();
         this.cTribunalModel     = new TribunalModel();
@@ -43,7 +53,7 @@ public class ProcessoModel
      * @param where    Condições para a busca.
      * @return Lista de Processos.
      */
-    private List<Processo> buscar(Recorte cRecorte, Estado cEstado, List<String> where)
+    private List<Processo> buscar(List<String> where)
     {
         List<Processo> ListaProcessos = new ArrayList<>();
         
@@ -158,99 +168,87 @@ public class ProcessoModel
     
     /**
      * Função para buscar os processos
-     * @param cRecorte
-     * @param cEstado
      * @param dataBusca
      * @return Processo
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca)
+    public List<Processo> buscar(Date dataBusca)
     {
         List<String> where = new ArrayList<>();
         where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
         
-        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        List<Processo> ListaProcessos = buscar(where);
         return ListaProcessos;
     }
     
     /**
      * Função para buscar os processos
-     * @param cRecorte
-     * @param cEstado
      * @param dataBusca
      * @param cTribunal
      * @return Processo
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, Tribunal cTribunal)
+    public List<Processo> buscar(Date dataBusca, Tribunal cTribunal)
     {
         List<String> where = new ArrayList<>();
         where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
         where.add("P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'");
         
-        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        List<Processo> ListaProcessos = buscar(where);
         return ListaProcessos;
     }
     
     /**
      * Função para buscar um Processo pelo seu numero de cadastro
-     * @param cRecorte
-     * @param cEstado
      * @param numProcesso
      * @return Processo
      */
-    public Processo buscar(Recorte cRecorte, Estado cEstado, int numProcesso)
+    public Processo buscar(int numProcesso)
     {
         List<String> where = new ArrayList<>();
         where.add("P1.NUM = " + numProcesso);
         
-        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        List<Processo> ListaProcessos = buscar(where);
         return ListaProcessos.get(0);
     }
     
     /**
      * Função para buscar os processos
-     * @param cRecorte
-     * @param cEstado
      * @param dataBusca
      * @param trechoBusca
      * @return Processo
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, String trechoBusca)
+    public List<Processo> buscar(Date dataBusca, String trechoBusca)
     {
         List<String> where = new ArrayList<>();
         where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
         where.add("P2.PUBLICACAO LIKE '%" + trechoBusca + "%'");
         
-        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        List<Processo> ListaProcessos = buscar(where);
         return ListaProcessos;
     }
     
     /**
      * Função para buscar os processos
-     * @param cRecorte
-     * @param cEstado
      * @param dataBusca
      * @param cTribunal
      * @param trechoBusca
      * @return Processo
      */
-    public List<Processo> buscar(Recorte cRecorte, Estado cEstado, Date dataBusca, Tribunal cTribunal, String trechoBusca)
+    public List<Processo> buscar(Date dataBusca, Tribunal cTribunal, String trechoBusca)
     {
         List<String> where = new ArrayList<>();
         where.add("P1.DATA = '" + (new SimpleDateFormat("yyyy-MM-dd").format(dataBusca)) + "'");
         where.add("P1.TRIBUNAL = '" + cTribunal.getNomeTribunal() + "'");
         where.add("P2.PUBLICACAO LIKE '%" + trechoBusca + "%'");
         
-        List<Processo> ListaProcessos = buscar(cRecorte, cEstado, where);
+        List<Processo> ListaProcessos = buscar(where);
         return ListaProcessos;
     }
     
     /**
      * Função para atualizar um processo
-     * @param cRecorte
-     * @param cEstado
      * @param cProcesso 
      */
-    public void atualizar(Recorte cRecorte, Estado cEstado, Processo cProcesso)
+    public void atualizar(Processo cProcesso)
     {
         String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
         
@@ -273,12 +271,10 @@ public class ProcessoModel
     
     /**
      * Função para cadastra um processo
-     * @param cRecorte
-     * @param cEstado
      * @param cProcesso 
      * @return Número de cadastro do processo.
      */
-    public int cadastrar(Recorte cRecorte, Estado cEstado, Processo cProcesso)
+    public int cadastrar(Processo cProcesso)
     {
         try
         {

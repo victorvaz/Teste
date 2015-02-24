@@ -22,9 +22,6 @@ import org.jsoup.Jsoup;
  */
 public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
 {
-    // Classes de modelo:
-    private final ProcessoModel cProcessoModel;
-    
     // Classes de entidade:
     private final Recorte  cRecorte;
     private final Estado   cEstado;
@@ -39,7 +36,6 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         this.cRecorte  = new Recorte();
         this.cEstado   = new Estado();
         this.cProcesso = new Processo();
-        this.cProcessoModel = new ProcessoModel();
     }
     
     /**
@@ -53,7 +49,6 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         this.cRecorte  = recorte;
         this.cEstado   = estado;
         this.cProcesso = new Processo();
-        this.cProcessoModel = new ProcessoModel();
     }
     
     /**
@@ -72,7 +67,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         this.cRecorte  = recorte;
         this.cEstado   = estado;
         this.cProcesso = processo;
-        this.cProcessoModel = new ProcessoModel();
+        ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
         preencherCampos();
         
         // Bloqueia campos:
@@ -150,6 +145,7 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         jLabel15.setText("COMARCA:");
 
         textoPublicacaoTxt.setContentType("text/html"); // NOI18N
+        textoPublicacaoTxt.setText("<html>\r\n  <head>\r\n\r\n  </head>\r\n  <body>\r\n    <p style=\"margin-top: 0;\">\r\n      \r\n    </p>\r\n  </body>\r\n</html>\r\n");
         textoPublicacaoTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         textoPublicacaoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -406,7 +402,8 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
             cTribunal.setNomeTribunal(tribunalPublicacaoTxt.getText());
             cProcessoAtual.setTribunal(cTribunal);
             
-            cProcessoModel.cadastrar(cRecorte, cEstado, cProcessoAtual);
+            ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+            cProcessoModel.cadastrar(cProcessoAtual);
             
             JOptionPane.showMessageDialog(null, "Publicação cadastrada com sucesso.");
         }
