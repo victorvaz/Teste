@@ -62,6 +62,11 @@ public class Processo
      * Corpo da publicação.
      */
     private String CorpoPublicacao;
+    
+    /**
+     * Se o processo foi revisado ou não.
+     */
+    private boolean Revisado;
 
     /**
      * Função para retornar o número do processo.
@@ -259,5 +264,23 @@ public class Processo
     public void setCorpoPublicacao(String CorpoPublicacao)
     {
         this.CorpoPublicacao = CorpoPublicacao;
+    }
+
+    /**
+     * Função para retornar o status de revisão.
+     * @return o Revisado
+     */
+    public boolean isRevisado()
+    {
+        return Revisado;
+    }
+
+    /**
+     * Função para definir o status de revisão.
+     * @param Revisado o status que será definido.
+     */
+    public void setRevisado(boolean Revisado)
+    {
+        this.Revisado = Revisado;
     }
 }

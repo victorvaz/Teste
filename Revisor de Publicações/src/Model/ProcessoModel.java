@@ -65,6 +65,7 @@ public class ProcessoModel
             "P1.CODIGO                 AS CODIGO_ESCRITORIO",
             "P1.ARQUIVO                AS ARQUIVO",
             "P1.DATA                   AS DATA_VISTA",
+            "P1.Revisado               AS REVISADO",
             "DOM.DATA_DISPONIBILIZACAO AS DATA_DISPONIBILIZACAO",
             "DOM.DATA_PUBLICACAO       AS DATA_PUBLICACAO",
             "P2.PUBLICACAO             AS CORPO_PUBLICACAO",
@@ -119,6 +120,7 @@ public class ProcessoModel
                 cProcesso.setVara(row.getString("VARA"));
                 cProcesso.setCorpoPublicacao(row.getString("CORPO_PUBLICACAO"));
                 cProcesso.setOrdem(row.getInt("ORDEM"));
+                cProcesso.setRevisado(row.getInt("REVISADO") == 1);
                 
                 // Pega o tribunal correspondente:
                 String nomeTribunal = row.getString("TRIBUNAL");
