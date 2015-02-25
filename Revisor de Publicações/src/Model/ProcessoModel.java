@@ -327,4 +327,30 @@ public class ProcessoModel
         
         return 0;
     }
+    
+    /**
+     * Função para mudar a bandeira de status
+     * @param numProcesso
+     * @param status 
+     */
+    public void marcarRevisao(int numProcesso, boolean status)
+    {
+        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+        
+        int numStatus = 0;
+        if (status)
+        {
+            numStatus = 1;
+        }
+        
+        String sql = "UPDATE " + tabelaEstado
+                   + "   SET Revisado = " + numStatus
+                   + " WHERE NUM = " + numProcesso;
+        
+        DAL.executarQuery(sql);
+        DAL.desconectar();
+    }
 }

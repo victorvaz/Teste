@@ -144,7 +144,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.4");
+        setTitle("Revisor de Publicações 1.0.0.5");
 
         jLabel2.setText("Estado:");
 
@@ -1167,6 +1167,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     cEstado.setNome(selectEstado.getSelectedItem().toString());
 
                     ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                    cProcessoModel.marcarRevisao((int) tabelaProcessos.getValueAt(tabelaProcessos.getSelectedRow(), 0), true);
+                    tabelaProcessos.setValueAt(true, tabelaProcessos.getSelectedRow(), 4);
                     Processo cProcesso = cProcessoModel.buscar((int) tabelaProcessos.getValueAt(tabelaProcessos.getSelectedRow(), 0));
                     
                     numeroProcessoPublicacaoTxt.setText(cProcesso.getNumeroProcesso());
