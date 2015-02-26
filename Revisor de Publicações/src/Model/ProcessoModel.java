@@ -13,10 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.jsoup.helper.StringUtil;
+import view.TelaPrincipal;
 
-/**
+/** 
  * Classe modelo para a entidade processo
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
@@ -26,10 +29,13 @@ public class ProcessoModel
     private final Recorte cRecorte;
     private final Estado  cEstado;
     
-    // Classes modelo
+    // Classes modelo:
     private final TabelaEstadoModel cTabelaEstadoModel;
     private final TribunalModel     cTribunalModel;
-
+    
+    // Classes de view:
+    private TelaPrincipal cTelaPrincipal;
+    
     /**
      * Construtor da classe
      * @param cRecorte Recorte referente ao processo.
@@ -44,6 +50,27 @@ public class ProcessoModel
         // Inicia as classes de modelo:
         this.cTabelaEstadoModel = new TabelaEstadoModel();
         this.cTribunalModel     = new TribunalModel();
+        
+        // Inicia as classes de view:
+        this.cTelaPrincipal = null;
+    }
+    
+    /**
+     * Função para definir a TelaPrincipal para o processo Model;
+     * @param cTelaPrincipal 
+     */
+    public void setTelaPrincipal(TelaPrincipal cTelaPrincipal)
+    {
+        this.cTelaPrincipal = cTelaPrincipal;
+    }
+
+    /**
+     * Função para retornar a TelaPrincipal
+     * @return cTelaPrincipal
+     */
+    private TelaPrincipal getTelaPrincipal()
+    {
+        return this.cTelaPrincipal;
     }
     
     /**
@@ -352,5 +379,119 @@ public class ProcessoModel
         
         DAL.executarQuery(sql);
         DAL.desconectar();
+    }
+    
+    /**
+     * Função para mudar a bandeira de status
+     * @param numProcesso
+     * @param status 
+     */
+    public void marcarRevisao(Integer[] numProcesso, boolean status)
+    {
+        if (cTelaPrincipal != null)
+        {
+            if (status)
+            {
+                cTelaPrincipal.barraProgressoOperacaoDemorada.setString("Marcando publicações como revisadas...");
+            }
+            else
+            {
+                cTelaPrincipal.barraProgressoOperacaoDemorada.setString("Marcando publicações não revisadas...");
+            }
+            
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setMaximum(numProcesso.length);
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setValue(0);
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setVisible(true);
+            cTelaPrincipal.repaint();
+        }
+        
+        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+        
+        int numStatus = 0;
+        if (status)
+        {
+            numStatus = 1;
+        }
+        
+        List<String> numeros = new ArrayList<>();
+        
+        for (Integer num : numProcesso)
+        {
+            numeros.add(num.toString());
+        }
+        
+        int buffer = 100;
+        Integer[][] lotes = new Integer[(numProcesso.length / buffer) + 1][buffer];
+        
+        int indiceLote = 0;
+        int indiceBuffer = 0;
+        for (int i = 1; i <= numProcesso.length; i++)
+        {
+            lotes[indiceLote][indiceBuffer] = numProcesso[i - 1];
+            indiceBuffer++;
+            
+            if (cTelaPrincipal != null)
+            {
+                cTelaPrincipal.barraProgressoOperacaoDemorada.setValue(i);
+                cTelaPrincipal.repaint();
+            }
+            
+            if ((i % buffer == 0) || (i == numProcesso.length))
+            {
+                indiceBuffer = 0;
+                indiceLote++;
+            }
+        }
+        
+        // ~gambiaaa necessaria - arrumar quando ter tempo
+        for (int i = 0; i < lotes.length; i++)
+        {
+            for (int j = 0; j < lotes[i].length; j++)
+            {
+                if (lotes[i][j] == null)
+                {
+                    lotes[i][j] = 0;
+                }
+            }
+        }
+        // fim da ~gambia necessaria
+        
+        if (cTelaPrincipal != null)
+        {
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setMaximum(lotes.length);
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setValue(0);
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setVisible(true);
+            cTelaPrincipal.repaint();
+        }
+        
+        for (int i = 0; i < lotes.length; i++)
+        {
+            Integer[] lote = lotes[i];
+            
+            if (cTelaPrincipal != null)
+            {
+                cTelaPrincipal.barraProgressoOperacaoDemorada.setValue(i);
+                cTelaPrincipal.repaint();
+            }
+            
+            String sql = "UPDATE " + tabelaEstado
+                       + "   SET Revisado = " + numStatus
+                       + " WHERE NUM IN (" + StringUtil.join(Arrays.asList(lote), ", ") + ")";
+            
+            DAL.executarQuery(sql);
+        }
+        
+        DAL.desconectar();
+        
+        if (cTelaPrincipal != null)
+        {
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setString("Finalizado");
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setValue(cTelaPrincipal.barraProgressoOperacaoDemorada.getMaximum());
+            cTelaPrincipal.barraProgressoOperacaoDemorada.setVisible(false);
+            cTelaPrincipal.repaint();
+        }
     }
 }

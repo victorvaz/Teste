@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -64,6 +65,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnNovoProcessoCabecalhoModelo.setEnabled(false);
         btnDuplicarPublicacao.setEnabled(false);
         btnSalvar.setEnabled(false);
+        menuMarcar.setEnabled(false);
+        barraProgressoOperacaoDemorada.setVisible(false);
         
         // Carrega os recortes:
         carregarRecortes();
@@ -78,6 +81,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
+        jProgressBar1 = new javax.swing.JProgressBar();
         jLabel2 = new javax.swing.JLabel();
         selectEstado = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
@@ -127,8 +131,10 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnNovaPublicacaoEmBranco = new javax.swing.JButton();
         btnDuplicarPublicacao = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
+        jToolBar2 = new javax.swing.JToolBar();
+        barraProgressoOperacaoDemorada = new javax.swing.JProgressBar();
         jMenuBar2 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menuArquivo = new javax.swing.JMenu();
         btnNovoProcessoEmBranco = new javax.swing.JMenuItem();
         btnNovoProcessoCabecalhoModelo = new javax.swing.JMenuItem();
         btnSalvarPublicacao = new javax.swing.JMenuItem();
@@ -138,7 +144,10 @@ public class TelaPrincipal extends javax.swing.JFrame
         btnFiltrarPorCodigoEscritorio = new javax.swing.JMenuItem();
         separator = new javax.swing.JPopupMenu.Separator();
         btnLimparFiltro = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuMarcar = new javax.swing.JMenu();
+        btnMarcarProcessosRevisado = new javax.swing.JMenuItem();
+        btnDesmarcarProcessosRevisado = new javax.swing.JMenuItem();
+        menuAjuda = new javax.swing.JMenu();
         menuSobre = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
@@ -235,7 +244,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jInternalFrameListaPublicacoesLayout.setVerticalGroup(
             jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 368, Short.MAX_VALUE)
+            .addGap(0, 348, Short.MAX_VALUE)
             .addGroup(jInternalFrameListaPublicacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
@@ -452,7 +461,7 @@ public class TelaPrincipal extends javax.swing.JFrame
             .addGroup(jInternalFrameDetalhesProcessoLayout.createSequentialGroup()
                 .addComponent(jPanelCabecalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelDetalhesPublicacaoLayout = new javax.swing.GroupLayout(jPanelDetalhesPublicacao);
@@ -467,7 +476,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         );
         jPanelDetalhesPublicacaoLayout.setVerticalGroup(
             jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 397, Short.MAX_VALUE)
+            .addGap(0, 377, Short.MAX_VALUE)
             .addGroup(jPanelDetalhesPublicacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelDetalhesPublicacaoLayout.createSequentialGroup()
                     .addComponent(jInternalFrameDetalhesProcesso)
@@ -515,10 +524,16 @@ public class TelaPrincipal extends javax.swing.JFrame
         });
         jToolBar1.add(btnSalvar);
 
-        jMenu1.setText("Arquivo");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        jToolBar2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jToolBar2.setFloatable(false);
+
+        barraProgressoOperacaoDemorada.setStringPainted(true);
+        jToolBar2.add(barraProgressoOperacaoDemorada);
+
+        menuArquivo.setText("Arquivo");
+        menuArquivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                menuArquivoActionPerformed(evt);
             }
         });
 
@@ -530,7 +545,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 btnNovoProcessoEmBrancoActionPerformed(evt);
             }
         });
-        jMenu1.add(btnNovoProcessoEmBranco);
+        menuArquivo.add(btnNovoProcessoEmBranco);
 
         btnNovoProcessoCabecalhoModelo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         btnNovoProcessoCabecalhoModelo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/duplicar.png"))); // NOI18N
@@ -540,7 +555,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 btnNovoProcessoCabecalhoModeloActionPerformed(evt);
             }
         });
-        jMenu1.add(btnNovoProcessoCabecalhoModelo);
+        menuArquivo.add(btnNovoProcessoCabecalhoModelo);
 
         btnSalvarPublicacao.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         btnSalvarPublicacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/save.png"))); // NOI18N
@@ -550,9 +565,9 @@ public class TelaPrincipal extends javax.swing.JFrame
                 btnSalvarPublicacaoActionPerformed(evt);
             }
         });
-        jMenu1.add(btnSalvarPublicacao);
+        menuArquivo.add(btnSalvarPublicacao);
 
-        jMenuBar2.add(jMenu1);
+        jMenuBar2.add(menuArquivo);
 
         menuFiltro.setText("Filtrar");
         menuFiltro.addActionListener(new java.awt.event.ActionListener() {
@@ -596,7 +611,29 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         jMenuBar2.add(menuFiltro);
 
-        jMenu2.setText("Ajuda");
+        menuMarcar.setText("Marcar");
+
+        btnMarcarProcessosRevisado.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        btnMarcarProcessosRevisado.setText("Marcar processos listados como revisado");
+        btnMarcarProcessosRevisado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarcarProcessosRevisadoActionPerformed(evt);
+            }
+        });
+        menuMarcar.add(btnMarcarProcessosRevisado);
+
+        btnDesmarcarProcessosRevisado.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        btnDesmarcarProcessosRevisado.setText("Desmarcar processos listados como revisado");
+        btnDesmarcarProcessosRevisado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesmarcarProcessosRevisadoActionPerformed(evt);
+            }
+        });
+        menuMarcar.add(btnDesmarcarProcessosRevisado);
+
+        jMenuBar2.add(menuMarcar);
+
+        menuAjuda.setText("Ajuda");
 
         menuSobre.setText("Sobre");
         menuSobre.addActionListener(new java.awt.event.ActionListener() {
@@ -604,9 +641,9 @@ public class TelaPrincipal extends javax.swing.JFrame
                 menuSobreActionPerformed(evt);
             }
         });
-        jMenu2.add(menuSobre);
+        menuAjuda.add(menuSobre);
 
-        jMenuBar2.add(jMenu2);
+        jMenuBar2.add(menuAjuda);
 
         setJMenuBar(jMenuBar2);
 
@@ -639,6 +676,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                         .addComponent(btnBuscar)))
                 .addContainerGap())
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -658,9 +696,12 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        getAccessibleContext().setAccessibleName("Revisor de Publicações 1.0.0.6");
 
         pack();
         setLocationRelativeTo(null);
@@ -813,9 +854,9 @@ public class TelaPrincipal extends javax.swing.JFrame
         abrirFormCadastroPublicacaoUtilizandoCabecalho();
     }//GEN-LAST:event_btnNovoProcessoCabecalhoModeloActionPerformed
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+    private void menuArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArquivoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_menuArquivoActionPerformed
 
     /**
      * Função chamada ao clicar no botão sobre
@@ -856,6 +897,22 @@ public class TelaPrincipal extends javax.swing.JFrame
     private void numeroProcessoPublicacaoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeroProcessoPublicacaoTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numeroProcessoPublicacaoTxtActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão de marcar todos os processos.
+     * @param evt 
+     */
+    private void btnMarcarProcessosRevisadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcarProcessosRevisadoActionPerformed
+        marcarRevisaoProcessos(true);
+    }//GEN-LAST:event_btnMarcarProcessosRevisadoActionPerformed
+
+    /**
+     * Função chamada ao clicar no botão de desmarcar todos os processos.
+     * @param evt 
+     */ 
+    private void btnDesmarcarProcessosRevisadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesmarcarProcessosRevisadoActionPerformed
+        marcarRevisaoProcessos(false);
+    }//GEN-LAST:event_btnDesmarcarProcessosRevisadoActionPerformed
 
     private void selectEstadoItemStateChanged(java.awt.event.ItemEvent evt){}
     
@@ -1078,6 +1135,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                 btnBuscar.setText("Buscando...");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
+                barraProgressoOperacaoDemorada.setString("Buscando processos...");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                barraProgressoOperacaoDemorada.setVisible(true);
+                
                 try
                 {
                     Recorte cRecorte = new Recorte();
@@ -1133,11 +1194,20 @@ public class TelaPrincipal extends javax.swing.JFrame
                     new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
                 
+                if (tabelaProcessos.getRowCount() > 0)
+                {
+                    menuMarcar.setEnabled(true);
+                }
+                
                 btnBuscar.setEnabled(true);
                 btnBuscar.setText("Buscar");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
                 
                 atualizaLabelPaginacao(0);
+                
+                barraProgressoOperacaoDemorada.setString("Finalizado");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                barraProgressoOperacaoDemorada.setVisible(false);
             }
         }, "Thread para buscar os valores para a tabela");
         
@@ -1157,6 +1227,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                 jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 btnNovoProcessoCabecalhoModelo.setEnabled(true);
                 btnDuplicarPublicacao.setEnabled(true);
+                
+                barraProgressoOperacaoDemorada.setString("Carregando publicação...");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                barraProgressoOperacaoDemorada.setVisible(true);
                 
                 try
                 {
@@ -1203,6 +1277,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                     new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
                 
+                barraProgressoOperacaoDemorada.setString("Finalizado");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                barraProgressoOperacaoDemorada.setVisible(false);
+                
                 jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png")));
             }
         });
@@ -1221,6 +1299,10 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
+                barraProgressoOperacaoDemorada.setString("Filtrando publicações por trecho...");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                barraProgressoOperacaoDemorada.setVisible(true);
+                
                 menuFiltro.setText("Buscando...");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
@@ -1283,6 +1365,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                 
                 menuFiltro.setText("Filtrar");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+                
+                barraProgressoOperacaoDemorada.setString("Finalizado");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                barraProgressoOperacaoDemorada.setVisible(false);
             }
         });
         thread.start();
@@ -1299,6 +1385,10 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
+                barraProgressoOperacaoDemorada.setString("Filtrando publicações por número de cadastro...");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                barraProgressoOperacaoDemorada.setVisible(true);
+                
                 menuFiltro.setText("Buscando...");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
@@ -1343,6 +1433,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                 
                 menuFiltro.setText("Filtrar");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+                
+                barraProgressoOperacaoDemorada.setString("Finalizado");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                barraProgressoOperacaoDemorada.setVisible(false);
             }
         });
         thread.start();
@@ -1359,6 +1453,10 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
+                barraProgressoOperacaoDemorada.setString("Filtrando publicações por código do escritório...");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                barraProgressoOperacaoDemorada.setVisible(true);
+                
                 menuFiltro.setText("Buscando...");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
                 
@@ -1394,6 +1492,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                 
                 menuFiltro.setText("Filtrar");
                 jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+                
+                barraProgressoOperacaoDemorada.setString("Finalizado");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                barraProgressoOperacaoDemorada.setVisible(false);
             }
         });
         
@@ -1419,6 +1521,10 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
+                barraProgressoOperacaoDemorada.setString("Salvando publicação...");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                barraProgressoOperacaoDemorada.setVisible(true);
+                
                 Recorte cRecorte = new Recorte();
                 cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
                 
@@ -1437,6 +1543,10 @@ public class TelaPrincipal extends javax.swing.JFrame
                 conteudoAlterado = false;
                 varaPublicacao  = varaPublicacaoTxt.getText();
                 corpoPublicacao = textoPublicacaoTxt.getText();
+                
+                barraProgressoOperacaoDemorada.setString("Finalizado");
+                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                barraProgressoOperacaoDemorada.setVisible(false);
             }
         });
         thread.start();
@@ -1509,16 +1619,60 @@ public class TelaPrincipal extends javax.swing.JFrame
 
         new CadastroPublicacaoPorModelo(cRecorte, cEstado, cProcesso).setVisible(true);
     }
+    
+    /**
+     * Função para marcar como revisado ou não os processos listados na tabela de processos.
+     */
+    private void marcarRevisaoProcessos(final boolean status)
+    {
+        final TelaPrincipal cTelaPrincipal = this;
+        
+        Thread thread = new Thread(
+            new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    Integer[] numProcessos = new Integer[tabelaProcessos.getRowCount()];
+        
+                    for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                    {
+                        numProcessos[i] = Integer.parseInt(tabelaProcessos.getValueAt(i, 0).toString());
+                    }
+
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+                    Estado cEstado = new Estado();
+                    cEstado.setNome(selectEstado.getSelectedItem().toString());
+
+                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                    cProcessoModel.setTelaPrincipal(cTelaPrincipal);
+                    cProcessoModel.marcarRevisao(numProcessos, status);
+
+                    for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                    {
+                        tabelaProcessos.setValueAt(status, i, 4);
+                    }
+                }
+            }
+        );
+        
+        thread.start();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField arquivoPublicacaoTxt;
+    public javax.swing.JProgressBar barraProgressoOperacaoDemorada;
     private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JMenuItem btnDesmarcarProcessosRevisado;
     private javax.swing.JButton btnDuplicarPublicacao;
     private javax.swing.JMenuItem btnFiltrarPorCodigoEscritorio;
     private javax.swing.JMenuItem btnFiltrarPorNumeroUnico;
     private javax.swing.JMenuItem btnFiltrarPorTrechoDaPublicacao;
     private javax.swing.JMenuItem btnLimparFiltro;
+    private javax.swing.JMenuItem btnMarcarProcessosRevisado;
     private javax.swing.JButton btnNovaPublicacaoEmBranco;
     private javax.swing.JMenuItem btnNovoProcessoCabecalhoModelo;
     private javax.swing.JMenuItem btnNovoProcessoEmBranco;
@@ -1548,20 +1702,23 @@ public class TelaPrincipal extends javax.swing.JFrame
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanelCabecalho;
     private javax.swing.JPanel jPanelDetalhesPublicacao;
     private javax.swing.JPanel jPanelTabela;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneTabela;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel labelPaginacao;
+    private javax.swing.JMenu menuAjuda;
+    private javax.swing.JMenu menuArquivo;
     private javax.swing.JMenu menuFiltro;
+    private javax.swing.JMenu menuMarcar;
     private javax.swing.JMenuItem menuSobre;
     private javax.swing.JTextField nomeBuscadotxt;
     private javax.swing.JTextField numeroProcessoPublicacaoTxt;
