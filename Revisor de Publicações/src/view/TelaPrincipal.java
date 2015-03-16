@@ -153,7 +153,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.5");
+        setTitle("Revisor de Publicações 1.0.0.6");
 
         jLabel2.setText("Estado:");
 

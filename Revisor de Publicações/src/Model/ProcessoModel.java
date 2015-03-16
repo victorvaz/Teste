@@ -362,6 +362,8 @@ public class ProcessoModel
      */
     public void marcarRevisao(int numProcesso, boolean status)
     {
+        String dataHoraAtual = new SimpleDateFormat("yyyy/MM/dd H:m:s").format(new Date()) + ".000";
+        System.out.println(dataHoraAtual);
         String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
 
         RecorteDAL DAL = new RecorteDAL();
@@ -374,7 +376,8 @@ public class ProcessoModel
         }
         
         String sql = "UPDATE " + tabelaEstado
-                   + "   SET Revisado = " + numStatus
+                   + "   SET Revisado = " + numStatus + ","
+                   + "       DATA_PROCESSADO = '" + dataHoraAtual + "'"
                    + " WHERE NUM = " + numProcesso;
         
         DAL.executarQuery(sql);
@@ -388,6 +391,9 @@ public class ProcessoModel
      */
     public void marcarRevisao(Integer[] numProcesso, boolean status)
     {
+        String dataHoraAtual = new SimpleDateFormat("yyyy/MM/dd H:m:s").format(new Date()) + ".000";
+        System.out.println(dataHoraAtual);
+        
         if (cTelaPrincipal != null)
         {
             if (status)
@@ -478,7 +484,8 @@ public class ProcessoModel
             }
             
             String sql = "UPDATE " + tabelaEstado
-                       + "   SET Revisado = " + numStatus
+                       + "   SET Revisado = " + numStatus + ","
+                       + "       DATA_PROCESSADO = '" + dataHoraAtual + "'"
                        + " WHERE NUM IN (" + StringUtil.join(Arrays.asList(lote), ", ") + ")";
             
             DAL.executarQuery(sql);
