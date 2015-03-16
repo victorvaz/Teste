@@ -128,10 +128,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="1.0.0.7"/>
+        <Property name="text" type="java.lang.String" value="1.0.0.8"/>
       </Properties>
       <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="1.0.0.7"/>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="1.0.0.8"/>
       </AccessibilityProperties>
     </Component>
   </SubComponents>

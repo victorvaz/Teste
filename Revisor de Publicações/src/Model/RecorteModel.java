@@ -29,6 +29,7 @@ public class RecorteModel
             String sql = "  SELECT CLIENTE"
                        + "    FROM DIARIO_OFICIAL_CLIENTE_CONFIG"
                        + "   WHERE STATUS IN ('ATIVO', 'BLOQUEADO', 'CORTESIA')"
+                       + "     AND CLIENTE = 'PROMAD'"
                        + "ORDER BY CLIENTE ASC";
 
             ResultSet row = DAL.executarSelectQuery(sql);
