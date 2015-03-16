@@ -53,7 +53,7 @@ public class Sobre extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Versão:");
 
-        jLabel7.setText("1.0.0.6");
+        jLabel7.setText("1.0.0.7");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,6 +100,8 @@ public class Sobre extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jLabel7.getAccessibleContext().setAccessibleName("1.0.0.7");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

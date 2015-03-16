@@ -153,7 +153,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.6");
+        setTitle("Revisor de Publicações 1.0.0.7");
 
         jLabel2.setText("Estado:");
 
@@ -700,8 +700,6 @@ public class TelaPrincipal extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        getAccessibleContext().setAccessibleName("Revisor de Publicações 1.0.0.6");
 
         pack();
         setLocationRelativeTo(null);

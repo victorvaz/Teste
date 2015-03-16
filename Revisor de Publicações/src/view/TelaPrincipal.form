@@ -156,11 +156,8 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Revisor de Publica&#xe7;&#xf5;es 1.0.0.6"/>
+    <Property name="title" type="java.lang.String" value="Revisor de Publica&#xe7;&#xf5;es 1.0.0.7"/>
   </Properties>
-  <AccessibilityProperties>
-    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Revisor de Publica&#xe7;&#xf5;es 1.0.0.6"/>
-  </AccessibilityProperties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar2"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
