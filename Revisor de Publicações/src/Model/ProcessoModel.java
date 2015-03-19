@@ -129,7 +129,8 @@ public class ProcessoModel implements Model<Processo, Integer>
         DAL.setRecorte(cRecorte);
         
         String sqlProc1 = "UPDATE " + tabelaEstado
-                        + "   SET VARA = '" + cProcesso.getVara() + "'"
+                        + "   SET VARA = '" + cProcesso.getVara() + "',"
+                        + "       Retificada = '1'"
                         + " WHERE NUM = " + cProcesso.getNumProcesso();
         
         DAL.executarQuery(sqlProc1);

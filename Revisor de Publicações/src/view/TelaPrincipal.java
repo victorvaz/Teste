@@ -42,6 +42,7 @@ public class TelaPrincipal extends javax.swing.JFrame
     private String  corpoPublicacao;
     private boolean conteudoAlterado;
     private Date    dataVistaProcesso;
+    private Integer numPublicacao;
     
     /**
      * Creates new form TelaPrincipal
@@ -151,7 +152,7 @@ public class TelaPrincipal extends javax.swing.JFrame
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Revisor de Publicações 1.0.0.8");
+        setTitle("Revisor de Publicações 1.0.0.9");
 
         jLabel2.setText("Estado:");
 
@@ -1281,6 +1282,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     tabelaProcessos.setValueAt(true, tabelaProcessos.getSelectedRow(), 4);
                     Processo cProcesso = cProcessoModel.buscar((int) tabelaProcessos.getValueAt(tabelaProcessos.getSelectedRow(), 0));
                     
+                    numPublicacao = cProcesso.getNumProcesso();
+                    
                     numeroProcessoPublicacaoTxt.setText(cProcesso.getNumeroProcesso());
                     arquivoPublicacaoTxt.setText(cProcesso.getArquivo());
                     ordemPublicacaoTxt.setText(cProcesso.getOrdem() + "");
@@ -1594,6 +1597,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                     cEstado.setNome(selectEstado.getSelectedItem().toString());
 
                     Processo cProcesso = new Processo();
+                    cProcesso.setNumProcesso(numPublicacao);
                     cProcesso.setVara(varaPublicacaoTxt.getText());
                     cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
 
