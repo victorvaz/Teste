@@ -11,38 +11,55 @@ import java.util.List;
  * Classe modelo da entidade Estado.
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
-public class EstadoModel
+public class EstadoModel implements Model<Estado, Integer>
 {
+    @Override
+    public void cadastrar(Estado e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void atualizar(Estado e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deletar(Estado e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**
-     * Função para buscar todos os estados.
-     * @return Lista de Estados.
+     * Função para buscar o estado de um diário através de seu código
+     * @param CodEstado Código do Estado
+     * @return Estado correspondente ao código
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
-    public List<Estado> buscar() throws SQLException, ClassNotFoundException
+    @Override
+    public Estado buscar(Integer CodEstado) throws SQLException, ClassNotFoundException
     {
         ClienteDAL DAL = new ClienteDAL();
 
         String sql = "SELECT CodEstado,"
                    + "       Sigla,"
                    + "       Nome"
-                   + "  FROM db_vista_recorte.dbo.estadoextended";
+                   + "  FROM Estado"
+                   + " WHERE CodEstado = '" + CodEstado + "'";
 
         ResultSet row = DAL.executarSelectQuery(sql);
+        row.next();
 
-        List<Estado> ListaEstados = new ArrayList<>();
+        Estado EstadoAtual = new Estado();
+        EstadoAtual.setCodEstado(row.getInt("CodEstado"));
+        EstadoAtual.setSigla(row.getString("Sigla"));
+        EstadoAtual.setNome(row.getString("Nome"));
 
-        while(row.next())
-        {
-            Estado EstadoAtual = new Estado();
-
-            EstadoAtual.setCodEstado(row.getInt("CodEstado"));
-            EstadoAtual.setSigla(row.getString("Sigla"));
-            EstadoAtual.setNome(row.getString("Nome"));
-            ListaEstados.add(EstadoAtual);
-        }
         DAL.desconectar();
-        return ListaEstados;
+
+        return EstadoAtual;
     }
     
     /**
@@ -74,58 +91,37 @@ public class EstadoModel
 
         return EstadoAtual;
     }
-    
+
     /**
-     * Função para buscar o estado de um diário através de seu código
-     * @param CodEstado Código do Estado
-     * @return Estado correspondente ao código
+     * Função para buscar todos os estados.
+     * @return Lista de Estados.
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
-    public Estado buscar(int CodEstado) throws SQLException, ClassNotFoundException
+    @Override
+    public List<Estado> buscarTodos() throws SQLException, ClassNotFoundException
     {
         ClienteDAL DAL = new ClienteDAL();
 
         String sql = "SELECT CodEstado,"
                    + "       Sigla,"
                    + "       Nome"
-                   + "  FROM Estado"
-                   + " WHERE CodEstado = '" + CodEstado + "'";
-
-        ResultSet row = DAL.executarSelectQuery(sql);
-        row.next();
-
-        Estado EstadoAtual = new Estado();
-        EstadoAtual.setCodEstado(row.getInt("CodEstado"));
-        EstadoAtual.setSigla(row.getString("Sigla"));
-        EstadoAtual.setNome(row.getString("Nome"));
-
-        DAL.desconectar();
-
-        return EstadoAtual;
-    }
-    
-    /**
-     * Função para retornar o nome de Estado através de seu código.
-     * @param codigo Código do estado.
-     * @return String Nome do estado.
-     * @throws java.sql.SQLException
-     * @throws java.lang.ClassNotFoundException
-     */
-    public String buscarNomePorCodigo(int codigo) throws SQLException, ClassNotFoundException
-    {
-        ClienteDAL DAL = new ClienteDAL();
-
-        String sql = "SELECT Nome"
-                   + "  FROM Estado"
-                   + " WHERE CodEstado = " + codigo;
+                   + "  FROM db_vista_recorte.dbo.estadoextended";
 
         ResultSet row = DAL.executarSelectQuery(sql);
 
-        row.next();
-        String nome = row.getString("Nome");
-        DAL.desconectar();
+        List<Estado> ListaEstados = new ArrayList<>();
 
-        return nome;
+        while(row.next())
+        {
+            Estado EstadoAtual = new Estado();
+
+            EstadoAtual.setCodEstado(row.getInt("CodEstado"));
+            EstadoAtual.setSigla(row.getString("Sigla"));
+            EstadoAtual.setNome(row.getString("Nome"));
+            ListaEstados.add(EstadoAtual);
+        }
+        DAL.desconectar();
+        return ListaEstados;
     }
 }

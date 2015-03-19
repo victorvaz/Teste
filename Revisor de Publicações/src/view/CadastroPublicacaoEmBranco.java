@@ -33,9 +33,6 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
     // Classes de modelo:
     private final RecorteModel    cRecorteModel;
     private final EstadoModel     cEstadoModel;
-    private final TribunalModel   cTribunalModel;
-    private final EscritorioModel cEscritorioModel;
-    private final ClienteModel    cClienteModel;
     
     /**
      * Cria o formulário CadastroPublicacao
@@ -49,9 +46,6 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
         
         this.cRecorteModel    = new RecorteModel();
         this.cEstadoModel     = new EstadoModel();
-        this.cTribunalModel   = new TribunalModel();
-        this.cEscritorioModel = new EscritorioModel();
-        this.cClienteModel    = new ClienteModel();
         
         preencherCampos();
         carregarRecortes();
@@ -381,7 +375,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
                 try
                 {
                     // Busca os recortes
-                    List<Recorte> ListaRecortes = cRecorteModel.buscar();
+                    List<Recorte> ListaRecortes = cRecorteModel.buscarTodos();
 
                     for (Recorte ListaRecorte : ListaRecortes)
                     {
@@ -428,7 +422,7 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
                 try
                 {
                     // Busca os estados
-                    List<Estado> ListaEstados = cEstadoModel.buscar();
+                    List<Estado> ListaEstados = cEstadoModel.buscarTodos();
 
                     estadoTxt.removeAllItems();
 
@@ -483,7 +477,8 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
                     tribunalTxt.removeAllItems();
 
                     // Busca os tribunais
-                    List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+                    TribunalModel cTribunalModel = new TribunalModel(cRecorte);
+                    List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cEstado);
 
                     for (Tribunal ListaTribunal : ListaTribunais)
                     {
@@ -535,7 +530,8 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
 
                     nomeBuscadotxt.removeAllItems();
 
-                    List<Cliente> ListaClientes = cClienteModel.buscar(cRecorte, cEscritorio);
+                    ClienteModel cClienteModel = new ClienteModel(cRecorte, cEscritorio);
+                    List<Cliente> ListaClientes = cClienteModel.buscarTodos();
 
                     for (Cliente cCliente : ListaClientes)
                     {
@@ -581,7 +577,8 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
 
                     codigoEscritorioPublicacaoTxt.removeAllItems();
 
-                    List<Escritorio> ListaEscritorios = cEscritorioModel.buscar(cRecorte);
+                    EscritorioModel cEscritorioModel = new EscritorioModel(cRecorte);
+                    List<Escritorio> ListaEscritorios = cEscritorioModel.buscarTodos();
 
                     for (Escritorio cEscritorio : ListaEscritorios)
                     {

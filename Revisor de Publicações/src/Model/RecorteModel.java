@@ -11,15 +11,40 @@ import java.util.List;
  * Classe modelo para a entidade Recorte
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
-public class RecorteModel
+public class RecorteModel implements Model<Recorte, Integer>
 {
+    @Override
+    public void cadastrar(Recorte e)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void atualizar(Recorte e) 
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deletar(Recorte e)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Recorte buscar(Integer identificador)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
     /**
      * Função para buscar os recortes
      * @return Lista de Recortes
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
-    public List<Recorte> buscar() throws SQLException, ClassNotFoundException
+    @Override
+    public List<Recorte> buscarTodos() throws SQLException, ClassNotFoundException
     {
         List<Recorte> ListaRecortes = new ArrayList<>();
 

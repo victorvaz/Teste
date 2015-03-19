@@ -31,7 +31,7 @@ public class RecorteDAL extends DAL
         this.cRecorte = cRecorte;
     }
 
-    public Recorte getRecorte()
+    private Recorte getRecorte()
     {
         return this.cRecorte;
     }

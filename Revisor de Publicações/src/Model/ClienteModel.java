@@ -13,27 +13,59 @@ import java.util.List;
  * Classe modelo da entidade Cliente
  * @author Victor Vaz <victor.vaz@vistaes.com.br>
  */
-public class ClienteModel
+public class ClienteModel implements Model<Cliente, Integer>
 {
+    private final Recorte Recorte;
+    private final Escritorio Escritorio;
+    
+    public ClienteModel(Recorte Recorte, Escritorio Escritorio)
+    {
+        this.Recorte = Recorte;
+        this.Escritorio = Escritorio;
+    }
+
+    @Override
+    public void cadastrar(Cliente e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void atualizar(Cliente e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deletar(Cliente e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Cliente buscar(Integer objetoIdentificador) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
     /**
      * Função para buscar os clientes de um escritório
-     * @param cRecorte
-     * @param cEscritorio
      * @return Lista de Clientes.
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      */
-    public List<Cliente> buscar(Recorte cRecorte, Escritorio cEscritorio) throws SQLException, ClassNotFoundException
+    @Override
+    public List<Cliente> buscarTodos() throws SQLException, ClassNotFoundException
     {
         List<Cliente> ListaClientes = new ArrayList<>();
 
         RecorteDAL DAL = new RecorteDAL();
-        DAL.setRecorte(cRecorte);
+        DAL.setRecorte(Recorte);
 
         String sql = "SELECT NUM,"
                    + "       NOME"
                    + "  FROM CLIENTE"
-                   + " WHERE CODIGO = " + cEscritorio.getCodigo();
+                   + " WHERE CODIGO = " + Escritorio.getCodigo();
 
         ResultSet row = DAL.executarSelectQuery(sql);
 

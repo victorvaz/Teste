@@ -14,16 +14,47 @@ import java.util.List;
  * Classe modelo da entidade Tribunal
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
-public class TribunalModel 
+public class TribunalModel implements Model<Tribunal, Integer>
 {
+    private final Recorte Recorte;
+
+    public TribunalModel(Recorte Recorte)
+    {
+        this.Recorte = Recorte;
+    }
+
+    @Override
+    public void cadastrar(Tribunal e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void atualizar(Tribunal e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deletar(Tribunal e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Tribunal buscar(Integer objetoIdentificador) throws SQLException, ClassNotFoundException 
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**
      * Função para buscar tribunais
-     * @param cRecorte
      * @return Lista de Tribunais
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
-    public List<Tribunal> buscar(Recorte cRecorte) throws SQLException, ClassNotFoundException
+    @Override
+    public List<Tribunal> buscarTodos() throws SQLException, ClassNotFoundException
     {
         List<Tribunal> ListaTribunais = new ArrayList<>();
         VistaDAL DAL = new VistaDAL();
@@ -33,7 +64,7 @@ public class TribunalModel
                    + "       TRIBUNAL,"
                    + "       ESTADO"
                    + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
-                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'";
+                   + " WHERE CLIENTE = '" + Recorte.getNomeRecorte() + "'";
 
         ResultSet row = DAL.executarSelectQuery(sql);
 
@@ -58,13 +89,12 @@ public class TribunalModel
     
     /**
      * Função para buscar tribunais por estado
-     * @param cRecorte Recorte
      * @param cEstado Estado
      * @return Lista de Tribunais
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
-    public List<Tribunal> buscarPorEstado(Recorte cRecorte, Estado cEstado) throws SQLException, ClassNotFoundException
+    public List<Tribunal> buscarPorEstado(Estado cEstado) throws SQLException, ClassNotFoundException
     {
         List<Tribunal> ListaTribunais = new ArrayList<>();
         VistaDAL DAL = new VistaDAL();
@@ -74,7 +104,7 @@ public class TribunalModel
                    + "       TRIBUNAL,"
                    + "       ESTADO"
                    + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
-                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
+                   + " WHERE CLIENTE = '" + Recorte.getNomeRecorte() + "'"
                    + "   AND ESTADO  = '" + Charset.removeAcentos(cEstado.getNome().toUpperCase()) + "'";
 
         ResultSet row = DAL.executarSelectQuery(sql);
@@ -100,13 +130,12 @@ public class TribunalModel
     
     /**
      * Função para buscar tribunais por estado
-     * @param cRecorte Recorte
      * @param nomeTribunal Nome do estado
      * @return Tribunais
      * @throws java.sql.SQLException
      * @throws java.lang.ClassNotFoundException
      */
-    public Tribunal buscarPorNome(Recorte cRecorte, String nomeTribunal) throws SQLException, ClassNotFoundException
+    public Tribunal buscarPorNome(String nomeTribunal) throws SQLException, ClassNotFoundException
     {
         VistaDAL DAL = new VistaDAL();
 
@@ -115,7 +144,7 @@ public class TribunalModel
                    + "       TRIBUNAL,"
                    + "       ESTADO"
                    + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
-                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
+                   + " WHERE CLIENTE = '" + Recorte.getNomeRecorte() + "'"
                    + "   AND TRIBUNAL = '" + Charset.removeAcentos(nomeTribunal.toUpperCase()) + "'";
 
         ResultSet row = DAL.executarSelectQuery(sql);

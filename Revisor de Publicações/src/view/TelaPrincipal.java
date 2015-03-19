@@ -36,7 +36,6 @@ public class TelaPrincipal extends javax.swing.JFrame
     // Classes de modelo:
     private final RecorteModel  cRecorteModel;
     private final EstadoModel   cEstadoModel;
-    private final TribunalModel cTribunalModel;
     
     // Variáveis da tela de publicação:
     private String  varaPublicacao;
@@ -55,7 +54,6 @@ public class TelaPrincipal extends javax.swing.JFrame
         // Inicia as classes de modelo:
         this.cRecorteModel  = new RecorteModel();
         this.cEstadoModel   = new EstadoModel();
-        this.cTribunalModel = new TribunalModel();
         
         conteudoAlterado = false;
         
@@ -934,15 +932,11 @@ public class TelaPrincipal extends javax.swing.JFrame
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
@@ -1024,7 +1018,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 try
                 {
                     // Busca os recortes
-                    List<Recorte> ListaRecortes = cRecorteModel.buscar();
+                    List<Recorte> ListaRecortes = cRecorteModel.buscarTodos();
 
                     for (Recorte ListaRecorte : ListaRecortes)
                     {
@@ -1069,7 +1063,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                 try
                 {
                     // Busca os estados
-                    List<Estado> ListaEstados = cEstadoModel.buscar();
+                    List<Estado> ListaEstados = cEstadoModel.buscarTodos();
 
                     for (Estado ListaEstado : ListaEstados)
                     {
@@ -1122,7 +1116,8 @@ public class TelaPrincipal extends javax.swing.JFrame
                     selectTribunal.removeAllItems();
 
                     // Busca os tribunais
-                    List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+                    TribunalModel cTribunalModel = new TribunalModel(cRecorte);
+                    List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cEstado);
 
                     selectTribunal.addItem("Todos");
 
@@ -1184,7 +1179,7 @@ public class TelaPrincipal extends javax.swing.JFrame
                     Date data = df.parse(dataBusca.getText());
 
                     ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
-                    List<Processo> ListaProcessos = null;
+                    List<Processo> ListaProcessos;
 
                     if (selectTribunal.getSelectedItem().toString().equalsIgnoreCase("Todos"))
                     {

@@ -22,7 +22,7 @@ import view.TelaPrincipal;
  * Classe modelo para a entidade processo
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
-public class ProcessoModel
+public class ProcessoModel implements Model<Processo, Integer>
 {
     // Classes de Entidade:
     private final Recorte cRecorte;
@@ -47,8 +47,8 @@ public class ProcessoModel
         this.cEstado  = cEstado;
         
         // Inicia as classes de modelo:
-        this.cTabelaEstadoModel = new TabelaEstadoModel();
-        this.cTribunalModel     = new TribunalModel();
+        this.cTabelaEstadoModel = new TabelaEstadoModel(cRecorte);
+        this.cTribunalModel     = new TribunalModel(cRecorte);
         
         // Inicia as classes de view:
         this.cTelaPrincipal = null;
@@ -73,6 +73,99 @@ public class ProcessoModel
     }
     
     /**
+     * Função para cadastra um processo
+     * @param cProcesso 
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Override
+    public void cadastrar(Processo cProcesso) throws SQLException, ClassNotFoundException
+    {
+        String tabelaEstado = cTabelaEstadoModel.buscar(cEstado).getNomeTabela();
+
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+
+        String sqlBuscaIDRegistro = "SELECT CAST(MAX(NUM) AS INT) AS PROXIMO_ID"
+                                  + "  FROM PROC_ACRE";
+        ResultSet rowRegistro = DAL.executarSelectQuery(sqlBuscaIDRegistro);
+        rowRegistro.next();
+        int id = rowRegistro.getInt("PROXIMO_ID") + 1;
+
+        String sql = "INSERT INTO " + tabelaEstado + " (NUM,"
+                   + "                                  DATA,"
+                   + "                                  CODIGO,"
+                   + "                                  NOME,"
+                   + "                                  VARA,"
+                   + "                                  TRIBUNAL,"
+                   + "                                  ARQUIVO,"
+                   + "                                  ORDEM,"
+                   + "                                  N_PROCESSO)" 
+                   + "                          VALUES ( " + id + ","
+                   + "                                  '" + new SimpleDateFormat("yyyy-MM-dd").format(cProcesso.getDataVista()) + "',"
+                   + "                                   " + cProcesso.getEscritorio().getCodigo() + ","
+                   + "                                  '" + cProcesso.getEscritorio().getCliente().getNome() + "',"
+                   + "                                  '" + cProcesso.getVara() + "',"
+                   + "                                  '" + cProcesso.getTribunal().getNomeTribunal() + "',"
+                   + "                                  '" + cProcesso.getArquivo() + "',"
+                   + "                                   " + cProcesso.getOrdem() + ","
+                   + "                                  '" + cProcesso.getNumeroProcesso() + "')";
+
+        DAL.executarQuery(sql);
+    }
+    
+    /**
+     * Função para atualizar um processo
+     * @param cProcesso 
+     * @throws java.sql.SQLException 
+     * @throws java.lang.ClassNotFoundException 
+     */
+    @Override
+    public void atualizar(Processo cProcesso) throws SQLException, ClassNotFoundException
+    {
+        String tabelaEstado = cTabelaEstadoModel.buscar(cEstado).getNomeTabela();
+        
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+        
+        String sqlProc1 = "UPDATE " + tabelaEstado
+                        + "   SET VARA = '" + cProcesso.getVara() + "'"
+                        + " WHERE NUM = " + cProcesso.getNumProcesso();
+        
+        DAL.executarQuery(sqlProc1);
+        
+        String sqlProc2 = "UPDATE " + tabelaEstado + "2"
+                        + "   SET PUBLICACAO = '" + cProcesso.getCorpoPublicacao() + "'"
+                        + " WHERE NUM2 = " + cProcesso.getNumProcesso();
+        
+        DAL.executarQuery(sqlProc2);
+        DAL.desconectar();
+    }
+
+    @Override
+    public void deletar(Processo e) throws SQLException, ClassNotFoundException
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Função para buscar um Processo pelo seu numero de cadastro
+     * @param numProcesso
+     * @return Processo
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     */
+    @Override
+    public Processo buscar(Integer numProcesso) throws SQLException, ClassNotFoundException
+    {
+        List<String> where = new ArrayList<>();
+        where.add("P1.NUM = " + numProcesso);
+        
+        List<Processo> ListaProcessos = buscar(where);
+        return ListaProcessos.get(0);
+    }
+    
+    /**
      * Função para buscar processos de forma geral. É uma busca centralizada: todas os outros tipos de busca apontam para esta função.
      * @param cRecorte Recorte no qual buscaremos as publicações.
      * @param cEstado  Estado das publicações.
@@ -83,9 +176,9 @@ public class ProcessoModel
     {
         List<Processo> ListaProcessos = new ArrayList<>();
         
-        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+        String tabelaEstado = cTabelaEstadoModel.buscar(cEstado).getNomeTabela();
             
-        List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+        List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cEstado);
         
         RecorteDAL DAL = new RecorteDAL();
         DAL.setRecorte(cRecorte);
@@ -218,22 +311,6 @@ public class ProcessoModel
     }
     
     /**
-     * Função para buscar um Processo pelo seu numero de cadastro
-     * @param numProcesso
-     * @return Processo
-     * @throws java.sql.SQLException
-     * @throws java.lang.ClassNotFoundException
-     */
-    public Processo buscar(int numProcesso) throws SQLException, ClassNotFoundException
-    {
-        List<String> where = new ArrayList<>();
-        where.add("P1.NUM = " + numProcesso);
-        
-        List<Processo> ListaProcessos = buscar(where);
-        return ListaProcessos.get(0);
-    }
-    
-    /**
      * Função para buscar os processos
      * @param dataBusca
      * @param trechoBusca
@@ -270,84 +347,11 @@ public class ProcessoModel
         List<Processo> ListaProcessos = buscar(where);
         return ListaProcessos;
     }
-    
-    /**
-     * Função para atualizar um processo
-     * @param cProcesso 
-     * @throws java.sql.SQLException 
-     * @throws java.lang.ClassNotFoundException 
-     */
-    public void atualizar(Processo cProcesso) throws SQLException, ClassNotFoundException
+
+    @Override
+    public List<Processo> buscarTodos() throws SQLException, ClassNotFoundException
     {
-        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-        
-        RecorteDAL DAL = new RecorteDAL();
-        DAL.setRecorte(cRecorte);
-        
-        String sqlProc1 = "UPDATE " + tabelaEstado
-                        + "   SET VARA = '" + cProcesso.getVara() + "'"
-                        + " WHERE NUM = " + cProcesso.getNumProcesso();
-        
-        DAL.executarQuery(sqlProc1);
-        
-        String sqlProc2 = "UPDATE " + tabelaEstado + "2"
-                        + "   SET PUBLICACAO = '" + cProcesso.getCorpoPublicacao() + "'"
-                        + " WHERE NUM2 = " + cProcesso.getNumProcesso();
-        
-        DAL.executarQuery(sqlProc2);
-        DAL.desconectar();
-    }
-    
-    /**
-     * Função para cadastra um processo
-     * @param cProcesso 
-     * @return Número de cadastro do processo.
-     * @throws java.sql.SQLException
-     * @throws java.lang.ClassNotFoundException
-     */
-    public int cadastrar(Processo cProcesso) throws SQLException, ClassNotFoundException
-    {
-        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
-
-        RecorteDAL DAL = new RecorteDAL();
-        DAL.setRecorte(cRecorte);
-
-        String sqlBuscaIDRegistro = "SELECT CAST(MAX(NUM) AS INT) AS PROXIMO_ID"
-                                  + "  FROM PROC_ACRE";
-        ResultSet rowRegistro = DAL.executarSelectQuery(sqlBuscaIDRegistro);
-        rowRegistro.next();
-        int id = rowRegistro.getInt("PROXIMO_ID") + 1;
-
-        String sql1 = "INSERT INTO " + tabelaEstado + " (NUM,"
-                    + "                                  DATA,"
-                    + "                                  CODIGO,"
-                    + "                                  NOME,"
-                    + "                                  VARA,"
-                    + "                                  TRIBUNAL,"
-                    + "                                  ARQUIVO,"
-                    + "                                  ORDEM,"
-                    + "                                  N_PROCESSO)" 
-                    + "                          VALUES ( " + id + ","
-                    + "                                  '" + new SimpleDateFormat("yyyy-MM-dd").format(cProcesso.getDataVista()) + "',"
-                    + "                                   " + cProcesso.getEscritorio().getCodigo() + ","
-                    + "                                  '" + cProcesso.getEscritorio().getCliente().getNome() + "',"
-                    + "                                  '" + cProcesso.getVara() + "',"
-                    + "                                  '" + cProcesso.getTribunal().getNomeTribunal() + "',"
-                    + "                                  '" + cProcesso.getArquivo() + "',"
-                    + "                                   "  + cProcesso.getOrdem() + ","
-                    + "                                  '" + cProcesso.getNumeroProcesso() + "')";
-
-        DAL.executarQuery(sql1);
-
-        String sql2 = "INSERT INTO " + tabelaEstado + "2 (NUM2,"
-                    + "                                   PUBLICACAO)"
-                    + "                           VALUES ( " + id + ","
-                    + "                                   '" + cProcesso.getCorpoPublicacao() + "')";
-
-        DAL.executarQuery(sql2);
-        DAL.desconectar();
-
-        return id;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     /**
@@ -361,7 +365,7 @@ public class ProcessoModel
     {
         String dataHoraAtual = new SimpleDateFormat("yyyy/MM/dd H:m:s").format(new Date()) + ".000";
         System.out.println(dataHoraAtual);
-        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+        String tabelaEstado = cTabelaEstadoModel.buscar(cEstado).getNomeTabela();
 
         RecorteDAL DAL = new RecorteDAL();
         DAL.setRecorte(cRecorte);
@@ -410,7 +414,7 @@ public class ProcessoModel
             cTelaPrincipal.repaint();
         }
         
-        String tabelaEstado = cTabelaEstadoModel.buscarTabelaPorEstado(cRecorte, cEstado).getNomeTabela();
+        String tabelaEstado = cTabelaEstadoModel.buscar(cEstado).getNomeTabela();
 
         RecorteDAL DAL = new RecorteDAL();
         DAL.setRecorte(cRecorte);
