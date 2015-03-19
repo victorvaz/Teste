@@ -2,13 +2,16 @@ package Core.Excecao;
 
 import Core.Email.Email;
 import Core.Template.Template;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JOptionPane;
 
 /**
  * Classe que implementa as medidas a serem tomadas em um caso de exceção.
- * <p>
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
 public class Excecao
@@ -37,7 +40,6 @@ public class Excecao
 
     /**
      * Classe responsável por gerenciar as exceções do sistema.
-     * <p>
      * @param nomeErro
      * @param classeResponsavel
      * @param descricao
@@ -55,14 +57,27 @@ public class Excecao
         JOptionPane.showMessageDialog(null, "Aconteceu um erro: " + NOME_DO_ERRO + " na " + CLASSE_RESPONSAVEL + ": " + DESCRICAO);
         System.out.println("Aconteceu um erro: " + NOME_DO_ERRO + " na " + CLASSE_RESPONSAVEL + ": " + DESCRICAO);
 
-        // Efetua a notificação por e-mail:
-        this.notificarViaEmail();
+        try
+        {
+            // Efetua a notificação por e-mail:
+            this.notificarViaEmail();
+        }
+        catch (MessagingException ex)
+        {
+            System.out.println("Aconteceu um erro: Não foi possível enviar o e-mail. " + ex.toString());
+            Logger.getLogger(Excecao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Aconteceu um erro: Não foi possível ler o template de e-mail. " + ex.toString());
+            Logger.getLogger(Excecao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
      * Função enviar a notificação de exceção por e-mail.
      */
-    private void notificarViaEmail()
+    private void notificarViaEmail() throws MessagingException, IOException
     {
         // Captura a data e hora atual:
         String dataHoraAtual = new SimpleDateFormat("dd/MM/yyyy H:m:s").format(new Date());

@@ -4,19 +4,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import Core.Excecao.Excecao;
 
 /**
  * Camada de acesso ao banco de dados.
- * <p>
  * @author Víctor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
 public abstract class DAL
 {
-    private int tentativa;
-    
     /**
      * Conexão com o banco de dados.
      */
@@ -43,78 +37,57 @@ public abstract class DAL
      */
     public DAL()
     {
-        tentativa = 0;
     }
 
     /**
      * Função para estabelecer uma conexão com o banco de dados.
      * @return null
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    abstract public Connection conectar();
+    abstract public Connection conectar() throws SQLException, ClassNotFoundException;
     
     /**
      * Função para desconectar uma conexão com o banco de dados.
+     * @throws java.sql.SQLException
      */
-    public void desconectar()
+    public void desconectar() throws SQLException
     {
-        try
-        {
-            conexao.close();
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao desconectar", this.getClass().getName(), ex.toString());
-        }
+        conexao.close();
     }
 
     /**
      * Função para executar uma query no banco de dados.
-     * <p>
      * @param sql Comando a ser executado no banco de dados.
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public void executarQuery(String sql)
+    public void executarQuery(String sql) throws SQLException, ClassNotFoundException
     {
-        try
-        {
-            Connection conn = this.conectar();            
-            Statement stmt = conn.createStatement();
-            stmt.execute(sql);            
-            desconectar();
-        }
-        catch (SQLException ex) // Acontece muito ao dar SQLBUSY
-        {
-            new Excecao("Não foi possível executar a query", this.getClass().getName(), ex.toString());
-        }
+        Connection conn = this.conectar();
+        Statement stmt = conn.createStatement();
+        stmt.execute(sql);            
+        desconectar();
     }
 
     /**
      * Função para executar uma query no banco de dados e retornar um ResultSet
-     * <p>
      * @param sql Comando a ser executado no banco de dados.
-     * <p>
      * @return ResultSet
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public ResultSet executarSelectQuery(String sql)
+    public ResultSet executarSelectQuery(String sql) throws SQLException, ClassNotFoundException
     {
-        try
-        {
-            Connection conn = this.conectar();
-            ResultSet result;
-            Statement stmt = conn.createStatement();            
-            result = stmt.executeQuery(sql);
-            return result;
-        }
-        catch (SQLException ex) // Acontece muito ao dar SQLBUSY
-        {
-            new Excecao("Não foi possível executar a query", this.getClass().getName(), ex.toString());
-        }
-
-        return null;
+        Connection conn = this.conectar();
+        ResultSet result;
+        Statement stmt = conn.createStatement();            
+        result = stmt.executeQuery(sql);
+        return result;
     }
 
     /**
      * Retorna uma string contendo as configurações do servidor.
-     * <p>
      * @return String
      */
     @Override

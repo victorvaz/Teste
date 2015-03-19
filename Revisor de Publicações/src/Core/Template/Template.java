@@ -3,6 +3,7 @@ package Core.Template;
 import Core.Excecao.Excecao;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.mail.MessagingException;
 
 /**
  * Classe responsável por gerenciar templates para a aplicação.
@@ -24,30 +25,23 @@ public class Template
      * Função para carregar um template e retornar o seu conteúdo em uma String.
      * @param template
      * @return String
+     * @throws javax.mail.MessagingException
+     * @throws java.io.IOException
      */
-    public String carregar(String template)
+    public String carregar(String template) throws MessagingException, IOException
     {
-        try
+        StringBuilder html;
+
+        try (InputStream cInputStream = getClass().getResourceAsStream(template))
         {
-            StringBuilder html;
-            
-            try (InputStream cInputStream = getClass().getResourceAsStream(template))
+            html = new StringBuilder();
+            int b;
+            while ((b = cInputStream.read(BUFFER, 0, BUFFER.length)) != -1)
             {
-                html = new StringBuilder();
-                int b;
-                while ((b = cInputStream.read(BUFFER, 0, BUFFER.length)) != -1)
-                {
-                    html.append(new String(BUFFER));
-                }
+                html.append(new String(BUFFER));
             }
-
-            return html.toString();
-        }
-        catch (IOException ex)
-        {
-            new Excecao("Erro de leitura", this.getClass().getName(), ex.toString());
         }
 
-        return null;
+        return html.toString();
     }
 }

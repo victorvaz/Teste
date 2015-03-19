@@ -10,6 +10,7 @@ import Entity.Tribunal;
 import Model.ProcessoModel;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -409,7 +410,15 @@ public class CadastroPublicacaoPorModelo extends javax.swing.JFrame
         }
         catch (ParseException ex)
         {
-            new Excecao("Erro ao tentar converter a data", this.getClass().getName(), ex.toString());
+            Excecao excecao = new Excecao("Erro ao tentar converter a data", this.getClass().getName(), ex.toString());
+        }
+        catch (SQLException ex)
+        {
+            Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao atualizar o processo. " + ex.toString());
+        }
+        catch (ClassNotFoundException ex)
+        {
+            Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
         }
     }
 

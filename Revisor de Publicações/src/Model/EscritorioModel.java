@@ -1,6 +1,5 @@
 package Model;
 
-import Core.Excecao.Excecao;
 import DAL.RecorteDAL;
 import Entity.Escritorio;
 import Entity.Recorte;
@@ -19,40 +18,33 @@ public class EscritorioModel
      * Função para buscar um determinado escritório
      * @param cRecorte
      * @return Lista dos escritórios do recorte.
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public List<Escritorio> buscar(Recorte cRecorte)
+    public List<Escritorio> buscar(Recorte cRecorte) throws SQLException, ClassNotFoundException
     {
-        try
+        List<Escritorio> ListaEscritorios = new ArrayList<>();
+
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+
+        String sql = "SELECT CODIGO,"
+                   + "       NOME"
+                   + "  FROM ESCRITORIO";
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+
+        while (row.next())
         {
-            List<Escritorio> ListaEscritorios = new ArrayList<>();
+            Escritorio cEscritorio = new Escritorio();
+            cEscritorio.setCodigo(row.getInt("CODIGO"));
+            cEscritorio.setNome(row.getString("NOME"));
 
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);
-
-            String sql = "SELECT CODIGO,"
-                       + "       NOME"
-                       + "  FROM ESCRITORIO";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Escritorio cEscritorio = new Escritorio();
-                cEscritorio.setCodigo(row.getInt("CODIGO"));
-                cEscritorio.setNome(row.getString("NOME"));
-
-                ListaEscritorios.add(cEscritorio);
-            }
-
-            DAL.desconectar();
-
-            return ListaEscritorios;
+            ListaEscritorios.add(cEscritorio);
         }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
-        }
-        
-        return null;
+
+        DAL.desconectar();
+
+        return ListaEscritorios;
     }
 }

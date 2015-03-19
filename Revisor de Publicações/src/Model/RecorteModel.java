@@ -1,6 +1,5 @@
 package Model;
 
-import Core.Excecao.Excecao;
 import DAL.VistaDAL;
 import Entity.Recorte;
 import java.sql.ResultSet;
@@ -17,37 +16,30 @@ public class RecorteModel
     /**
      * Função para buscar os recortes
      * @return Lista de Recortes
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public List<Recorte> buscar()
+    public List<Recorte> buscar() throws SQLException, ClassNotFoundException
     {
-        try
+        List<Recorte> ListaRecortes = new ArrayList<>();
+
+        VistaDAL DAL = new VistaDAL();
+
+        String sql = "  SELECT CLIENTE"
+                   + "    FROM DIARIO_OFICIAL_CLIENTE_CONFIG"
+                   + "   WHERE STATUS IN ('ATIVO', 'BLOQUEADO', 'CORTESIA')"
+                   + "     AND CLIENTE = 'PROMAD'"
+                   + "ORDER BY CLIENTE ASC";
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+
+        while (row.next())
         {
-            List<Recorte> ListaRecortes = new ArrayList<>();
-            
-            VistaDAL DAL = new VistaDAL();
-
-            String sql = "  SELECT CLIENTE"
-                       + "    FROM DIARIO_OFICIAL_CLIENTE_CONFIG"
-                       + "   WHERE STATUS IN ('ATIVO', 'BLOQUEADO', 'CORTESIA')"
-                       + "     AND CLIENTE = 'PROMAD'"
-                       + "ORDER BY CLIENTE ASC";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Recorte cRecorte = new Recorte();
-                cRecorte.setNomeRecorte(row.getString("CLIENTE"));
-                ListaRecortes.add(cRecorte);
-            }
-            
-            return ListaRecortes;
+            Recorte cRecorte = new Recorte();
+            cRecorte.setNomeRecorte(row.getString("CLIENTE"));
+            ListaRecortes.add(cRecorte);
         }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro na busca dos recorte", this.getClass().getName(), ex.toString());
-        }
-        
-        return null;
+
+        return ListaRecortes;
     }
 }

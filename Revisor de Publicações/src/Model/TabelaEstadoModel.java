@@ -1,7 +1,6 @@
 package Model;
 
 import Core.Charset.Charset;
-import Core.Excecao.Excecao;
 import DAL.VistaDAL;
 import Entity.Estado;
 import Entity.Recorte;
@@ -20,32 +19,25 @@ public class TabelaEstadoModel
      * @param cRecorte Recorte
      * @param cEstado  Estado
      * @return TabelaEstado
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public TabelaEstado buscarTabelaPorEstado(Recorte cRecorte, Estado cEstado)
+    public TabelaEstado buscarTabelaPorEstado(Recorte cRecorte, Estado cEstado) throws SQLException, ClassNotFoundException
     {
-        try
-        {
-            VistaDAL DAL = new VistaDAL();
+        VistaDAL DAL = new VistaDAL();
 
-            String sql = "SELECT TABELA"
-                       + "  FROM DIARIO_OFICIAL_ESTADOS"
-                       + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
-                       + "   AND ESTADO = '" + Charset.removeAcentos(cEstado.getNome().toUpperCase()) + "'";
+        String sql = "SELECT TABELA"
+                   + "  FROM DIARIO_OFICIAL_ESTADOS"
+                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
+                   + "   AND ESTADO = '" + Charset.removeAcentos(cEstado.getNome().toUpperCase()) + "'";
 
-            ResultSet row = DAL.executarSelectQuery(sql);
-            row.next();
-            
-            TabelaEstado cTabelaEstado = new TabelaEstado();
-            cTabelaEstado.setNomeTabela(row.getString("TABELA"));
-            
-            DAL.desconectar();
-            return cTabelaEstado;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar a tabela do estado do recorte", this.getClass().getName(), ex.toString());
-        }
-        
-        return null;
+        ResultSet row = DAL.executarSelectQuery(sql);
+        row.next();
+
+        TabelaEstado cTabelaEstado = new TabelaEstado();
+        cTabelaEstado.setNomeTabela(row.getString("TABELA"));
+
+        DAL.desconectar();
+        return cTabelaEstado;
     }
 }

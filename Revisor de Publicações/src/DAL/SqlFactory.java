@@ -48,6 +48,7 @@ public class SqlFactory
         return sqlFull;
     }
 
-    private SqlFactory() {
+    private SqlFactory()
+    {
     }
 }

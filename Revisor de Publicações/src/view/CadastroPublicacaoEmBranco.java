@@ -15,6 +15,7 @@ import Model.RecorteModel;
 import Model.TribunalModel;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -370,30 +371,43 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
      */
     private void carregarRecortes()
     {
-        Thread thread = new Thread(new Runnable()
+        Thread thread;
+        thread = new Thread(new Runnable()
         {
             @Override
             @SuppressWarnings("unchecked")
             public void run()
             {
-                // Busca os recortes
-                List<Recorte> ListaRecortes = cRecorteModel.buscar();
-                
-                for (Recorte ListaRecorte : ListaRecortes)
+                try
                 {
-                    String nomeRecorte = ListaRecorte.getNomeRecorte();                    
-                    recorteTxt.addItem(nomeRecorte);
+                    // Busca os recortes
+                    List<Recorte> ListaRecortes = cRecorteModel.buscar();
+
+                    for (Recorte ListaRecorte : ListaRecortes)
+                    {
+                        String nomeRecorte = ListaRecorte.getNomeRecorte();                    
+                        recorteTxt.addItem(nomeRecorte);
+                    }
+
+                    // Deixa selecionado o index 0
+                    if (!ListaRecortes.isEmpty())
+                    {
+                        recorteTxt.setSelectedIndex(0);
+                    }
+
+                    // Carrega os estados
+                    carregarEscritorios();
+                    carregarEstados();
+                }
+                catch (SQLException ex)
+                {
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os recortes. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
                 }
                 
-                // Deixa selecionado o index 0
-                if (!ListaRecortes.isEmpty())
-                {
-                    recorteTxt.setSelectedIndex(0);
-                }
-                
-                // Carrega os estados
-                carregarEscritorios();
-                carregarEstados();
             }            
         }, "Thread para buscar os recortes.");
         
@@ -411,25 +425,36 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                // Busca os estados
-                List<Estado> ListaEstados = cEstadoModel.buscar();
-                
-                estadoTxt.removeAllItems();
-                
-                for (Estado ListaEstado : ListaEstados)
+                try
                 {
-                    String nomeEstado = ListaEstado.getNome();
-                    estadoTxt.addItem(nomeEstado);
+                    // Busca os estados
+                    List<Estado> ListaEstados = cEstadoModel.buscar();
+
+                    estadoTxt.removeAllItems();
+
+                    for (Estado ListaEstado : ListaEstados)
+                    {
+                        String nomeEstado = ListaEstado.getNome();
+                        estadoTxt.addItem(nomeEstado);
+                    }
+
+                    // Deixa selecionado como padrão o index 0
+                    if (!ListaEstados.isEmpty())
+                    {
+                        estadoTxt.setSelectedIndex(0);
+                    }
+
+                    // Carrega os tribunais
+                    carregarTribunais();
                 }
-                
-                // Deixa selecionado como padrão o index 0
-                if (!ListaEstados.isEmpty())
+                catch (SQLException ex)
                 {
-                    estadoTxt.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os estados. " + ex.toString());
                 }
-                
-                // Carrega os tribunais
-                carregarTribunais();
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         }, "Thread para buscar os estados.");
         
@@ -447,28 +472,39 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                Recorte cRecorte = new Recorte();
-                cRecorte.setNomeRecorte(recorteTxt.getSelectedItem().toString());
-                
-                Estado cEstado = new Estado();
-                cEstado.setNome(estadoTxt.getSelectedItem().toString());
-                
-                tribunalTxt.removeAllItems();
-                
-                // Busca os tribunais
-                List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-                
-                for (Tribunal ListaTribunal : ListaTribunais)
+                try
                 {
-                    String siglaTribunal = ListaTribunal.getSigla();
-                    String nomeTribunal  = ListaTribunal.getNomeTribunal();                    
-                    tribunalTxt.addItem(siglaTribunal + " - " + nomeTribunal);
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(recorteTxt.getSelectedItem().toString());
+
+                    Estado cEstado = new Estado();
+                    cEstado.setNome(estadoTxt.getSelectedItem().toString());
+
+                    tribunalTxt.removeAllItems();
+
+                    // Busca os tribunais
+                    List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+
+                    for (Tribunal ListaTribunal : ListaTribunais)
+                    {
+                        String siglaTribunal = ListaTribunal.getSigla();
+                        String nomeTribunal  = ListaTribunal.getNomeTribunal();                    
+                        tribunalTxt.addItem(siglaTribunal + " - " + nomeTribunal);
+                    }
+
+                    // Deixa selecionado como padrão o index 0
+                    if (!ListaTribunais.isEmpty())
+                    {
+                        tribunalTxt.setSelectedIndex(0);
+                    }
                 }
-                
-                // Deixa selecionado como padrão o index 0
-                if (!ListaTribunais.isEmpty())
+                catch (SQLException ex)
                 {
-                    tribunalTxt.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os tribunais. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
                 }
             }
         }, "Thread para buscar os tribunais.");
@@ -487,28 +523,39 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                Recorte cRecorte = new Recorte();
-                cRecorte.setNomeRecorte(recorteTxt.getSelectedItem().toString());
-                
-                nomeBuscadotxt.removeAllItems();
-                
-                Escritorio cEscritorio = new Escritorio();
-                cEscritorio.setCodigo(Integer.parseInt(codigoEscritorioPublicacaoTxt.getSelectedItem().toString().split(" - ")[0]));
-                
-                nomeBuscadotxt.removeAllItems();
-                
-                List<Cliente> ListaClientes = cClienteModel.buscar(cRecorte, cEscritorio);
-                
-                for (Cliente cCliente : ListaClientes)
+                try
                 {
-                    int codigo = cCliente.getNum();
-                    String nome = cCliente.getNome();
-                    nomeBuscadotxt.addItem(codigo + " - " + nome);
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(recorteTxt.getSelectedItem().toString());
+
+                    nomeBuscadotxt.removeAllItems();
+
+                    Escritorio cEscritorio = new Escritorio();
+                    cEscritorio.setCodigo(Integer.parseInt(codigoEscritorioPublicacaoTxt.getSelectedItem().toString().split(" - ")[0]));
+
+                    nomeBuscadotxt.removeAllItems();
+
+                    List<Cliente> ListaClientes = cClienteModel.buscar(cRecorte, cEscritorio);
+
+                    for (Cliente cCliente : ListaClientes)
+                    {
+                        int codigo = cCliente.getNum();
+                        String nome = cCliente.getNome();
+                        nomeBuscadotxt.addItem(codigo + " - " + nome);
+                    }
+
+                    if (!ListaClientes.isEmpty())
+                    {
+                        nomeBuscadotxt.setSelectedIndex(0);
+                    }
                 }
-                
-                if (!ListaClientes.isEmpty())
+                catch (SQLException ex)
                 {
-                    nomeBuscadotxt.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os nomes. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
                 }
             }
         }, "Thread para carregar os nomes.");
@@ -527,26 +574,37 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                Recorte cRecorte = new Recorte();
-                cRecorte.setNomeRecorte(recorteTxt.getSelectedItem().toString());
-                
-                codigoEscritorioPublicacaoTxt.removeAllItems();
-                
-                List<Escritorio> ListaEscritorios = cEscritorioModel.buscar(cRecorte);
-                
-                for (Escritorio cEscritorio : ListaEscritorios)
+                try
                 {
-                    int codigo = cEscritorio.getCodigo();
-                    String nome = cEscritorio.getNome();
-                    codigoEscritorioPublicacaoTxt.addItem(codigo + " - " + nome);
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(recorteTxt.getSelectedItem().toString());
+
+                    codigoEscritorioPublicacaoTxt.removeAllItems();
+
+                    List<Escritorio> ListaEscritorios = cEscritorioModel.buscar(cRecorte);
+
+                    for (Escritorio cEscritorio : ListaEscritorios)
+                    {
+                        int codigo = cEscritorio.getCodigo();
+                        String nome = cEscritorio.getNome();
+                        codigoEscritorioPublicacaoTxt.addItem(codigo + " - " + nome);
+                    }
+
+                    if (!ListaEscritorios.isEmpty())
+                    {
+                        codigoEscritorioPublicacaoTxt.setSelectedIndex(0);
+                    }
+
+                    carregarNomes();
                 }
-                
-                if (!ListaEscritorios.isEmpty())
+                catch (SQLException ex)
                 {
-                    codigoEscritorioPublicacaoTxt.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os escritórios. " + ex.toString());
                 }
-                
-                carregarNomes();
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         }, "Thread para buscar os escritórios.");
         
@@ -602,7 +660,15 @@ public class CadastroPublicacaoEmBranco extends javax.swing.JFrame
         }
         catch (ParseException ex)
         {
-            new Excecao("Erro ao tentar converter a data", this.getClass().getName(), ex.toString());
+            Excecao excecao = new Excecao("Erro ao tentar converter a data", this.getClass().getName(), ex.toString());
+        }
+        catch (SQLException ex)
+        {
+            Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao atualizar o processo. " + ex.toString());
+        }
+        catch (ClassNotFoundException ex)
+        {
+            Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
         }
     }
 

@@ -1,6 +1,5 @@
 package Model;
 
-import Core.Excecao.Excecao;
 import DAL.RecorteDAL;
 import Entity.Cliente;
 import Entity.Escritorio;
@@ -21,41 +20,34 @@ public class ClienteModel
      * @param cRecorte
      * @param cEscritorio
      * @return Lista de Clientes.
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
-    public List<Cliente> buscar(Recorte cRecorte, Escritorio cEscritorio)
+    public List<Cliente> buscar(Recorte cRecorte, Escritorio cEscritorio) throws SQLException, ClassNotFoundException
     {
-        try
+        List<Cliente> ListaClientes = new ArrayList<>();
+
+        RecorteDAL DAL = new RecorteDAL();
+        DAL.setRecorte(cRecorte);
+
+        String sql = "SELECT NUM,"
+                   + "       NOME"
+                   + "  FROM CLIENTE"
+                   + " WHERE CODIGO = " + cEscritorio.getCodigo();
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+
+        while (row.next())
         {
-            List<Cliente> ListaClientes = new ArrayList<>();
+            Cliente cCliente = new Cliente();
+            cCliente.setNum(row.getInt("NUM"));
+            cCliente.setNome(row.getString("NOME"));
 
-            RecorteDAL DAL = new RecorteDAL();
-            DAL.setRecorte(cRecorte);
-
-            String sql = "SELECT NUM,"
-                       + "       NOME"
-                       + "  FROM CLIENTE"
-                       + " WHERE CODIGO = " + cEscritorio.getCodigo();
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Cliente cCliente = new Cliente();
-                cCliente.setNum(row.getInt("NUM"));
-                cCliente.setNome(row.getString("NOME"));
-                
-                ListaClientes.add(cCliente);
-            }
-
-            DAL.desconectar();
-            
-            return ListaClientes;
+            ListaClientes.add(cCliente);
         }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
-        }
-        
-        return null;
+
+        DAL.desconectar();
+
+        return ListaClientes;
     }
 }

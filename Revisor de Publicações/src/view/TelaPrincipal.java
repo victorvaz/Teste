@@ -15,11 +15,11 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -926,7 +926,8 @@ public class TelaPrincipal extends javax.swing.JFrame
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+        try
+        {            
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -1020,23 +1021,34 @@ public class TelaPrincipal extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                // Busca os recortes
-                List<Recorte> ListaRecortes = cRecorteModel.buscar();
-                
-                for (Recorte ListaRecorte : ListaRecortes)
+                try
                 {
-                    String nomeRecorte = ListaRecorte.getNomeRecorte();                    
-                    selectRecorte.addItem(nomeRecorte);
+                    // Busca os recortes
+                    List<Recorte> ListaRecortes = cRecorteModel.buscar();
+
+                    for (Recorte ListaRecorte : ListaRecortes)
+                    {
+                        String nomeRecorte = ListaRecorte.getNomeRecorte();                    
+                        selectRecorte.addItem(nomeRecorte);
+                    }
+
+                    // Deixa selecionado o index 0
+                    if (!ListaRecortes.isEmpty())
+                    {
+                        selectRecorte.setSelectedIndex(0);
+                    }
+
+                    // Carrega os estados
+                    carregarEstados();
                 }
-                
-                // Deixa selecionado o index 0
-                if (!ListaRecortes.isEmpty())
+                catch (SQLException ex)
                 {
-                    selectRecorte.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os recortes. " + ex.toString());
                 }
-                
-                // Carrega os estados
-                carregarEstados();
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }            
         }, "Thread para buscar os recortes.");
         
@@ -1054,23 +1066,34 @@ public class TelaPrincipal extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                // Busca os estados
-                List<Estado> ListaEstados = cEstadoModel.buscar();
-                
-                for (Estado ListaEstado : ListaEstados)
+                try
                 {
-                    String nomeEstado = ListaEstado.getNome();
-                    selectEstado.addItem(nomeEstado);
+                    // Busca os estados
+                    List<Estado> ListaEstados = cEstadoModel.buscar();
+
+                    for (Estado ListaEstado : ListaEstados)
+                    {
+                        String nomeEstado = ListaEstado.getNome();
+                        selectEstado.addItem(nomeEstado);
+                    }
+
+                    // Deixa selecionado como padrão o index 0
+                    if (!ListaEstados.isEmpty())
+                    {
+                        selectEstado.setSelectedIndex(0);
+                    }
+
+                    // Carrega os tribunais
+                    carregarTribunais();
                 }
-                
-                // Deixa selecionado como padrão o index 0
-                if (!ListaEstados.isEmpty())
+                catch (SQLException ex)
                 {
-                    selectEstado.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os estados. " + ex.toString());
                 }
-                
-                // Carrega os tribunais
-                carregarTribunais();
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         }, "Thread para buscar os estados.");
         
@@ -1088,30 +1111,41 @@ public class TelaPrincipal extends javax.swing.JFrame
             @SuppressWarnings("unchecked")
             public void run()
             {
-                Recorte cRecorte = new Recorte();
-                cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
-                
-                Estado cEstado = new Estado();
-                cEstado.setNome(selectEstado.getSelectedItem().toString());
-                
-                selectTribunal.removeAllItems();
-                
-                // Busca os tribunais
-                List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
-                
-                selectTribunal.addItem("Todos");
-                
-                for (Tribunal ListaTribunal : ListaTribunais)
+                try
                 {
-                    String siglaTribunal = ListaTribunal.getSigla();
-                    String nomeTribunal  = ListaTribunal.getNomeTribunal();                    
-                    selectTribunal.addItem(siglaTribunal + " - " + nomeTribunal);
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+                    Estado cEstado = new Estado();
+                    cEstado.setNome(selectEstado.getSelectedItem().toString());
+
+                    selectTribunal.removeAllItems();
+
+                    // Busca os tribunais
+                    List<Tribunal> ListaTribunais = cTribunalModel.buscarPorEstado(cRecorte, cEstado);
+
+                    selectTribunal.addItem("Todos");
+
+                    for (Tribunal ListaTribunal : ListaTribunais)
+                    {
+                        String siglaTribunal = ListaTribunal.getSigla();
+                        String nomeTribunal  = ListaTribunal.getNomeTribunal();                    
+                        selectTribunal.addItem(siglaTribunal + " - " + nomeTribunal);
+                    }
+
+                    // Deixa selecionado como padrão o index 0
+                    if (!ListaTribunais.isEmpty())
+                    {
+                        selectTribunal.setSelectedIndex(0);
+                    }
                 }
-                
-                // Deixa selecionado como padrão o index 0
-                if (!ListaTribunais.isEmpty())
+                catch (SQLException ex)
                 {
-                    selectTribunal.setSelectedIndex(0);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os tribunais. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
                 }
             }
         }, "Thread para buscar os tribunais.");
@@ -1124,21 +1158,22 @@ public class TelaPrincipal extends javax.swing.JFrame
      */
     private void carregarTabela()
     {
-        Thread thread = new Thread(new Runnable()
+        Thread thread;
+        thread = new Thread(new Runnable()
         {
             @Override
             public void run()
             {
-                btnBuscar.setEnabled(false);
-                btnBuscar.setText("Buscando...");
-                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
-                
-                barraProgressoOperacaoDemorada.setString("Buscando processos...");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
-                barraProgressoOperacaoDemorada.setVisible(true);
-                
                 try
                 {
+                    btnBuscar.setEnabled(false);
+                    btnBuscar.setText("Buscando...");
+                    jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
+
+                    barraProgressoOperacaoDemorada.setString("Buscando processos...");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                    barraProgressoOperacaoDemorada.setVisible(true);
+                
                     Recorte cRecorte = new Recorte();
                     cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
 
@@ -1186,26 +1221,34 @@ public class TelaPrincipal extends javax.swing.JFrame
                             model.addRow(linha);
                         }
                     }
+
+                    if (tabelaProcessos.getRowCount() > 0)
+                    {
+                        menuMarcar.setEnabled(true);
+                    }
+
+                    btnBuscar.setEnabled(true);
+                    btnBuscar.setText("Buscar");
+                    jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+
+                    atualizaLabelPaginacao(0);
+
+                    barraProgressoOperacaoDemorada.setString("Finalizado");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                    barraProgressoOperacaoDemorada.setVisible(false);
                 }
                 catch (HeadlessException | ParseException ex)
                 {
-                    new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
+                    Excecao excecao = new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
-                
-                if (tabelaProcessos.getRowCount() > 0)
+                catch (SQLException ex)
                 {
-                    menuMarcar.setEnabled(true);
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar os recortes. " + ex.toString());
                 }
-                
-                btnBuscar.setEnabled(true);
-                btnBuscar.setText("Buscar");
-                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
-                
-                atualizaLabelPaginacao(0);
-                
-                barraProgressoOperacaoDemorada.setString("Finalizado");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
-                barraProgressoOperacaoDemorada.setVisible(false);
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         }, "Thread para buscar os valores para a tabela");
         
@@ -1222,16 +1265,16 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
-                jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
-                btnNovoProcessoCabecalhoModelo.setEnabled(true);
-                btnDuplicarPublicacao.setEnabled(true);
-                
-                barraProgressoOperacaoDemorada.setString("Carregando publicação...");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
-                barraProgressoOperacaoDemorada.setVisible(true);
-                
                 try
                 {
+                    jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
+                    btnNovoProcessoCabecalhoModelo.setEnabled(true);
+                    btnDuplicarPublicacao.setEnabled(true);
+
+                    barraProgressoOperacaoDemorada.setString("Carregando publicação...");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                    barraProgressoOperacaoDemorada.setVisible(true);
+                
                     Recorte cRecorte = new Recorte();
                     cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
 
@@ -1269,17 +1312,25 @@ public class TelaPrincipal extends javax.swing.JFrame
                     dataVistaProcesso = cProcesso.getDataVista();
                     
                     atualizaLabelPaginacao(tabelaProcessos.getSelectedRow());
+                
+                    barraProgressoOperacaoDemorada.setString("Finalizado");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                    barraProgressoOperacaoDemorada.setVisible(false);
+
+                    jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png")));
                 }
                 catch (HeadlessException ex)
                 {
-                    new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
+                    Excecao excecao = new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
-                
-                barraProgressoOperacaoDemorada.setString("Finalizado");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
-                barraProgressoOperacaoDemorada.setVisible(false);
-                
-                jInternalFrameDetalhesProcesso.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/publicacao.png")));
+                catch (SQLException ex)
+                {
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar a publicação. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         });
         
@@ -1297,15 +1348,15 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
-                barraProgressoOperacaoDemorada.setString("Filtrando publicações por trecho...");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
-                barraProgressoOperacaoDemorada.setVisible(true);
-                
-                menuFiltro.setText("Buscando...");
-                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
-                
                 try
                 {                    
+                    barraProgressoOperacaoDemorada.setString("Filtrando publicações por trecho...");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                    barraProgressoOperacaoDemorada.setVisible(true);
+
+                    menuFiltro.setText("Buscando...");
+                    jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
+                
                     Recorte cRecorte = new Recorte();
                     cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
 
@@ -1353,20 +1404,28 @@ public class TelaPrincipal extends javax.swing.JFrame
                             model.addRow(linha);
                         }
                     }
+                
+                    atualizaLabelPaginacao(0);
+
+                    menuFiltro.setText("Filtrar");
+                    jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+
+                    barraProgressoOperacaoDemorada.setString("Finalizado");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                    barraProgressoOperacaoDemorada.setVisible(false);
                 }
                 catch (HeadlessException | ParseException ex)
                 {
-                    new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
+                    Excecao excecao = new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
-                
-                atualizaLabelPaginacao(0);
-                
-                menuFiltro.setText("Filtrar");
-                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
-                
-                barraProgressoOperacaoDemorada.setString("Finalizado");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
-                barraProgressoOperacaoDemorada.setVisible(false);
+                catch (SQLException ex)
+                {
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar ao filtrar a tabela. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         });
         thread.start();
@@ -1383,15 +1442,15 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
-                barraProgressoOperacaoDemorada.setString("Filtrando publicações por número de cadastro...");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
-                barraProgressoOperacaoDemorada.setVisible(true);
-                
-                menuFiltro.setText("Buscando...");
-                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
-                
                 try
                 {                    
+                    barraProgressoOperacaoDemorada.setString("Filtrando publicações por número de cadastro...");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                    barraProgressoOperacaoDemorada.setVisible(true);
+
+                    menuFiltro.setText("Buscando...");
+                    jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/loading.png")));
+                
                     Recorte cRecorte = new Recorte();
                     cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
 
@@ -1421,20 +1480,28 @@ public class TelaPrincipal extends javax.swing.JFrame
 
                         model.addRow(linha);
                     }
+                
+                    atualizaLabelPaginacao(0);
+
+                    menuFiltro.setText("Filtrar");
+                    jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
+
+                    barraProgressoOperacaoDemorada.setString("Finalizado");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                    barraProgressoOperacaoDemorada.setVisible(false);
                 }
                 catch (HeadlessException ex)
                 {
                     new Excecao("Erro ao buscar os processos", this.getClass().getName(), ex.toString());
                 }
-                
-                atualizaLabelPaginacao(0);
-                
-                menuFiltro.setText("Filtrar");
-                jInternalFrameListaPublicacoes.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resources/lista.png")));
-                
-                barraProgressoOperacaoDemorada.setString("Finalizado");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
-                barraProgressoOperacaoDemorada.setVisible(false);
+                catch (SQLException ex)
+                {
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar ao filtrar a tabela. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         });
         thread.start();
@@ -1519,32 +1586,43 @@ public class TelaPrincipal extends javax.swing.JFrame
             @Override
             public void run()
             {
-                barraProgressoOperacaoDemorada.setString("Salvando publicação...");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
-                barraProgressoOperacaoDemorada.setVisible(true);
-                
-                Recorte cRecorte = new Recorte();
-                cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
-                
-                Estado cEstado = new Estado();
-                cEstado.setNome(selectEstado.getSelectedItem().toString());
+                try
+                {
+                    barraProgressoOperacaoDemorada.setString("Salvando publicação...");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMinimum());
+                    barraProgressoOperacaoDemorada.setVisible(true);
 
-                Processo cProcesso = new Processo();
-                cProcesso.setVara(varaPublicacaoTxt.getText());
-                cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
-                
-                ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
-                cProcessoModel.atualizar(cProcesso);
-                JOptionPane.showMessageDialog(null, "Publicação atualizada com sucesso.");
-                
-                jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle().replace(" (Alterado) ", ""));
-                conteudoAlterado = false;
-                varaPublicacao  = varaPublicacaoTxt.getText();
-                corpoPublicacao = textoPublicacaoTxt.getText();
-                
-                barraProgressoOperacaoDemorada.setString("Finalizado");
-                barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
-                barraProgressoOperacaoDemorada.setVisible(false);
+                    Recorte cRecorte = new Recorte();
+                    cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+                    Estado cEstado = new Estado();
+                    cEstado.setNome(selectEstado.getSelectedItem().toString());
+
+                    Processo cProcesso = new Processo();
+                    cProcesso.setVara(varaPublicacaoTxt.getText());
+                    cProcesso.setCorpoPublicacao(Jsoup.parse(textoPublicacaoTxt.getText()).text());
+
+                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                    cProcessoModel.atualizar(cProcesso);
+                    JOptionPane.showMessageDialog(null, "Publicação atualizada com sucesso.");
+
+                    jInternalFrameDetalhesProcesso.setTitle(jInternalFrameDetalhesProcesso.getTitle().replace(" (Alterado) ", ""));
+                    conteudoAlterado = false;
+                    varaPublicacao  = varaPublicacaoTxt.getText();
+                    corpoPublicacao = textoPublicacaoTxt.getText();
+
+                    barraProgressoOperacaoDemorada.setString("Finalizado");
+                    barraProgressoOperacaoDemorada.setValue(barraProgressoOperacaoDemorada.getMaximum());
+                    barraProgressoOperacaoDemorada.setVisible(false);   
+                }
+                catch (SQLException ex)
+                {
+                    Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar ao salvar a publicação. " + ex.toString());
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
+                }
             }
         });
         thread.start();
@@ -1631,26 +1709,37 @@ public class TelaPrincipal extends javax.swing.JFrame
                 @Override
                 public void run()
                 {
-                    Integer[] numProcessos = new Integer[tabelaProcessos.getRowCount()];
-        
-                    for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                    try
                     {
-                        numProcessos[i] = Integer.parseInt(tabelaProcessos.getValueAt(i, 0).toString());
+                        Integer[] numProcessos = new Integer[tabelaProcessos.getRowCount()];
+
+                        for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                        {
+                            numProcessos[i] = Integer.parseInt(tabelaProcessos.getValueAt(i, 0).toString());
+                        }
+
+                        Recorte cRecorte = new Recorte();
+                        cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
+
+                        Estado cEstado = new Estado();
+                        cEstado.setNome(selectEstado.getSelectedItem().toString());
+
+                        ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
+                        cProcessoModel.setTelaPrincipal(cTelaPrincipal);
+                        cProcessoModel.marcarRevisao(numProcessos, status);
+
+                        for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                        {
+                            tabelaProcessos.setValueAt(status, i, 4);
+                        }
                     }
-
-                    Recorte cRecorte = new Recorte();
-                    cRecorte.setNomeRecorte(selectRecorte.getSelectedItem().toString());
-
-                    Estado cEstado = new Estado();
-                    cEstado.setNome(selectEstado.getSelectedItem().toString());
-
-                    ProcessoModel cProcessoModel = new ProcessoModel(cRecorte, cEstado);
-                    cProcessoModel.setTelaPrincipal(cTelaPrincipal);
-                    cProcessoModel.marcarRevisao(numProcessos, status);
-
-                    for (int i = 0; i < tabelaProcessos.getRowCount(); i++)
+                    catch (SQLException ex)
                     {
-                        tabelaProcessos.setValueAt(status, i, 4);
+                        Excecao excecao = new Excecao("Erro de SQL", this.getClass().getName(), "Erro ao buscar ao marcar como revisado. " + ex.toString());
+                    }
+                    catch (ClassNotFoundException ex)
+                    {
+                        Excecao excecao = new Excecao("Classe não encontrada", this.getClass().getName(), "Erro ao iniciar a classe do JTDS. " + ex.toString());
                     }
                 }
             }

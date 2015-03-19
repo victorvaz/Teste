@@ -1,7 +1,6 @@
 package Model;
 
 import Core.Charset.Charset;
-import Core.Excecao.Excecao;
 import DAL.VistaDAL;
 import Entity.Estado;
 import Entity.Recorte;
@@ -21,121 +20,25 @@ public class TribunalModel
      * Função para buscar tribunais
      * @param cRecorte
      * @return Lista de Tribunais
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public List<Tribunal> buscar(Recorte cRecorte)
+    public List<Tribunal> buscar(Recorte cRecorte) throws SQLException, ClassNotFoundException
     {
-        try
+        List<Tribunal> ListaTribunais = new ArrayList<>();
+        VistaDAL DAL = new VistaDAL();
+
+        String sql = "SELECT ID,"
+                   + "       SIGLA,"
+                   + "       TRIBUNAL,"
+                   + "       ESTADO"
+                   + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
+                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'";
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+
+        while (row.next())
         {
-            List<Tribunal> ListaTribunais = new ArrayList<>();
-            VistaDAL DAL = new VistaDAL();
-
-            String sql = "SELECT ID,"
-                       + "       SIGLA,"
-                       + "       TRIBUNAL,"
-                       + "       ESTADO"
-                       + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
-                       + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Tribunal cTribunal = new Tribunal();
-                cTribunal.setID(row.getInt("ID"));
-                cTribunal.setSigla(row.getString("SIGLA"));
-                cTribunal.setNomeTribunal(row.getString("TRIBUNAL"));
-                
-                Estado cEstado = new Estado();
-                cEstado.setNome("ESTADO");
-                cTribunal.setEstado(cEstado);
-                
-                ListaTribunais.add(cTribunal);
-            }
-            
-            DAL.desconectar();
-            
-            return ListaTribunais;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro na busca dos tribunais", this.getClass().getName(), ex.toString());
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Função para buscar tribunais por estado
-     * @param cRecorte Recorte
-     * @param cEstado Estado
-     * @return Lista de Tribunais
-     */
-    public List<Tribunal> buscarPorEstado(Recorte cRecorte, Estado cEstado)
-    {
-        try
-        {
-            List<Tribunal> ListaTribunais = new ArrayList<>();
-            VistaDAL DAL = new VistaDAL();
-
-            String sql = "SELECT ID,"
-                       + "       SIGLA,"
-                       + "       TRIBUNAL,"
-                       + "       ESTADO"
-                       + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
-                       + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
-                       + "   AND ESTADO  = '" + Charset.removeAcentos(cEstado.getNome().toUpperCase()) + "'";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-
-            while (row.next())
-            {
-                Tribunal cTribunal = new Tribunal();
-                cTribunal.setID(row.getInt("ID"));
-                cTribunal.setSigla(row.getString("SIGLA"));
-                cTribunal.setNomeTribunal(row.getString("TRIBUNAL"));
-                
-                Estado cEstadoAtual = new Estado();
-                cEstado.setNome(row.getString("ESTADO"));
-                cTribunal.setEstado(cEstadoAtual);
-                
-                ListaTribunais.add(cTribunal);
-            }
-            
-            DAL.desconectar();
-            
-            return ListaTribunais;
-        }
-        catch (SQLException ex)
-        {
-            new Excecao("Erro na busca dos tribunais", this.getClass().getName(), ex.toString());
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Função para buscar tribunais por estado
-     * @param cRecorte Recorte
-     * @param nomeTribunal Nome do estado
-     * @return Tribunais
-     */
-    public Tribunal buscarPorNome(Recorte cRecorte, String nomeTribunal)
-    {
-        try
-        {
-            VistaDAL DAL = new VistaDAL();
-
-            String sql = "SELECT ID,"
-                       + "       SIGLA,"
-                       + "       TRIBUNAL,"
-                       + "       ESTADO"
-                       + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
-                       + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
-                       + "   AND TRIBUNAL = '" + Charset.removeAcentos(nomeTribunal.toUpperCase()) + "'";
-
-            ResultSet row = DAL.executarSelectQuery(sql);
-            row.next();
-            
             Tribunal cTribunal = new Tribunal();
             cTribunal.setID(row.getInt("ID"));
             cTribunal.setSigla(row.getString("SIGLA"));
@@ -144,16 +47,91 @@ public class TribunalModel
             Estado cEstado = new Estado();
             cEstado.setNome("ESTADO");
             cTribunal.setEstado(cEstado);
-            
-            DAL.desconectar();
-            
-            return cTribunal;
+
+            ListaTribunais.add(cTribunal);
         }
-        catch (SQLException ex)
+
+        DAL.desconectar();
+
+        return ListaTribunais;
+    }
+    
+    /**
+     * Função para buscar tribunais por estado
+     * @param cRecorte Recorte
+     * @param cEstado Estado
+     * @return Lista de Tribunais
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     */
+    public List<Tribunal> buscarPorEstado(Recorte cRecorte, Estado cEstado) throws SQLException, ClassNotFoundException
+    {
+        List<Tribunal> ListaTribunais = new ArrayList<>();
+        VistaDAL DAL = new VistaDAL();
+
+        String sql = "SELECT ID,"
+                   + "       SIGLA,"
+                   + "       TRIBUNAL,"
+                   + "       ESTADO"
+                   + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
+                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
+                   + "   AND ESTADO  = '" + Charset.removeAcentos(cEstado.getNome().toUpperCase()) + "'";
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+
+        while (row.next())
         {
-            new Excecao("Erro na busca dos tribunais", this.getClass().getName(), ex.toString());
+            Tribunal cTribunal = new Tribunal();
+            cTribunal.setID(row.getInt("ID"));
+            cTribunal.setSigla(row.getString("SIGLA"));
+            cTribunal.setNomeTribunal(row.getString("TRIBUNAL"));
+
+            Estado cEstadoAtual = new Estado();
+            cEstado.setNome(row.getString("ESTADO"));
+            cTribunal.setEstado(cEstadoAtual);
+
+            ListaTribunais.add(cTribunal);
         }
-        
-        return null;
+
+        DAL.desconectar();
+
+        return ListaTribunais;
+    }
+    
+    /**
+     * Função para buscar tribunais por estado
+     * @param cRecorte Recorte
+     * @param nomeTribunal Nome do estado
+     * @return Tribunais
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     */
+    public Tribunal buscarPorNome(Recorte cRecorte, String nomeTribunal) throws SQLException, ClassNotFoundException
+    {
+        VistaDAL DAL = new VistaDAL();
+
+        String sql = "SELECT ID,"
+                   + "       SIGLA,"
+                   + "       TRIBUNAL,"
+                   + "       ESTADO"
+                   + "  FROM DIARIO_OFICIAL_TRIBUNAIS"
+                   + " WHERE CLIENTE = '" + cRecorte.getNomeRecorte() + "'"
+                   + "   AND TRIBUNAL = '" + Charset.removeAcentos(nomeTribunal.toUpperCase()) + "'";
+
+        ResultSet row = DAL.executarSelectQuery(sql);
+        row.next();
+
+        Tribunal cTribunal = new Tribunal();
+        cTribunal.setID(row.getInt("ID"));
+        cTribunal.setSigla(row.getString("SIGLA"));
+        cTribunal.setNomeTribunal(row.getString("TRIBUNAL"));
+
+        Estado cEstado = new Estado();
+        cEstado.setNome("ESTADO");
+        cTribunal.setEstado(cEstado);
+
+        DAL.desconectar();
+
+        return cTribunal;
     }
 }

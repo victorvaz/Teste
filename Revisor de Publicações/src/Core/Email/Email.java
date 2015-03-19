@@ -7,12 +7,12 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
  * Classe responsável por disparar os e-mails da aplicação.
- * <p>
  * @author Victor Vaz de Oliveira <victor.vaz@vistaes.com.br>
  */
 public class Email
@@ -108,8 +108,10 @@ public class Email
 
     /**
      * Função para enviar o e-mail de acordo com as configurações.
+     * @throws javax.mail.internet.AddressException
+     * @throws javax.mail.MessagingException
      */
-    public void enviaEmail()
+    public void enviaEmail() throws AddressException, MessagingException
     {
         Properties props = new Properties();
 
@@ -130,22 +132,15 @@ public class Email
         // Ativa Debug para sessão:
         session.setDebug(false);
 
-        try
-        {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(Email.EMAIL));
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(Email.EMAIL));
 
-            Address[] toUser = InternetAddress.parse(this.getDestinatario());
+        Address[] toUser = InternetAddress.parse(this.getDestinatario());
 
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject(this.getAssunto());
-            message.setContent(this.getCorpo(), "text/html; charset=utf-8");
+        message.setRecipients(Message.RecipientType.TO, toUser);
+        message.setSubject(this.getAssunto());
+        message.setContent(this.getCorpo(), "text/html; charset=utf-8");
 
-            Transport.send(message);
-        }
-        catch (MessagingException e)
-        {
-            throw new RuntimeException(e);
-        }
+        Transport.send(message);
     }
 }
