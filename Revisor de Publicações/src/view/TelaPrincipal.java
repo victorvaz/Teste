@@ -1,6 +1,6 @@
 package view;
 
-import Core.Excecao.Excecao;
+import Core.Excecao;
 import Entity.Cliente;
 import Entity.Escritorio;
 import Entity.Estado;

@@ -1,6 +1,6 @@
 package Model;
 
-import Core.Charset.Charset;
+import Core.Charset;
 import DAL.VistaDAL;
 import Entity.Estado;
 import Entity.Recorte;
