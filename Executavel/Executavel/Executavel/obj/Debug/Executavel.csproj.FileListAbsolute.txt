@@ -8,3 +8,6 @@ C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Exec
 C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.csprojResolveAssemblyReference.cache
 C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.exe.manifest
 C:\Users\user\Documents\GitHub\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.application
+C:\Users\VictorVaz\Documents\Netbeans Projects\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\bin\Debug\Executavel.exe.config
+C:\Users\VictorVaz\Documents\Netbeans Projects\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.exe
+C:\Users\VictorVaz\Documents\Netbeans Projects\Revisor-de-Publicacoes\Executavel\Executavel\Executavel\obj\Debug\Executavel.pdb
